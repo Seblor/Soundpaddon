@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scroll-bar-bg-color);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scroll-bar-color);
+  border-radius: 20px;
+  border: 3px solid var(--scroll-bar-bg-color);
+}
+
+.highlighted-bar {
+  background-color: rgb(var(--color-surface-900));
+  background-image: radial-gradient(at 50% 0%,
+      rgba(var(--color-secondary-500) / 0.18) 0px,
+      transparent 75%),
+    radial-gradient(at 100% 0%,
+      rgba(var(--color-tertiary-500) / 0.18) 0px,
+      transparent 50%);
+}
+
+body {
+  height: 100vh;
+}
