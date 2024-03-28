@@ -2,6 +2,7 @@
   import {
     Drawer,
     Modal,
+    Toast,
     getDrawerStore,
     initializeStores,
   } from "@skeletonlabs/skeleton";
@@ -34,6 +35,8 @@
 <svelte:head>
   {@html webManifestLink}
 </svelte:head>
+
+<Toast />
 
 <Modal />
 
