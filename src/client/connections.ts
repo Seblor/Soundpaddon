@@ -41,7 +41,7 @@ export {
 export function testHostIp(ip: string, timeout: number = 1000): Promise<boolean> {
   const endpoint = `http://${ip}:${get(serverHost).port}/api/data`
   return new Promise((resolve) => {
-    fetch(endpoint, { method: "GET", mode: "no-cors", cache: "no-store", redirect: "manual", referrerPolicy: "no-referrer" })
+    fetch(endpoint)
       .then(() => resolve(true))
       .catch(() => resolve(false));
     setTimeout(() => resolve(false), timeout);
