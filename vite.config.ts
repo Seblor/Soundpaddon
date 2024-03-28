@@ -17,10 +17,10 @@ const config: UserConfig = {
 		target: 'node20',
 	},
 	server: {
-		port: 3000,
+		port: 8555,
 	},
 	preview: {
-		port: 3000,
+		port: 8555,
 	},
 	plugins: [
 		sveltekit(),

@@ -11,7 +11,7 @@ export const settingsOpacity: Writable<number> = writable(1);
  * === Persistent Settings ===
  */
 
-export const serverHost: Writable<{ ip: string, port: 3000 }> = localStorageStore('v1_serverHost', { ip: '127.0.0.1', port: 3000 })
+export const serverHost: Writable<{ ip: string, port: 8555 }> = localStorageStore('v1_serverHost', { ip: '127.0.0.1', port: 8555 })
 
 export const mirrorLayoutSoundButtonSize: Writable<number> = localStorageStore('v1_mirrorLayoutSoundButtonSize', 60);
 

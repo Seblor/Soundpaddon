@@ -66,7 +66,7 @@
   <TabGroup class="w-[100vw] flex flex-col">
     <div
       bind:this={header}
-      class="flex w-[100vw] border-b border-gray-400 fixed overflow-x-auto h-20 highlighted-bar draggable z-10"
+      class="flex w-[100vw] border-b border-gray-400 fixed overflow-x-auto overflow-y-hidden h-20 highlighted-bar draggable z-10"
     >
       {#each categories as category, index}
         <Tab bind:group={tabSet} name="tab1" value={index}>
