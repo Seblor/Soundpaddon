@@ -13,14 +13,14 @@
   async function onScanSuccess(decodedText: string) {
     stopScan();
     // handle the scanned code as you like, for example:
-    const allLocalIPs = JSON.parse(decodedText);
+    const allLocalIPs: string[] = JSON.parse(decodedText);
 
     toastStore.trigger({
       hideDismiss: true,
       message: "Scanning for your device...",
     })
 
-    Promise.allSettled(allLocalIPs.map(testHostIp)).then((results) => {
+    Promise.allSettled(allLocalIPs.map(ip => testHostIp(ip))).then((results) => {
       results.forEach((result, index) => {
         if (result.status === "fulfilled" && result.value) {
           serverHost.update((host) => {
