@@ -10,3 +10,7 @@ export function getSoundName(sound: Sound): string {
     : RegExp(/.+\/([^/]+)\..+$/).exec(sound.url.replace(/\/\/|\\\\|\\/g, "/"))?.[1] ??
     ""
 }
+
+export function isBuild(): boolean {
+  return process.env.npm_lifecycle_event === 'build'
+}

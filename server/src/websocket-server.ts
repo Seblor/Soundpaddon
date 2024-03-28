@@ -25,21 +25,19 @@ let playbackStatus = PlayStatus.STOPPED
 const socketsToNotify: Socket[] = []
 
 setImmediate(async () => {
-  await clients.playbackFetcher.connectionAwaiter
-
   while (true) {
+    await clients.soundsFetcher.connectionAwaiter
+
     const newPlaybackPosition = await clients.playbackFetcher.getPlaybackPosition()
     const newPlaybackDuration = await clients.playbackFetcher.getPlaybackDuration()
     const newPlaybackStatus = await clients.playbackFetcher.getPlayStatus()
 
 
     if (playbackStatus === PlayStatus.PLAYING && newPlaybackStatus === PlayStatus.STOPPED) {
-      console.log('playback reset, notifying clients');
       socketsToNotify.forEach(socket => socket.emit('playback-position', 0))
     }
 
     if (newPlaybackStatus === PlayStatus.PLAYING && (newPlaybackPosition !== playbackPosition || newPlaybackDuration !== playbackDuration)) {
-      console.log('playback changed, notifying clients');
       playbackPosition = newPlaybackPosition
       playbackDuration = newPlaybackDuration
       socketsToNotify.forEach(socket => socket.emit('playback-position', playbackPosition / playbackDuration))
@@ -56,13 +54,12 @@ setImmediate(async () => {
 let sounds: Sound[] = []
 
 setImmediate(async () => {
-  await clients.soundsFetcher.connectionAwaiter
-
   while (true) {
+    await clients.soundsFetcher.connectionAwaiter
+
     const newSounds = await clients.soundsFetcher.getSoundListJSON()
     if (newSounds && _.isEqual(soundListToComparable(newSounds), soundListToComparable(sounds)) === false) {
       sounds = newSounds
-      console.log('sounds list changed, notifying clients');
       socketsToNotify.forEach(socket => socket.emit('sounds', sounds))
     }
     await sleep(1000)
@@ -78,11 +75,14 @@ export default function onWebsocketConnection(socket: Socket) {
   socketsToNotify.push(socket)
   socket.on('disconnect', () => {
     socketsToNotify.splice(socketsToNotify.indexOf(socket), 1)
-    console.log('Client disconnected => ' + socketsToNotify.length + ' clients remaining')
   })
 }
 
-function soundListToComparable(sounds: Sound[]) {
+function soundListToComparable(sounds: Sound[]): {
+  index: number;
+  title: string;
+  url: string;
+}[] {
   return sounds.map(sound => ({
     index: sound.index,
     title: sound.title,

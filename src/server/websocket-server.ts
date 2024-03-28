@@ -1,6 +1,6 @@
 import { type Socket } from "socket.io";
 import Soundpad, { PlayStatus, type Sound } from 'soundpad.js'
-import { sleep } from "../utils/misc";
+import { isBuild, sleep } from "../utils/misc";
 import _ from 'lodash'
 
 // Using multiple clients since Soundpad uses a named pipe, race conditions may mix responses in a single message
@@ -15,9 +15,10 @@ const clients = {
   }),
 }
 
-await Promise.all(Object.values(clients).map(client => client.connect()))
+if (isBuild() === false) {
+  await Promise.all(Object.values(clients).map(client => client.connect()))
+}
 
-clients.playbackFetcher.addEventListener('close', console.log)
 
 /**
  * === Playback Fetcher ===
@@ -28,7 +29,7 @@ let playbackStatus = PlayStatus.STOPPED
 const socketsToNotify: Socket[] = []
 
 setImmediate(async () => {
-  while (true) {
+  while (isBuild() === false) {
     await clients.playbackFetcher.connectionAwaiter
 
     const newPlaybackPosition = await clients.playbackFetcher.getPlaybackPosition()
@@ -37,12 +38,10 @@ setImmediate(async () => {
 
 
     if (playbackStatus === PlayStatus.PLAYING && newPlaybackStatus === PlayStatus.STOPPED) {
-      console.log('playback reset, notifying clients');
       socketsToNotify.forEach(socket => socket.emit('playback-position', 0))
     }
 
     if (newPlaybackStatus === PlayStatus.PLAYING && (newPlaybackPosition !== playbackPosition || newPlaybackDuration !== playbackDuration)) {
-      console.log('playback changed, notifying clients');
       playbackPosition = newPlaybackPosition
       playbackDuration = newPlaybackDuration
       socketsToNotify.forEach(socket => socket.emit('playback-position', playbackPosition / playbackDuration))
@@ -59,13 +58,12 @@ setImmediate(async () => {
 let sounds: Sound[] = []
 
 setImmediate(async () => {
-  while (true) {
+  while (isBuild() === false) {
     await clients.soundsFetcher.connectionAwaiter
 
     const newSounds = await clients.soundsFetcher.getSoundListJSON()
     if (newSounds && _.isEqual(soundListToComparable(newSounds), soundListToComparable(sounds)) === false) {
       sounds = newSounds
-      console.log('sounds list changed, notifying clients');
       socketsToNotify.forEach(socket => socket.emit('sounds', sounds))
     }
     await sleep(1000)
@@ -81,7 +79,6 @@ export default function onWebsocketConnection(socket: Socket): void {
   socketsToNotify.push(socket)
   socket.on('disconnect', () => {
     socketsToNotify.splice(socketsToNotify.indexOf(socket), 1)
-    console.log('Client disconnected => ' + socketsToNotify.length + ' clients remaining')
   })
 }
 
