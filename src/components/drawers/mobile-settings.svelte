@@ -8,7 +8,6 @@
   import InstallPwa from "../install-pwa.svelte";
 
   let volume = 0;
-  let drawerStore = getDrawerStore();
 
   soundpadClient.getVolume().then((v) => {
     volume = v;
@@ -16,9 +15,11 @@
 
   function updateVolume(event: Event) {
     if (event?.target == null) return;
+    const newVolume = (event.target as HTMLInputElement).value;
     soundpadClient.setVolume(
-      parseInt((event.target as HTMLInputElement).value),
+      parseInt(newVolume),
     );
+    volume = parseInt(newVolume);
   }
 </script>
 
