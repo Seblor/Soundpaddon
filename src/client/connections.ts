@@ -8,6 +8,7 @@ const soundpadClient = new Soundpad();
 const server = get(serverHost);
 
 const socket = io(`${server.ip}:${server.port}`, {
+  secure: false,
   transports: ["websocket"],
 });
 
