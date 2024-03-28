@@ -6,7 +6,7 @@
   import { onMount } from "svelte";
   import type { Html5QrcodeScannerConfig } from "html5-qrcode/esm/html5-qrcode-scanner";
   import { serverHost } from "../stores/settings";
-    import { getToastStore } from "@skeletonlabs/skeleton";
+  import { getToastStore } from "@skeletonlabs/skeleton";
 
   const toastStore = getToastStore();
 
@@ -18,19 +18,30 @@
     toastStore.trigger({
       hideDismiss: true,
       message: "Scanning for your device...",
-    })
-
-    Promise.allSettled(allLocalIPs.map(ip => testHostIp(ip))).then((results) => {
-      results.forEach((result, index) => {
-        if (result.status === "fulfilled" && result.value) {
-          serverHost.update((host) => {
-            host.ip = allLocalIPs[index];
-            return host;
-          });
-          window.location.reload();
-        }
-      });
     });
+
+    Promise.allSettled(allLocalIPs.map((ip) => testHostIp(ip))).then(
+      (results) => {
+        results.forEach((result, index) => {
+          if (result.status === "fulfilled" && result.value) {
+            serverHost.update((host) => {
+              host.ip = allLocalIPs[index];
+              return host;
+            });
+          }
+
+          toastStore.trigger({
+            hideDismiss: true,
+            timeout: 3000,
+            message: "Found your device, connecting...",
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 1e3);
+        });
+      },
+    );
   }
 
   let config: Html5QrcodeScannerConfig = {
