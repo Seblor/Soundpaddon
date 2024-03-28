@@ -14,6 +14,7 @@
   });
 
   onMount(() => {
+    socket.connect();
     // @ts-ignore
     window.soundpad = soundpadClient;
   });

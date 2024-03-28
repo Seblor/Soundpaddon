@@ -4,10 +4,11 @@
   import { onMount } from "svelte";
   import { serverHost } from "../stores/settings";
   import { get } from "svelte/store";
+  import { ipToSSLDomain } from "../client/connections";
 
   const server = get(serverHost);
 
-  if (isMobile() && location.href.includes("/mobile") === false){
+  if (isMobile() && location.href.includes("/mobile") === false) {
     location.href = "/mobile";
   }
 
@@ -15,7 +16,7 @@
 
   onMount(async () => {
     const data = await fetch(
-      `http://${server.ip}:${server.port}/api/data/`,
+      `https://${ipToSSLDomain(server.ip)}:${server.port}/api/data/`,
     ).then((res) => res.json());
     QRCode.toCanvas(
       qrcodeCanvas,
