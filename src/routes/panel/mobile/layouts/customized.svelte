@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Sound from "../../../components/sound.svelte";
-  import { mirrorLayoutSoundButtonSize } from "../../../stores/settings";
-  import { sounds } from "../../../stores/sounds";
+  import Sound from "../../../../components/sound.svelte";
+  import { mirrorLayoutSoundButtonSize } from "../../../../stores/settings";
+  import { sounds } from "../../../../stores/sounds";
 </script>
 
 <div

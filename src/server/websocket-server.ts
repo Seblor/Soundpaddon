@@ -1,5 +1,5 @@
 import { type Socket } from "socket.io";
-import Soundpad, { PlayStatus, type Sound } from 'soundpad.js'
+import Soundpad, { PlayStatus, type Category, type Sound } from 'soundpad.js'
 import { isBuild, sleep } from "../utils/misc";
 import _ from 'lodash'
 
@@ -10,6 +10,10 @@ const clients = {
     startSoundpadOnConnect: true,
   }),
   soundsFetcher: new Soundpad({
+    autoReconnect: true,
+    startSoundpadOnConnect: true,
+  }),
+  categoriesFetcher: new Soundpad({
     autoReconnect: true,
     startSoundpadOnConnect: true,
   }),
@@ -52,19 +56,30 @@ setImmediate(async () => {
 })
 
 /**
- * === Sounds Fetcher ===
+ * === Sounds & Categories Fetcher ===
  */
 
 let sounds: Sound[] = []
+let categories: Category[] = []
 
 setImmediate(async () => {
   while (isBuild() === false) {
-    await clients.soundsFetcher.connectionAwaiter
+    await Promise.all([
+      clients.soundsFetcher.connectionAwaiter,
+      clients.categoriesFetcher.connectionAwaiter
+    ])
 
-    const newSounds = await clients.soundsFetcher.getSoundListJSON()
+    const [newSounds, newCategories] = await Promise.all([
+      clients.soundsFetcher.getSoundListJSON(),
+      clients.categoriesFetcher.getCategoriesJSON(true, true),
+    ])
     if (newSounds && _.isEqual(soundListToComparable(newSounds), soundListToComparable(sounds)) === false) {
       sounds = newSounds
       socketsToNotify.forEach(socket => socket.emit('sounds', sounds))
+    }
+    if (newCategories && _.isEqual(categoriesToComparable(newCategories), categoriesToComparable(categories)) === false) {
+      categories = newCategories
+      socketsToNotify.forEach(socket => socket.emit('categories', categories))
     }
     await sleep(1000)
   }
@@ -91,5 +106,19 @@ function soundListToComparable(sounds: Sound[]): {
     index: sound.index,
     title: sound.title,
     url: sound.url,
+  }))
+}
+
+function categoriesToComparable(categories: Category[]): {
+  index: number;
+  icon: string;
+  name: string;
+  sounds: ReturnType<typeof soundListToComparable>;
+}[] {
+  return categories.map(category => ({
+    index: category.index,
+    icon: category.icon ?? 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==', // Transparent 1x1 PNG
+    name: category.name,
+    sounds: soundListToComparable(category.sounds ?? []),
   }))
 }

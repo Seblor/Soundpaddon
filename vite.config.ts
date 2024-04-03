@@ -30,8 +30,10 @@ const config: UserConfig = {
 			devOptions: {
 				enabled: true,
 			},
+			base: '/panel',
 			registerType: 'autoUpdate',
 			manifest: {
+				publicPath: '/panel',
 				display: 'standalone',
 				name: 'Soundpaddon',
 				id: 'com.soundpaddon',

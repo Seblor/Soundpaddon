@@ -7,12 +7,17 @@
   import type { Html5QrcodeScannerConfig } from "html5-qrcode/esm/html5-qrcode-scanner";
   import { serverHost } from "../stores/settings";
   import { getToastStore } from "@skeletonlabs/skeleton";
+  import lz from "lz-string";
 
   const toastStore = getToastStore();
 
-  async function onScanSuccess(decodedText: string) {
+  if (location.search) {
+    onScanSuccess(location.search)
+  }
+
+  async function onScanSuccess(fullURL: string) {
     stopScan();
-    // handle the scanned code as you like, for example:
+    const decodedText = lz.decompressFromBase64(fullURL.split("host=")[1])
     const allLocalIPs: string[] = JSON.parse(decodedText);
 
     toastStore.trigger({

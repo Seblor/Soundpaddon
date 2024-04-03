@@ -3,9 +3,8 @@
   // import CustomizedLayoutIcon from "virtual:icons/mdi/brush";
   import MirrorLayoutSettings from "../settings/mirror-layout-settings.svelte";
   import { soundpadClient } from "../../client/connections";
-  import { SlideToggle, getDrawerStore } from "@skeletonlabs/skeleton";
+  import { SlideToggle } from "@skeletonlabs/skeleton";
   import { showSearchBar } from "../../stores/settings";
-  import InstallPwa from "../install-pwa.svelte";
 
   let volume = 0;
 
@@ -49,7 +48,6 @@
   </div>
   <hr />
   <MirrorLayoutSettings />
-  <InstallPwa />
   <!-- <h1>Select layout</h1>
   <RadioGroup>
     <RadioItem bind:group={$selectedLayout} name="justify" value={'mirror'}>
