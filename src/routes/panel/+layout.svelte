@@ -8,9 +8,6 @@
   } from "@skeletonlabs/skeleton";
   import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
   import { storePopup } from '@skeletonlabs/skeleton';
-  import "../../app.postcss";
-  // @ts-ignore
-  import { pwaInfo } from "virtual:pwa-info";
   import { DRAWER_TYPES } from "../../utils/enums";
   import MobileSettings from "../../components/drawers/mobile-settings.svelte";
   import LeftArrowIcon from "virtual:icons/mdi/arrow-left";
@@ -18,12 +15,6 @@
   import { settingsOpacity } from "../../stores/settings";
 
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
-
-  $: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : "";
-
-  $: {
-    console.log(webManifestLink);
-  }
 
   initializeStores();
 
@@ -35,10 +26,6 @@
 
   let drawerId: DRAWER_TYPES = ($drawerStore.id = DRAWER_TYPES.MOBILE_SETTINGS);
 </script>
-
-<svelte:head>
-  {@html webManifestLink}
-</svelte:head>
 
 <Toast />
 

@@ -16,3 +16,15 @@ export const POST: RequestHandler = async function ({ request, cookies }) {
 
   return new Response(await soundpadClient.sendQuery(data))
 }
+
+// Preflight request handler for CORS
+export const OPTIONS: RequestHandler = async function () {
+  return new Response(null, {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '600',
+    }
+  })
+}

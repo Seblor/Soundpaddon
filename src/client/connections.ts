@@ -16,7 +16,7 @@ const socket = io(`wss://${serverIP}:${server.port}`, {
 
 soundpadClient.connect((query: string) => {
   console.log(query);
-  return fetch(`https://${serverIP}:${server.port}/api/soundpad/`, { method: "POST", body: query })
+  return fetch(`https://${serverIP}:${server.port}/api/soundpad`, { method: "POST", body: query })
     .then((data) => data.text())
     .then((data) => {
       return data;

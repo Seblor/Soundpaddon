@@ -3,7 +3,7 @@
   import { isConnected, socket } from "../client/connections";
   import ToolbarButtons from "./toolbar-buttons.svelte";
   import QrcodeScanButton from "./qrcode-scan-button.svelte";
-    import ManualHostButton from "./manual-host-button.svelte";
+  import ManualHostButton from "./manual-host-button.svelte";
 
   socket.on("playback-position", (playbackPosition) => {
     data = parseFloat(playbackPosition);

@@ -2,6 +2,9 @@ import { type Socket } from "socket.io";
 import Soundpad, { PlayStatus, type Category, type Sound } from 'soundpad.js'
 import { isBuild, sleep } from "../utils/misc";
 import _ from 'lodash'
+// import {execSync} from 'child_process'
+
+// execSync(`PowerShell -Command "Add-Type -AssemblyName PresentationFramework;[System.Windows.MessageBox]::Show('Hello World', '${process.env.name}', 0, 16)"`)
 
 // Using multiple clients since Soundpad uses a named pipe, race conditions may mix responses in a single message
 const clients = {

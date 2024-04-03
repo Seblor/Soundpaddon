@@ -30,10 +30,10 @@ const config: UserConfig = {
 			devOptions: {
 				enabled: true,
 			},
-			base: '/panel',
+			base: '/',
 			registerType: 'autoUpdate',
 			manifest: {
-				publicPath: '/panel',
+				start_url: '/panel',
 				display: 'standalone',
 				name: 'Soundpaddon',
 				id: 'com.soundpaddon',
@@ -41,7 +41,7 @@ const config: UserConfig = {
 				icons: [{
 					src: '/icon.png',
 					purpose: 'any',
-					sizes: '192x192',
+					sizes: '144x144',
 				}]
 			}
 		}),

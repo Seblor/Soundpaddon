@@ -16,7 +16,7 @@
     ).then((res) => res.json());
     QRCode.toCanvas(
       qrcodeCanvas,
-      `https://soundpaddon.app/?host=${lz.compressToBase64(JSON.stringify(data.localIPs))}`,
+      `https://soundpaddon.app/panel?host=${lz.compressToBase64(JSON.stringify(data.localIPs))}`,
       (error: any) => {
         if (error) console.error(error);
       },
