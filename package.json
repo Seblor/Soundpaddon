@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "vite dev --host",
     "build": "vite build",
-    "postbuild": "tsc -p ./server/tsconfig.json",
+    "postbuild": "tsc -p ./tsconfig.host.json",
     "preview": "vite preview",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
@@ -27,8 +27,10 @@
     "@types/node": "20.11.28",
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.8",
+    "@types/winreg": "^1.2.36",
     "@vite-pwa/sveltekit": "^0.4.0",
     "autoprefixer": "10.4.18",
+    "esbuild": "^0.20.2",
     "postcss": "8.4.35",
     "svelte": "^4.2.7",
     "svelte-check": "^3.6.0",
@@ -41,6 +43,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@esbuild-plugins/node-resolve": "^0.2.2",
     "@floating-ui/dom": "^1.6.3",
     "cors": "^2.8.5",
     "express": "^4.19.2",
@@ -55,9 +58,19 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "sortablejs": "^1.15.2",
-    "soundpad.js": "^2.1.1",
+    "soundpad.js": "^2.2.0",
+    "start-on-windows-boot": "^1.0.0",
     "svelte-gestures": "^4.0.0",
+    "systray": "^1.0.5",
     "unplugin-icons": "^0.18.5",
+    "winreg": "^1.2.5",
     "yt-dlp-wrap": "^2.3.12"
+  },
+  "pkg": {
+    "outputPath": "dist",
+    "options": ["experimental-modules"],
+    "targets": [
+      "node20-win-x64"
+    ]
   }
 }

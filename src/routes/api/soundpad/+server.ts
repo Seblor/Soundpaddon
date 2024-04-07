@@ -1,6 +1,6 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import Soundpad from 'soundpad.js'
-import { isBuild } from '../../../utils/misc';
+import { isBuild } from '$lib/utils/misc';
 
 const soundpadClient = new Soundpad({
   autoReconnect: true,

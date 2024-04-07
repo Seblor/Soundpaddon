@@ -1,8 +1,9 @@
 import { Server } from 'socket.io'
+import '../host/add-system-tray'
 
 // === socket.io setup for development ===
 
-import onWebsocketConnection from './websocket-server';
+import onWebsocketConnection from '../host/websocket-server';
 
 export function devSocketSetup() {
   console.log('[DEV] Starting to listen for socket connections');

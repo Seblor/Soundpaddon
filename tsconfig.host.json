@@ -1,7 +1,6 @@
 {
 	"compilerOptions": {
-		"rootDir": "./src",
-		"outDir": "./build",
+		"outDir": "./host-build",
 		"target": "ESNext",
 		"allowJs": true,
 		"checkJs": true,
@@ -21,7 +20,8 @@
 			]
 		},
 		"rootDirs": [
-			".",
+			"./src/host",
+			"./src/lib",
 			"./types"
 		],
 		"verbatimModuleSyntax": true,
@@ -37,14 +37,16 @@
 		"ambient.d.ts",
 		"non-ambient.d.ts",
 		"./types/**/$types.d.ts",
-		"./src/**/*.js",
-		"./src/**/*.ts",
-		"./src/**/*.svelte",
+		"./src/host/**/*.js",
+		"./src/host/**/*.ts",
+		"./src/host/**/*.svelte",
+		"./src/lib/**/*.ts",
 		"./tests/**/*.js",
 		"./tests/**/*.ts",
 		"./tests/**/*.svelte"
 	],
 	"exclude": [
+		"!./src/host",
 		"../node_modules/**",
 		"../src/service-worker.js",
 		"../src/service-worker.ts",

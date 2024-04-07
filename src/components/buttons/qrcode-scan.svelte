@@ -1,11 +1,11 @@
 <script lang="ts">
   import CameraIcon from "virtual:icons/mdi/camera";
   import CameraOffIcon from "virtual:icons/mdi/camera-off";
-  import { testHostIp } from "../client/connections";
+  import { testHostIp } from "../../client/connections";
   import { Html5QrcodeScanType, Html5QrcodeScanner } from "html5-qrcode";
   import { onMount } from "svelte";
   import type { Html5QrcodeScannerConfig } from "html5-qrcode/esm/html5-qrcode-scanner";
-  import { serverHost } from "../stores/settings";
+  import { serverHost } from "../../stores/settings";
   import { getToastStore } from "@skeletonlabs/skeleton";
   import lz from "lz-string";
 

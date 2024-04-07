@@ -1,6 +1,6 @@
 import { type Socket } from "socket.io";
 import Soundpad, { PlayStatus, type Category, type Sound } from 'soundpad.js'
-import { isBuild, sleep } from "../utils/misc";
+import { isBuild, sleep } from "../lib/utils/misc.js";
 import _ from 'lodash'
 // import {execSync} from 'child_process'
 
@@ -24,6 +24,7 @@ const clients = {
 
 if (isBuild() === false) {
   await Promise.all(Object.values(clients).map(client => client.connect()))
+  await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
 }
 
 
@@ -37,8 +38,6 @@ const socketsToNotify: Socket[] = []
 
 setImmediate(async () => {
   while (isBuild() === false) {
-    await clients.playbackFetcher.connectionAwaiter
-
     const newPlaybackPosition = await clients.playbackFetcher.getPlaybackPosition()
     const newPlaybackDuration = await clients.playbackFetcher.getPlaybackDuration()
     const newPlaybackStatus = await clients.playbackFetcher.getPlayStatus()
@@ -67,11 +66,6 @@ let categories: Category[] = []
 
 setImmediate(async () => {
   while (isBuild() === false) {
-    await Promise.all([
-      clients.soundsFetcher.connectionAwaiter,
-      clients.categoriesFetcher.connectionAwaiter
-    ])
-
     const [newSounds, newCategories] = await Promise.all([
       clients.soundsFetcher.getSoundListJSON(),
       clients.categoriesFetcher.getCategoriesJSON(true, true),

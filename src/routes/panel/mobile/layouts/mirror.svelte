@@ -6,7 +6,7 @@
     popup,
   } from "@skeletonlabs/skeleton";
   import type { Category, Sound as SoundpadSound } from "soundpad.js/web";
-  import Sound from "../../../../components/sound.svelte";
+  import Sound from "../../../../components/buttons/sound.svelte";
   import { socket, soundpadClient } from "../../../../client/connections";
   import { sounds } from "../../../../stores/sounds";
   import { onMount } from "svelte";

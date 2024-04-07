@@ -1,8 +1,8 @@
 <script lang="ts">
   import PenIcon from "virtual:icons/mdi/pen";
   import TickIcon from "virtual:icons/mdi/tick-circle";
-  import { testHostIp } from "../client/connections";
-  import { serverHost } from "../stores/settings";
+  import { testHostIp } from "../../client/connections";
+  import { serverHost } from "../../stores/settings";
   import {
     getToastStore,
     popup,

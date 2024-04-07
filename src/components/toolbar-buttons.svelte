@@ -5,7 +5,7 @@
   import SettingsIcon from "virtual:icons/mdi/cog";
   import { soundpadClient } from "../client/connections";
   import { getDrawerStore } from "@skeletonlabs/skeleton";
-  import { DRAWER_TYPES } from "../utils/enums";
+  import { DRAWER_TYPES } from "$lib/utils/enums";
 
   export let isSoundPlaying = true;
 

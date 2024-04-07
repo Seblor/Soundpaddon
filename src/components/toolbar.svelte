@@ -2,8 +2,8 @@
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import { isConnected, socket } from "../client/connections";
   import ToolbarButtons from "./toolbar-buttons.svelte";
-  import QrcodeScanButton from "./qrcode-scan-button.svelte";
-  import ManualHostButton from "./manual-host-button.svelte";
+  import QrcodeScanButton from "./buttons/qrcode-scan.svelte";
+  import ManualHostButton from "./buttons/manual-host.svelte";
 
   socket.on("playback-position", (playbackPosition) => {
     data = parseFloat(playbackPosition);

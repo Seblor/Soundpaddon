@@ -8,7 +8,7 @@
   } from "@skeletonlabs/skeleton";
   import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
   import { storePopup } from '@skeletonlabs/skeleton';
-  import { DRAWER_TYPES } from "../../utils/enums";
+  import { DRAWER_TYPES } from "$lib/utils/enums";
   import MobileSettings from "../../components/drawers/mobile-settings.svelte";
   import LeftArrowIcon from "virtual:icons/mdi/arrow-left";
   import { swipe } from "svelte-gestures";

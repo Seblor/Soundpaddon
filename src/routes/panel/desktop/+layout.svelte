@@ -9,6 +9,17 @@
   });
 </script>
 
-<div class="h-[100vh]">
+<div class="flex justify-between items-center h-[100vh] gap-4">
   <slot />
+
+  <div class="mr-4">
+    <iframe
+      seamless
+      src="/panel/mobile"
+      frameborder="0"
+      title="mobile view"
+      class="w-96 h-[48rem] border-8 border-black rounded-lg shadow-lg resize"
+      style="direction: rtl"
+    ></iframe>
+  </div>
 </div>

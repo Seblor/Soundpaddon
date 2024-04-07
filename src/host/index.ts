@@ -4,6 +4,7 @@ import express from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
 import injectSocketIO from './socketIoHandler.js';
+import './add-system-tray.js'
 // import { handler } from '../../build/handler.js';
 
 const keyUrl = 'http://local-ip.co/cert/server.pem';
