@@ -5,7 +5,6 @@
   import DiscordIcon from "virtual:icons/mdi/discord";
   import MyInstantsIcon from "virtual:icons/mdi/gesture-tap";
   import PairingQrcode from "../../../components/dekstop/pairing-qrcode.svelte";
-  import DesktopSettings from "../../../components/settings/desktop-settings.svelte";
 
   let currentTile = 0;
 </script>
@@ -108,7 +107,7 @@
     {/if}
     {#if currentTile === 2}
       <div>
-        <DesktopSettings />
+        Import
       </div>
     {/if}
   </div>

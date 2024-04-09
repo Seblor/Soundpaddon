@@ -7,8 +7,10 @@ import fetch from 'node-fetch'
 import fs from 'fs'
 
 const enableHttps = !process.env.VERCEL_ENV;
-const keyUrl = 'http://local-ip.co/cert/server.pem';
-const certUrl = 'http://local-ip.co/cert/server.key'
+// const keyUrl = 'http://local-ip.co/cert/server.pem'
+// const certUrl = 'http://local-ip.co/cert/server.key'
+const keyUrl = 'https://local-ip.sh/server.pem'
+const certUrl = 'https://local-ip.sh/server.key'
 
 // === Vite config ===
 
@@ -73,6 +75,7 @@ if (enableHttps && config.server) {
 		downloadFile(keyUrl, 'ssl/server.key'),
 		downloadFile(certUrl, 'ssl/server.pem'),
 	])
+	console.log('downloaded ssl files');
 	config.server.https = {
 		key: 'ssl/server.pem',
 		cert: 'ssl/server.key',

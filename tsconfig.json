@@ -2,10 +2,14 @@
 	"extends": "./.svelte-kit/tsconfig.json",
 	"compilerOptions": {
 		"target": "ESNext",
+		"types": [
+			"node"
+		],
 		"allowJs": true,
 		"checkJs": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
+		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"skipLibCheck": true,
 		"sourceMap": true,

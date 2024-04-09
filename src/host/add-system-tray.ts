@@ -1,14 +1,14 @@
 
 import SysTray, { type ClickEvent, type Menu } from 'systray'
-import fs from 'fs'
+import fs from 'node:fs'
 import { closeSoundpad } from 'soundpad.js'
 import { disableAutoStart, enableAutoStart, getAutoStartValue } from '../lib/utils/start-with-windows.js'
 
 const iconPath = 'D:\\workspace\\soundpaddon-svelte\\static\\soundpaddon.ico'
 
-const iconToBase64 = (path: string) => {
+function iconToBase64(path: string) {
   const fileContent = fs.readFileSync(path)
-  return Buffer.from(fileContent).toString('base64')
+  return fileContent.toString('base64')
 }
 
 // @ts-ignore

@@ -24,7 +24,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "@types/express": "^4.17.21",
     "@types/lodash": "^4.17.0",
-    "@types/node": "20.11.28",
+    "@types/node": "^20.12.6",
     "@types/qrcode": "^1.5.5",
     "@types/sortablejs": "^1.15.8",
     "@types/winreg": "^1.2.36",
@@ -58,7 +58,7 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "sortablejs": "^1.15.2",
-    "soundpad.js": "^2.2.0",
+    "soundpad.js": "^2.2.1",
     "start-on-windows-boot": "^1.0.0",
     "svelte-gestures": "^4.0.0",
     "systray": "^1.0.5",
@@ -68,7 +68,9 @@
   },
   "pkg": {
     "outputPath": "dist",
-    "options": ["experimental-modules"],
+    "options": [
+      "experimental-modules"
+    ],
     "targets": [
       "node20-win-x64"
     ]

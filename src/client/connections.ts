@@ -37,7 +37,8 @@ export {
 }
 
 export function ipToSSLDomain(ip: string): string {
-  return `${ip.replace(/\./g, '-')}.my.local-ip.co`;
+  // return `${ip.replace(/\./g, '-')}.my.local-ip.co`;
+  return `${ip.replace(/\./g, '-')}.local-ip.sh`;
 }
 
 /**

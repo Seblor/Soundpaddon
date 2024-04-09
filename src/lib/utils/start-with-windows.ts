@@ -5,20 +5,20 @@ import WinReg from 'winreg';
 export function enableAutoStart(name: string, file: string) {
   return new Promise<void>((resolve, reject) => {
     getKey()
-      .set(name, WinReg.REG_SZ, file, (err) => !err ? resolve() : reject(err));
+      .set(name, WinReg.REG_SZ, file, (err: any) => !err ? resolve() : reject(err));
   });
 }
 
 export function disableAutoStart(name: string) {
   return new Promise<void>((resolve, reject) => {
     getKey()
-      .remove(name, (err) => !err ? resolve() : reject(err));
+      .remove(name, (err: any) => !err ? resolve() : reject(err));
   });
 }
 
 export function getAutoStartValue(name: string) {
   return new Promise<boolean>((resolve) => {
-    getKey().get(name, (error, result) => {
+    getKey().get(name, (error: any, result: any) => {
       if (error) {
         resolve(false)
       }
