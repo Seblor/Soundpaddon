@@ -12,7 +12,7 @@
 
   onMount(async () => {
     const data = await fetch(
-      `https://${ipToSSLDomain(server.ip)}:${server.port}/api/data/`,
+      `https://${ipToSSLDomain(server.ip)}:${server.port}/api/data`,
     ).then((res) => res.json());
     QRCode.toCanvas(
       qrcodeCanvas,

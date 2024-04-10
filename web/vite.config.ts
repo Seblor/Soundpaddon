@@ -19,10 +19,10 @@ const config: UserConfig = {
 		target: 'node20',
 	},
 	server: {
-		port: 8555,
+		port: 8080,
 	},
 	preview: {
-		port: 8555,
+		port: 8080,
 	},
 	plugins: [
 		sveltekit(),
@@ -50,7 +50,9 @@ const config: UserConfig = {
 		Icons({
 			compiler: 'svelte',
 		}),
-	].concat(process.env.NODE_ENV === 'production' ? [] : [(await import('./src/server/socket')).devSocketSetup()]),
+	].concat(process.env.NODE_ENV === 'production' ? [] : [
+		// (await import('./src/server/socket')).devSocketSetup()
+	]),
 };
 
 function downloadFile(url: string, targetPath: string): Promise<void> {
@@ -70,16 +72,5 @@ function downloadFile(url: string, targetPath: string): Promise<void> {
 	})
 }
 
-if (enableHttps && config.server) {
-	await Promise.all([
-		downloadFile(keyUrl, 'ssl/server.key'),
-		downloadFile(certUrl, 'ssl/server.pem'),
-	])
-	console.log('downloaded ssl files');
-	config.server.https = {
-		key: 'ssl/server.pem',
-		cert: 'ssl/server.key',
-	}
-}
 
 export default defineConfig(config)
