@@ -43,11 +43,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@esbuild-plugins/node-resolve": "^0.2.2",
     "@floating-ui/dom": "^1.6.3",
-    "cors": "^2.8.5",
-    "express": "^4.19.2",
-    "fluent-ffmpeg": "^2.1.2",
     "fuzzy": "^0.1.3",
     "html5-qrcode": "^2.3.8",
     "is-mobile": "^4.0.0",
@@ -59,12 +55,8 @@
     "socket.io-client": "^4.7.5",
     "sortablejs": "^1.15.2",
     "soundpad.js": "^2.2.1",
-    "start-on-windows-boot": "^1.0.0",
     "svelte-gestures": "^4.0.0",
-    "systray": "^1.0.5",
-    "unplugin-icons": "^0.18.5",
-    "winreg": "^1.2.5",
-    "yt-dlp-wrap": "^2.3.12"
+    "unplugin-icons": "^0.18.5"
   },
   "pkg": {
     "outputPath": "dist",
