@@ -2,6 +2,7 @@ import { purgeCss } from 'vite-plugin-tailwind-purgecss';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { SvelteKitPWA } from '@vite-pwa/sveltekit'
 import { defineConfig, type UserConfig } from 'vite';
+import pluginSsl from '@vitejs/plugin-basic-ssl'
 import Icons from 'unplugin-icons/vite'
 import fetch from 'node-fetch'
 import fs from 'fs'
@@ -20,6 +21,7 @@ const config: UserConfig = {
 	},
 	server: {
 		port: 8080,
+		proxy: {}
 	},
 	preview: {
 		port: 8080,
@@ -27,6 +29,11 @@ const config: UserConfig = {
 	plugins: [
 		sveltekit(),
 		purgeCss(),
+		// pluginSsl({
+		// 	domains: ['local-ip.sh:8080'],
+		// 	certDir: 'ssl',
+		// 	name: 'local-ip.sh',
+		// }),
 		SvelteKitPWA({
 			disable: false,
 			devOptions: {
@@ -70,6 +77,18 @@ function downloadFile(url: string, targetPath: string): Promise<void> {
 			});
 		})
 	})
+}
+
+if (enableHttps && config.server) {
+	await Promise.all([
+		downloadFile(keyUrl, 'ssl/server.key'),
+		downloadFile(certUrl, 'ssl/server.pem'),
+	])
+	console.log('downloaded ssl files');
+	config.server.https = {
+		key: 'ssl/server.pem',
+		cert: 'ssl/server.key',
+	}
 }
 
 

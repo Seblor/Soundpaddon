@@ -243,7 +243,7 @@
         class="input text-xl text-center"
         bind:value={$soundEditedName}
       />
-      <span data-popup-close bind:this={popupCloseBtn}>
+      <span data-popup-close class="cursor-pointer" bind:this={popupCloseBtn}>
         <TickIcon font-size="32" /></span
       >
     </div>

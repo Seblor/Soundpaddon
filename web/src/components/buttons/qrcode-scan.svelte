@@ -11,13 +11,9 @@
 
   const toastStore = getToastStore();
 
-  if (location.search) {
-    onScanSuccess(location.search)
-  }
-
   async function onScanSuccess(fullURL: string) {
     stopScan();
-    const decodedText = lz.decompressFromBase64(fullURL.split("host=")[1])
+    const decodedText = lz.decompressFromBase64(fullURL.split("host=")[1]);
     const allLocalIPs: string[] = JSON.parse(decodedText);
 
     toastStore.trigger({
@@ -65,6 +61,10 @@
   let isQrCodeScanning = false;
 
   onMount(() => {
+    if (location.search) {
+      onScanSuccess(location.search);
+    }
+
     html5QrcodeScanner = new Html5QrcodeScanner(
       "reader",
       config,
