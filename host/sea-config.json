@@ -1,0 +1,11 @@
+{
+  "main": "ncc/index.js",
+  "output": "node-sea/blob.blob",
+  "disableExperimentalSEAWarning": true,
+  "useSnapshot": false,
+  "assets": {
+    "soundpaddon.ico": "assets/soundpaddon.ico",
+    "tray_windows_release.exe": "node_modules/systray/traybin/tray_windows_release.exe",
+    "node-hide-console-window.node": "node_modules/node-hide-console-window/build/Release/node-hide-console-window.node"
+  }
+}
