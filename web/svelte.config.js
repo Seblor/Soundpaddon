@@ -4,7 +4,9 @@ import adapterStatic from '@sveltejs/adapter-static';
 import adapterVercel from '@sveltejs/adapter-vercel';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-let adapter = adapterStatic();
+let adapter = adapterStatic({
+	fallback: 'index.html'
+});
 
 if (process.env.VERCEL_ENV) {
 	adapter = adapterVercel();
@@ -16,7 +18,7 @@ const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
 	preprocess: [vitePreprocess()],
-	optimizeDeps: { exclude: ['@skeletonlabs\skeleton'] },
+	optimizeDeps: { exclude: ['@skeletonlabs/skeleton'] },
 
 	kit: {
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.

@@ -18,7 +18,7 @@
       src="/panel/mobile"
       frameborder="0"
       title="mobile view"
-      class="w-96 h-[48rem] border-8 border-black rounded-lg shadow-lg resize"
+      class="max-h-[75vh] w-96 h-[48rem] border-8 border-black rounded-lg shadow-lg resize"
       style="direction: rtl"
     ></iframe>
   </div>

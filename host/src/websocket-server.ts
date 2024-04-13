@@ -1,6 +1,6 @@
 import { type Socket } from "socket.io";
 import Soundpad, { PlayStatus, type Category, type Sound } from 'soundpad.js'
-import { isBuild, sleep } from "./utils/misc";
+import { sleep } from "./utils/misc";
 import _ from 'lodash'
 // import {execSync} from 'child_process'
 
@@ -22,10 +22,7 @@ const clients = {
   }),
 }
 
-if (isBuild() === false) {
-  await Promise.all(Object.values(clients).map(client => client.connect()))
-  await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
-}
+Promise.all(Object.values(clients).map(client => client.connect()))
 
 
 /**
@@ -37,10 +34,12 @@ let playbackStatus = PlayStatus.STOPPED
 const socketsToNotify: Socket[] = []
 
 setImmediate(async () => {
-  while (isBuild() === false) {
+  while (true) {
     const newPlaybackPosition = await clients.playbackFetcher.getPlaybackPosition()
     const newPlaybackDuration = await clients.playbackFetcher.getPlaybackDuration()
     const newPlaybackStatus = await clients.playbackFetcher.getPlayStatus()
+
+    await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
 
 
     if (playbackStatus === PlayStatus.PLAYING && newPlaybackStatus === PlayStatus.STOPPED) {
@@ -65,11 +64,14 @@ let sounds: Sound[] = []
 let categories: Category[] = []
 
 setImmediate(async () => {
-  while (isBuild() === false) {
+  while (true) {
     const [newSounds, newCategories] = await Promise.all([
       clients.soundsFetcher.getSoundListJSON(),
       clients.categoriesFetcher.getCategoriesJSON(true, true),
     ])
+
+    await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
+
     if (newSounds && _.isEqual(soundListToComparable(newSounds), soundListToComparable(sounds)) === false) {
       sounds = newSounds
       socketsToNotify.forEach(socket => socket.emit('sounds', sounds))
@@ -86,7 +88,9 @@ setImmediate(async () => {
  * === Export ===
  */
 
-export default function onWebsocketConnection(socket: Socket): void {
+export default async function onWebsocketConnection(socket: Socket): Promise<void> {
+  await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
+
   socket.emit('sounds', sounds)
   socketsToNotify.push(socket)
   socket.on('disconnect', () => {

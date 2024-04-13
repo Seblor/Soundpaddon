@@ -6,6 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
+    "build:renderer": "tsx fetch-sources.ts",
+    "build:main": "tsc -p tsconfig.main.json",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",
@@ -20,7 +22,14 @@
     "@electron-forge/plugin-auto-unpack-natives": "^7.4.0",
     "@electron-forge/plugin-fuses": "^7.4.0",
     "@electron/fuses": "^1.8.0",
-    "electron": "29.3.0"
+    "@types/electron-squirrel-startup": "^1.0.2",
+    "@types/express": "^4.17.21",
+    "@types/lodash": "^4.17.0",
+    "@types/node": "^20.12.7",
+    "@types/winreg": "^1.2.36",
+    "electron": "^20.3.12",
+    "fork-ts-checker-webpack-plugin": "^9.0.2",
+    "tsx": "^4.7.2"
   },
   "keywords": [],
   "author": {
@@ -29,6 +38,14 @@
   },
   "license": "MIT",
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "electron-squirrel-startup": "^1.0.0",
+    "express": "^4.19.2",
+    "lodash": "^4.17.21",
+    "node-fetch-commonjs": "^3.3.2",
+    "socket.io": "^4.7.5",
+    "soundpad.js": "^2.3.0",
+    "winreg": "^1.2.5"
   }
 }

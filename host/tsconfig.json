@@ -4,6 +4,7 @@
 		"target": "ESNext",
 		"allowJs": true,
 		"checkJs": true,
+		"declaration": true,
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"resolveJsonModule": true,
@@ -15,14 +16,14 @@
 			"./src",
 			"./types"
 		],
-		"verbatimModuleSyntax": true,
+		"verbatimModuleSyntax": false,
 		"isolatedModules": true,
 		"lib": [
 			"esnext",
 			"DOM",
 			"DOM.Iterable"
 		],
-		"module": "esnext",
+		"module": "CommonJS",
 	},
 	"include": [
 		"ambient.d.ts",

@@ -1,83 +1,62 @@
+// @ts-check
 
-import SysTrayModule, { type ClickEvent, type Menu } from 'systray'
-import fs from 'node:fs'
-import nodeSea from 'node:sea'
 import { closeSoundpad } from 'soundpad.js'
 import { disableAutoStart, enableAutoStart, getAutoStartValue } from './start-with-windows'
-import { hideWindow } from './utils/win';
+import { Menu, Tray, type App } from 'electron';
+import { BrowserWindow, type KeyboardEvent, type MenuItem, type MenuItemConstructorOptions } from 'electron/main';
 
-// @ts-ignore (dev mode is ESM, prod is CJS)
-const SysTray = nodeSea.isSea() ? SysTrayModule : SysTrayModule.default
+export async function createTray(app: App, iconPath: string) {
+  const tray = new Tray(iconPath)
 
-const iconPath = 'D:\\workspace\\soundpaddon-svelte\\host\\assets\\soundpaddon.ico'
+  const contextMenu = Menu.buildFromTemplate(await generateSystrayTemplate(app, tray))
+  tray.setToolTip('Soundpaddon')
+  tray.setContextMenu(contextMenu)
 
-function iconToBase64(path: string) {
-  const fileContent = fs.readFileSync(path)
-  return fileContent.toString('base64')
-}
-
-function getIconAsBase64() {
-  if (nodeSea.isSea()) {
-    const iconAsset = nodeSea.getRawAsset('soundpaddon.ico')
-    if (typeof iconAsset === 'string') {
-      return iconAsset
+  tray.on('click', (e: KeyboardEvent) => {
+    const appWindow = BrowserWindow.getAllWindows()[0]
+    if (appWindow.isVisible()) {
+      appWindow.hide()
     } else {
-      return Buffer.from(new Uint8Array(iconAsset)).toString('base64')
+      appWindow.show()
+      appWindow.focus()
     }
-  } else {
-    return iconToBase64(iconPath)
-  }
+  })
 }
 
-export async function createTray() {
-  const systray = new SysTray({
-    copyDir: './traybin',
-    menu: {
-      // you should using .png icon in macOS/Linux, but .ico format in windows
-      icon: getIconAsBase64(),
-      title: "Soundpaddon",
-      tooltip: "Soundpaddon",
-      items: [{
-        title: "Open Soundpaddon with Windows",
-        checked: await getAutoStartValue('Soundpaddon'),
-        enabled: true
-      }, {
-        title: "Close Soundpad and Soundpaddon",
-        checked: false,
-        enabled: true
-      }, {
-        title: "Close soundpaddon",
-        enabled: true
-      }]
-    } as Menu,
-    debug: false,
-    // copyDir: true, // copy go tray binary to outside directory, useful for packing tool like pkg.
-  })
+async function generateSystrayTemplate(app: App, tray: Tray): Promise<(MenuItemConstructorOptions | MenuItem)[]> {
+  return [
+    {
+      label: 'Open Soundpaddon with Windows',
+      type: 'checkbox',
+      checked: await getAutoStartValue('Soundpaddon'),
+      click: async () => {
+        if (await getAutoStartValue('Soundpaddon')) {
+          console.log('disabling autostart');
+          await disableAutoStart('Soundpaddon')
+        } else {
+          console.log('enabling autostart');
+          await enableAutoStart('Soundpaddon', '"C:\\Program Files (x86)\\Soundpad\\Soundpad.exe"').catch(console.error)
+        }
 
-  systray.onClick(async (action: ClickEvent) => {
-    if (action.seq_id === 0) {
-      systray.sendAction({
-        type: 'update-item',
-        item: {
-          ...action.item,
-          checked: !action.item.checked,
-        },
-        seq_id: action.seq_id,
-      })
-      if (!action.item.checked) {
-        console.log('enabling autostart');
-        enableAutoStart('Soundpaddon', '"C:\\Program Files (x86)\\Soundpad\\Soundpad.exe"').catch(console.error)
-      } else {
-        console.log('disabling autostart');
-        disableAutoStart('Soundpaddon')
+        // Update the context menu with the new checkbox value
+        tray.setContextMenu(Menu.buildFromTemplate(await generateSystrayTemplate(app, tray)))
       }
-    } else if (action.seq_id === 1) {
-      await closeSoundpad()
-      systray.kill()
-    } else if (action.seq_id === 2) {
-      systray.kill()
+    },
+    { type: 'separator' },
+    {
+      label: 'Close Soundpad and Soundpaddon',
+      type: 'normal',
+      click: async () => {
+        await closeSoundpad()
+        app.exit()
+      }
+    },
+    {
+      label: 'Close Soundpaddon',
+      type: 'normal',
+      click: () => {
+        app.exit()
+      }
     }
-  })
-
-  hideWindow()
+  ]
 }

@@ -1,5 +1,5 @@
 tsc
-ncc build ./build/index.js -o ./ncc --external node-hide-console-window --external ./traybin/node-hide-console-window.node
+ncc build ./build/index.js -o ./dist
 mkdir -Force node-sea
 node --experimental-sea-config sea-config.json
 node -e "require('fs').copyFileSync(process.execPath, 'node-sea/custom_node.exe')"
