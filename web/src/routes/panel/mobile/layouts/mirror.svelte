@@ -5,7 +5,7 @@
     type PopupSettings,
     popup,
   } from "@skeletonlabs/skeleton";
-  import type { Category, Sound as SoundpadSound } from "soundpad.js/web";
+  import type { Category, Sound as SoundpadSound } from "soundpad.js/lib/web";
   import Sound from "../../../../components/buttons/sound.svelte";
   import { socket, soundpadClient } from "../../../../client/connections";
   import { sounds } from "../../../../stores/sounds";
@@ -90,7 +90,7 @@
   });
 
   function refreshCategories() {
-    soundpadClient.getCategoriesJSON(true, true).then((fetchedCategories) => {
+    soundpadClient.getCategoriesJSON(true, true).then((fetchedCategories: Category[]) => {
       categories = fetchedCategories;
     });
   }

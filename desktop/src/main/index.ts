@@ -37,18 +37,26 @@ function downloadFile(url: string, targetPath: string): Promise<void> {
 export async function createHttpServer({
   certificateRootPath,
   pathToServe,
+  electronApp,
 }: {
   certificateRootPath: string
   pathToServe: string
+  electronApp: App
 }): Promise<https.Server> {
   await Promise.all([
-    downloadFile(keyUrl, path.join(certificateRootPath, 'ssl/server.key')),
-    downloadFile(certUrl, path.join(certificateRootPath, 'ssl/server.pem')),
+    downloadFile(keyUrl, path.join(certificateRootPath, 'server.key')),
+    downloadFile(certUrl, path.join(certificateRootPath, 'server.pem')),
   ])
 
   const app = express();
 
-  registerRoutes(app);
+  app.use(cors({
+    origin: /(.*\.)?soundpaddon.app|.*\.my\.local-ip\.co:.*|.*.local-ip\.sh:.*/,
+    methods: ['OPTIONS', 'POST', 'GET'],
+    maxAge: 2592000,
+  }))
+
+  registerRoutes(app, electronApp);
 
   app.use(express.static(pathToServe, {
     extensions: ['html']
@@ -57,18 +65,12 @@ export async function createHttpServer({
     response.sendFile(path.resolve(__dirname, 'index.html'));
   });
 
-  app.use(cors({
-    origin: /(.*\.)?soundpaddon.app|.*\.my\.local-ip\.co:.*|.*.local-ip\.sh:.*/,
-    methods: ['OPTIONS', 'POST', 'GET'],
-    maxAge: 2592000,
-  }))
-
   // SvelteKit handlers
   // app.use(handler);
 
   const server = https.createServer({
-    key: fs.readFileSync(path.join(certificateRootPath, 'ssl/server.pem')),
-    cert: fs.readFileSync(path.join(certificateRootPath, 'ssl/server.key')),
+    key: fs.readFileSync(path.join(certificateRootPath, 'server.pem')),
+    cert: fs.readFileSync(path.join(certificateRootPath, 'server.key')),
   }, app)
 
   // Inject SocketIO

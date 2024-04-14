@@ -5,6 +5,7 @@
   import DiscordIcon from "virtual:icons/mdi/discord";
   import MyInstantsIcon from "virtual:icons/mdi/gesture-tap";
   import PairingQrcode from "../../../components/dekstop/pairing-qrcode.svelte";
+    import YoutubeExtractor from "../../../components/dekstop/youtube-extractor.svelte";
 
   let currentTile = 0;
 </script>
@@ -103,7 +104,7 @@
       </div>
     {/if}
     {#if currentTile === 1}
-      <div>Tile 2</div>
+      <YoutubeExtractor />
     {/if}
     {#if currentTile === 2}
       <div>

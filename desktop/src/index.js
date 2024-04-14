@@ -3,9 +3,7 @@
 const { app, BrowserWindow, screen, shell } = require('electron');
 const { nativeImage } = require('electron/common');
 const path = require('node:path');
-const { fileURLToPath } = require('node:url');
-const host = require('./main/index');
-const { nativeTheme } = require('electron/main');
+const host = require('./main/dist/index');
 
 const iconPath = path.join(__dirname, '../assets/soundpaddon.ico')
 
@@ -55,8 +53,9 @@ const createWindow = async () => {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async () => {
   const server = await host.createHttpServer({
-    certificateRootPath: path.join(app.getPath('userData'), 'soundpaddon/ssl'),
+    certificateRootPath: path.join(app.getPath('userData'), 'ssl'),
     pathToServe: __dirname + '/renderer',
+    electronApp: app,
   })
 
   await new Promise(resolve => {

@@ -1,4 +1,5 @@
 import bodyParser from 'body-parser';
+import { App } from 'electron/main';
 import { type Application, type Request, type Response, } from 'express';
 import Soundpad from 'soundpad.js'
 
@@ -9,7 +10,7 @@ const soundpadClient = new Soundpad({
 
 soundpadClient.connect()
 
-export default function registerRoutes(app: Application) {
+export default function registerRoutes(app: Application, electronApp: App) {
   app.post('/api/soundpad', bodyParser.text(), async function (req: Request, res: Response) {
     const data = req.body;
 

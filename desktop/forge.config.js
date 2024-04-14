@@ -1,12 +1,15 @@
 const { FusesPlugin } = require('@electron-forge/plugin-fuses');
 const { FuseV1Options, FuseVersion } = require('@electron/fuses');
-const path = require('path');
+// const FFmpegStatic = require("ffmpeg-static-electron-forge").default
+// const path = require('path');
 
 // const iconPath = path.join(__dirname, './assets/soundpaddon')
 const iconPath = './assets/soundpaddon.ico'
 
 module.exports.packagerConfig = {
-  asar: true,
+  asar: {
+    unpack: 'ffmpeg.exe'
+  },
   icon: iconPath,
 };
 module.exports.rebuildConfig = {};
@@ -47,4 +50,8 @@ module.exports.plugins = [
     [FuseV1Options.EnableEmbeddedAsarIntegrityValidation]: true,
     [FuseV1Options.OnlyLoadAppFromAsar]: true,
   }),
+  // new FFmpegStatic({
+  //   remove: true, // Required
+  //   path: path.join(__dirname, "src/"), // Set path of main build
+  // }),
 ];

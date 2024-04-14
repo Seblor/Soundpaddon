@@ -7,6 +7,8 @@
     "esModuleInterop": true,
     "noImplicitAny": true,
     "sourceMap": true,
+    "outDir": "./src/main/dist",
+    "declaration": true,
     "baseUrl": "./src/main",
     "rootDir": "./src/main",
     "moduleResolution": "node",
