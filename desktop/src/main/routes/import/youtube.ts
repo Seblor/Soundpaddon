@@ -6,10 +6,7 @@ import path from 'node:path';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
 import Soundpad from 'soundpad.js';
-
-const soundpad = new Soundpad();
-
-soundpad.connect();
+import { importToSoundpad, timeMarkToSeconds } from '../../utils/misc';
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path.replace('app.asar', 'app.asar.unpacked'))
 
@@ -45,8 +42,7 @@ export default function registerRoutes(app: Application, electronApp: App) {
 
     responsesToUpdate.forEach(listener => listener(0, true));
 
-    await soundpad.connectionAwaiter
-    await soundpad.addSound(outputPath);
+    await importToSoundpad(outputPath);
 
     return res.end()
   })
@@ -76,9 +72,4 @@ export default function registerRoutes(app: Application, electronApp: App) {
       res.end();
     });
   });
-}
-
-function timeMarkToSeconds(timeMark: string): number {
-  const [hours, minutes, seconds] = timeMark.split('.')[0].split(':').map(Number);
-  return hours * 60 * 60 + minutes * 60 + seconds;
 }

@@ -3,36 +3,16 @@ import fs from 'node:fs';
 import path from 'node:path';
 import express from 'express';
 import cors from 'cors';
-import fetch from 'node-fetch-commonjs';
 import injectSocketIO from './socketIoHandler';
 import { registerRoutes } from './routes/index';
 import { createTray } from './add-system-tray';
 import type { App } from 'electron/main';
+import { downloadFile } from './utils/misc';
 
 // const keyUrl = 'http://local-ip.co/cert/server.pem'
 // const certUrl = 'http://local-ip.co/cert/server.key'
 const keyUrl = 'https://local-ip.sh/server.pem'
 const certUrl = 'https://local-ip.sh/server.key'
-
-function downloadFile(url: string, targetPath: string): Promise<void> {
-  if (!fs.existsSync(path.join(targetPath, '..'))) {
-    fs.mkdirSync(path.join(targetPath, '..'), { recursive: true })
-  }
-  return new Promise((resolve, reject) => {
-    fetch(url).then(res => {
-      const dest = fs.createWriteStream(targetPath);
-      if (res.body === null) {
-        reject(new Error('Response body is null'))
-        return
-      }
-      res.body.pipe(dest);
-      dest.on('finish', () => {
-        dest.close()
-        resolve()
-      });
-    })
-  })
-}
 
 export async function createHttpServer({
   certificateRootPath,

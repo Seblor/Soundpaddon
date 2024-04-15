@@ -149,7 +149,6 @@
       bind:value={videoUrl}
     />
   </label>
-  {videoUrl}
   <div class="shrink grid grid-flow-col h-full auto-cols-auto gap-4">
     <div class="place-self-end justify-self-end">
       {secondsToHHMMSS(start * videoDuration)}

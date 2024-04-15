@@ -1,6 +1,6 @@
 import registerDataRoutes from './data'
 import registerSoundpadRoutes from './soundpad'
-import importYoutubeRoutes from './import-youtube'
+import importYoutubeRoutes from './import/youtube'
 import { type Application } from 'express'
 import { App } from 'electron/main'
 

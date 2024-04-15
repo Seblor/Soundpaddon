@@ -47,8 +47,9 @@
     "fluent-ffmpeg": "^2.1.2",
     "lodash": "^4.17.21",
     "node-fetch-commonjs": "^3.3.2",
+    "node-fetch-progress": "^1.0.2",
     "socket.io": "^4.7.5",
-    "soundpad.js": "^2.3.0",
+    "soundpad.js": "2.3.0",
     "winreg": "^1.2.5",
     "ytdl-core": "^4.11.5"
   }

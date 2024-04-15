@@ -14,6 +14,7 @@ export default function registerRoutes(app: Application, electronApp: App) {
   app.post('/api/soundpad', bodyParser.text(), async function (req: Request, res: Response) {
     const data = req.body;
 
+    await soundpadClient.connectionAwaiter
     return res.send(await soundpadClient.sendQuery(data))
   })
 

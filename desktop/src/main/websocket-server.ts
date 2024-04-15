@@ -35,12 +35,11 @@ const socketsToNotify: Socket[] = []
 
 setImmediate(async () => {
   while (true) {
+    await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
+
     const newPlaybackPosition = await clients.playbackFetcher.getPlaybackPosition()
     const newPlaybackDuration = await clients.playbackFetcher.getPlaybackDuration()
     const newPlaybackStatus = await clients.playbackFetcher.getPlayStatus()
-
-    await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
-
 
     if (playbackStatus === PlayStatus.PLAYING && newPlaybackStatus === PlayStatus.STOPPED) {
       socketsToNotify.forEach(socket => socket.emit('playback-position', 0))
@@ -65,12 +64,12 @@ let categories: Category[] = []
 
 setImmediate(async () => {
   while (true) {
+    await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
+
     const [newSounds, newCategories] = await Promise.all([
       clients.soundsFetcher.getSoundListJSON(),
       clients.categoriesFetcher.getCategoriesJSON(true, true),
     ])
-
-    await Promise.all(Object.values(clients).map(client => client.connectionAwaiter))
 
     if (newSounds && _.isEqual(soundListToComparable(newSounds), soundListToComparable(sounds)) === false) {
       sounds = newSounds
