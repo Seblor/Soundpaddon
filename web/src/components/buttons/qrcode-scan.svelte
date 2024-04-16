@@ -37,6 +37,8 @@
             message: "Found your device, connecting...",
           });
 
+          window.location.search = "";
+
           setTimeout(() => {
             window.location.reload();
           }, 1e3);
@@ -79,7 +81,7 @@
 
   function stopScan() {
     isQrCodeScanning = false;
-    html5QrcodeScanner.clear();
+    html5QrcodeScanner?.clear();
   }
 
   function buttonClick() {
