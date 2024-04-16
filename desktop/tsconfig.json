@@ -20,6 +20,7 @@
   "include": [
     "src/**/*",
     "*.ts",
-    "forge.config.ts"
+    "forge.config.ts",
+    "src/customTypes/index.d.ts"
   ]
 }

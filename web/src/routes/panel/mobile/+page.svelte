@@ -1,6 +1,6 @@
 <script lang="ts">
     import { isConnected } from "../../../client/connections";
-    import Toolbar from "../../../components/toolbar.svelte";
+    import Toolbar from "../../../components/mobile/toolbar.svelte";
     import { selectedLayout } from "../../../stores/settings";
     import AskServerIp from "./layouts/ask-server-ip.svelte";
     import Customized from "./layouts/customized.svelte";

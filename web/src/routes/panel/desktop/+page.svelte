@@ -3,9 +3,12 @@
   import QRCodeIcon from "virtual:icons/mdi/qrcode";
   import YoutubeIcon from "virtual:icons/mdi/youtube";
   import DiscordIcon from "virtual:icons/mdi/discord";
-  import MyInstantsIcon from "virtual:icons/mdi/gesture-tap";
+  import ImportIcon from "virtual:icons/mdi/import";
+  import MagnifyIcon from "virtual:icons/mdi/magnify";
   import PairingQrcode from "../../../components/dekstop/pairing-qrcode.svelte";
-    import YoutubeExtractor from "../../../components/dekstop/youtube-extractor.svelte";
+  import YoutubeExtractor from "../../../components/dekstop/youtube-extractor.svelte";
+  import SoundBankLookup from "../../../components/dekstop/sound-bank-lookup.svelte";
+  import SoundExtractor from "../../../components/dekstop/sound-extractor.svelte";
 
   let currentTile = 0;
 </script>
@@ -14,14 +17,9 @@
   <AppRail class="min-w-[100px]">
     <svelte:fragment slot="lead">
       <AppRailAnchor
-        ><img
-          src="/icon.png"
-          alt="Soundpaddon icon"
-          class="scale-50"
-        />
+        ><img src="/icon.png" alt="Soundpaddon icon" class="scale-50" />
         <div class="-translate-y-2">Soundpaddon</div>
-        </AppRailAnchor
-      >
+      </AppRailAnchor>
     </svelte:fragment>
     <!-- --- -->
     <AppRailTile
@@ -65,14 +63,31 @@
       title="tile-3"
     >
       <svelte:fragment slot="lead"
-        ><MyInstantsIcon
+        ><ImportIcon
           class="justify-center w-full"
           color="white"
           font-size="32"
         /></svelte:fragment
       >
       <div class="px-2 pb-2">
-        <span class="text-white text-center">Import From Myinstants</span>
+        <span class="text-white text-center">Import From Soundbanks</span>
+      </div>
+    </AppRailTile>
+    <AppRailTile
+      bind:group={currentTile}
+      name="tile-4"
+      value={3}
+      title="tile-4"
+    >
+      <svelte:fragment slot="lead"
+        ><MagnifyIcon
+          class="justify-center w-full"
+          color="white"
+          font-size="32"
+        /></svelte:fragment
+      >
+      <div class="px-2 pb-2">
+        <span class="text-white text-center">Import From Web Page</span>
       </div>
     </AppRailTile>
     <!-- --- -->
@@ -92,14 +107,15 @@
     </svelte:fragment>
   </AppRail>
 
-  <div class="flex grow justify-center ml-4">
+  <div class="flex h-full grow justify-center items-center ml-4">
     {#if currentTile === 0}
       <div class="flex flex-col items-center text-center gap-4">
         <h1 class="text-2xl">Scan this QRCode with your phone</h1>
         <PairingQrcode />
         <p>
-          You can scan it from the <kbd class="bg-slate-700 rounded">soundpaddon.app</kbd> website on your phone or with
-          your usual QRCode scan application
+          You can scan it from the <kbd class="bg-slate-700 rounded"
+            >soundpaddon.app</kbd
+          > website on your phone or with your usual QRCode scan application
         </p>
       </div>
     {/if}
@@ -107,9 +123,10 @@
       <YoutubeExtractor />
     {/if}
     {#if currentTile === 2}
-      <div>
-        Import
-      </div>
+      <SoundBankLookup />
+    {/if}
+    {#if currentTile === 3}
+      <SoundExtractor />
     {/if}
   </div>
 </div>

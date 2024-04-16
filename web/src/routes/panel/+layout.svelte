@@ -4,21 +4,38 @@
     Modal,
     Toast,
     getDrawerStore,
+    getModalStore,
     initializeStores,
+    type ModalComponent,
   } from "@skeletonlabs/skeleton";
-  import { computePosition, autoUpdate, offset, shift, flip, arrow } from '@floating-ui/dom';
-  import { storePopup } from '@skeletonlabs/skeleton';
+  import {
+    computePosition,
+    autoUpdate,
+    offset,
+    shift,
+    flip,
+    arrow,
+  } from "@floating-ui/dom";
+  import { storePopup } from "@skeletonlabs/skeleton";
   import { DRAWER_TYPES } from "$lib/utils/enums";
   import MobileSettings from "../../components/drawers/mobile-settings.svelte";
   import LeftArrowIcon from "virtual:icons/mdi/arrow-left";
   import { swipe } from "svelte-gestures";
   import { settingsOpacity } from "../../stores/settings";
+  import DownloadFile from "../../components/modals/download-file-modal.svelte";
+
+  const modalRegistry: Record<string, ModalComponent> = {
+    // Set a unique modal ID, then pass the component reference
+    downloadFileModal: { ref: DownloadFile },
+    // ...
+  };
 
   storePopup.set({ computePosition, autoUpdate, offset, shift, flip, arrow });
 
   initializeStores();
 
   const drawerStore = getDrawerStore();
+  const modalStore = getModalStore();
 
   const drawerTitles = {
     [DRAWER_TYPES.MOBILE_SETTINGS]: "Settings",
@@ -29,7 +46,7 @@
 
 <Toast />
 
-<Modal />
+<Modal components={modalRegistry} />
 
 <Drawer bgDrawer="" width="w-[320px] md:w-[480px]">
   <div

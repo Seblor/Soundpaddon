@@ -31,8 +31,9 @@ export async function createHttpServer({
   const app = express();
 
   app.use(cors({
-    origin: /(.*\.)?soundpaddon.app|.*\.my\.local-ip\.co:.*|.*.local-ip\.sh:.*/,
+    origin: /(.*\.)?soundpaddon.app|.*\.my\.local-ip\.co:.*|.*.local-ip\.sh:.*|.*/,
     methods: ['OPTIONS', 'POST', 'GET'],
+    credentials: true,
     maxAge: 2592000,
   }))
 

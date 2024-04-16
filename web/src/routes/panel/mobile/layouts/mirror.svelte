@@ -191,7 +191,7 @@
           style={`grid-template-columns: repeat(auto-fill, minmax(${$mirrorLayoutSoundButtonSize}px, 1fr)); box-sizing: content-box;`}
           bind:this={sortableElement}
         >
-          {#each soundsToDisplay as sound (sound.url)}
+          {#each soundsToDisplay as sound (sound.url + sound.index)}
             <div
               animate:flip={{ duration: 100 }}
               draggable="true"

@@ -3,7 +3,7 @@
   import RecordIcon from "virtual:icons/mdi/microphone";
   import SpeakerIcon from "virtual:icons/mdi/speaker";
   import SettingsIcon from "virtual:icons/mdi/cog";
-  import { soundpadClient } from "../client/connections";
+  import { soundpadClient } from "../../client/connections";
   import { getDrawerStore } from "@skeletonlabs/skeleton";
   import { DRAWER_TYPES } from "$lib/utils/enums";
 
