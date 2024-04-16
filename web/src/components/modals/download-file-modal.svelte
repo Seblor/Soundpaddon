@@ -40,12 +40,12 @@
 </script>
 
 {#if $modalStore[0]?.meta?.sound != undefined}
-  <div class="w-2/3 card p-4">
+  <div class="w-2/3 card p-4 flex flex-col gap-4">
     <div class="card-header text-2xl">
       Download <pre class="inline">{soundData.sound.name}</pre>
       ?
     </div>
-    <div class="p-4">
+    <div>
       <label class="relative label w-full">
         <span>Confirm the file name</span>
         <input

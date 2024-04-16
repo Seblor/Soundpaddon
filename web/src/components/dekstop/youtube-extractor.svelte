@@ -26,7 +26,6 @@
   $: seekTo(start);
 
   async function updateVideoPlayer(videoId: string | false) {
-    console.log(videoId);
     if (videoId == false) {
       player?.destroy();
       player = undefined;
@@ -175,7 +174,7 @@
   <button
     on:click={importToSoundpad}
     class={`w-1/3 btn bg-primary-700`}
-    disabled={isDownloading}
+    disabled={isDownloading || !player}
   >
     {#if isDownloading}
       <LoadingIcon class="mr-3 animate-spin" />

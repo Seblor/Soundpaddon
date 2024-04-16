@@ -82,7 +82,7 @@
 <div
   class={`card ${isEarRape ? "!bg-error-800" : ""} flex flex-col justify-center items-center aspect-square overflow-hidden break-all basis-1/6`}
 >
-  <div class="grow flex flex-wrap overflow-hidden break-all p-2">
+  <div class="grow flex flex-wrap break-all p-2 overflow-scroll">
     {sound.name}
   </div>
   <div class="shrink flex justify-between p-1 pt-0 w-full">

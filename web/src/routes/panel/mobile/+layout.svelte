@@ -6,7 +6,6 @@
   import { get } from "svelte/store";
 
   socket.on("sounds", (soundsList) => {
-    console.log(soundsList);
     sounds.set(soundsList);
   });
 

@@ -9,13 +9,7 @@
     import { initAudioPreviewer } from "$lib/preview-audio";
 
   let searchFilter = "";
-  // let soundsFound: FetchedSound[] = [];
-  let soundsFound: FetchedSound[] = new Array(58).fill(undefined);
-  soundsFound = soundsFound.map((_, i) => ({
-    name: "Sound " + i,
-    source: "freesound",
-    url: "https://freetestdata.com/wp-content/uploads/2021/09/Free_Test_Data_5MB_MP3.mp3",
-  }));
+  let soundsFound: FetchedSound[] = [];
   let isFetching = false;
 
   const searchSounds = _.debounce(async () => {

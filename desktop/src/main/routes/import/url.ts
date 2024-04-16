@@ -61,7 +61,10 @@ export default function registerRoutes(app: Application, electronApp: App) {
       return res.status(400).send('Invalid URL');
     }
 
-    const fetchHeaders = await fetch(webPageUrl).then(res => res.headers)
+    const fetchHeaders = await fetch(webPageUrl).then(res => res.headers).catch(() => {
+      res.send([])
+      return null
+    })
 
     if (fetchHeaders.get('content-type').startsWith('audio')) {
       return res.send([{
@@ -71,7 +74,10 @@ export default function registerRoutes(app: Application, electronApp: App) {
       }])
     }
 
-    const webPage = await jsdom.JSDOM.fromURL(webPageUrl)
+    const webPage = await jsdom.JSDOM.fromURL(webPageUrl).catch(() => {
+      res.send([])
+      return null
+    })
 
     const allowedExtensions = [
       'mp3',
@@ -100,11 +106,11 @@ export default function registerRoutes(app: Application, electronApp: App) {
         })
       }) as Array<FetchedSound>
 
-      const uniqueSounds = audioFilesFound.filter((sound, index, self) =>
-        index === self.findIndex(t => (
-          t.url === sound.url
-        ))
-      )
+    const uniqueSounds = audioFilesFound.filter((sound, index, self) =>
+      index === self.findIndex(t => (
+        t.url === sound.url
+      ))
+    )
 
     return res.send(uniqueSounds)
   })
