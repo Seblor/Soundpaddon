@@ -6,8 +6,9 @@ import cors from 'cors';
 import injectSocketIO from './socketIoHandler';
 import { registerRoutes } from './routes/index';
 import { createTray } from './add-system-tray';
-import type { App } from 'electron/main';
+import { dialog, type App } from 'electron/main';
 import { downloadFile } from './utils/misc';
+import { getSoundpadPath } from 'soundpad.js';
 
 // const keyUrl = 'http://local-ip.co/cert/server.pem'
 // const certUrl = 'http://local-ip.co/cert/server.key'
@@ -27,6 +28,11 @@ export async function createHttpServer({
     downloadFile(keyUrl, path.join(certificateRootPath, 'server.key')),
     downloadFile(certUrl, path.join(certificateRootPath, 'server.pem')),
   ])
+
+  if (getSoundpadPath() === null) {
+    dialog.showErrorBox('Soundpad not found', 'Please install Soundpad and restart the app');
+    electronApp.quit();
+  }
 
   const app = express();
 
