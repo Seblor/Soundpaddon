@@ -100,6 +100,7 @@
 
     header.addEventListener("wheel", (e) => {
       if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+      e.preventDefault();
       headerScroll = Math.max(
         0,
         Math.min(

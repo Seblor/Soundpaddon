@@ -30,7 +30,7 @@
     "@types/node": "^20.12.7",
     "@types/request": "^2.48.12",
     "@types/winreg": "^1.2.36",
-    "electron": "^20.3.12",
+    "electron": "^30.0.0",
     "fork-ts-checker-webpack-plugin": "^9.0.2",
     "tsx": "^4.7.2"
   },

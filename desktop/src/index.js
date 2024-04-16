@@ -45,7 +45,7 @@ const createWindow = async () => {
   mainWindow.loadURL('https://127-0-0-1.local-ip.sh:8555/panel/desktop');
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
