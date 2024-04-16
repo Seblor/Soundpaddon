@@ -1,4 +1,4 @@
-export type SOUND_SOURCES = 'myinstants' | 'freesound' | 'voicy'
+export type SOUND_SOURCES = 'myinstants' | 'freesound' | 'voicy' | 'webpage'
 
 export type FetchedSound = {
   source: SOUND_SOURCES,

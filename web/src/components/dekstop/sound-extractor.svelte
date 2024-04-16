@@ -4,7 +4,7 @@
   import PencilIcon from "virtual:icons/mdi/pencil";
   import _ from "lodash";
   import type { FetchedSound } from "$lib/api-return-types";
-  import SoundFetched from "./sound-fetched.svelte";
+  import SoundFetched from "./sound-previewer.svelte";
   import { onMount } from "svelte";
   import { initAudioPreviewer } from "$lib/preview-audio";
 

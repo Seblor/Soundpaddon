@@ -1,16 +1,25 @@
 <script lang="ts">
   import { getEndpointUrl } from "$lib/utils/api";
   import LoadingIcon from "virtual:icons/mdi/loading";
-  import PencilIcon from "virtual:icons/mdi/pencil";
+  import CheckmarkIcon from "virtual:icons/mdi/check";
   import _ from "lodash";
   import type { FetchedSound } from "$lib/api-return-types";
-  import SoundFetched from "./sound-fetched.svelte";
+  import SoundFetched from "./sound-previewer.svelte";
   import { onMount } from "svelte";
-    import { initAudioPreviewer } from "$lib/preview-audio";
+  import { initAudioPreviewer } from "$lib/preview-audio";
+  import type { SOUND_SOURCES } from "$lib/api-return-types";
 
   let searchFilter = "";
   let soundsFound: FetchedSound[] = [];
   let isFetching = false;
+
+  const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy"];
+
+  let selectedSources: SOUND_SOURCES[] = [...sources];
+
+  $: filteredSounds = soundsFound.filter((sound) =>
+    selectedSources.includes(sound.source)
+  );
 
   const searchSounds = _.debounce(async () => {
     if (searchFilter.trim() === "") {
@@ -49,12 +58,36 @@
         <LoadingIcon class="absolute right-2 top-2 animate-spin !-mt-0.5" />
       {/if}
     </label>
+    <div class="flex gap-2">
+      {#each sources as clickedSource}
+        <button
+          class="rounded-full chip {selectedSources.includes(clickedSource)
+            ? 'variant-filled'
+            : 'variant-soft'}"
+          on:click={() => {
+            if (selectedSources.includes(clickedSource)) {
+              console.log('removing', clickedSource);
+              console.log(selectedSources);
+              selectedSources = selectedSources.filter(source => source !== clickedSource);
+              console.log(selectedSources);
+            } else {
+              selectedSources = [...selectedSources, clickedSource];
+            }
+          }}
+          on:keypress
+        >
+          {#if selectedSources.includes(clickedSource)}<span><CheckmarkIcon /></span
+            >{/if}
+          <span>{clickedSource}</span>
+        </button>
+      {/each}
+    </div>
     <div class="size-full overflow-y-auto">
       <div
         class="grid w-full gap-2 pt-2 auto-rows-auto"
         style={`grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); box-sizing: content-box;`}
       >
-        {#each soundsFound as soundFound (soundFound.name + soundFound.url)}
+        {#each filteredSounds as soundFound (soundFound.name + soundFound.url)}
           <SoundFetched sound={soundFound} />
         {/each}
       </div>
