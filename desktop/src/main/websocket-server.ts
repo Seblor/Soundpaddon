@@ -22,6 +22,11 @@ const clients = {
   }),
 }
 
+// Handle creating/removing shortcuts on Windows when installing/uninstalling.
+if (require('electron-squirrel-startup')) {
+  process.exit();
+}
+
 Promise.all(Object.values(clients).map(client => client.connect()))
 
 
