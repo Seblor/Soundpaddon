@@ -17,13 +17,15 @@ const responsesToUpdate: Array<(newProgress: number, isDone: boolean) => void> =
 export default function registerRoutes(app: Application, electronApp: App) {
   app.post('/api/import/url', bodyParser.json(), async function (req: Request, res: Response) {
     const data = req.body as {
+      name: string,
       url: string,
     };
 
-    const outputPath = path.join(electronApp.getPath('userData'), 'sounds', path.basename(data.url).replace(/\.[^/.]+$/, '') + '.mp3');
+    const outputPath = path.join(electronApp.getPath('userData'), 'sounds', (data.name ? path.normalize(data.name) : path.basename(data.url)).replace(/\.[^/.]+$/, '') + '.mp3');
 
     await new Promise(resolve => {
       ffmpeg(data.url)
+        .addOutputOption('-map_metadata', '-1')
         .audioBitrate(128)
         .on('progress', (progress) => {
           responsesToUpdate.forEach(listener => listener(progress.percent, false));

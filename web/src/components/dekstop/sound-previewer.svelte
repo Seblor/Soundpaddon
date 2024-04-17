@@ -5,7 +5,7 @@
   import StopIcon from "virtual:icons/mdi/stop";
   import { getEndpointUrl } from "$lib/utils/api";
   import type { FetchedSound } from "$lib/api-return-types";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { previewAudio, stopPreview } from "$lib/preview-audio";
   import { getModalStore } from "@skeletonlabs/skeleton";
 
@@ -77,6 +77,12 @@
     });
     isDownloading = false;
   }
+
+  onDestroy(() => {
+    if (audioState === AUDIO_STATE.PLAYING) {
+      stopPreview();
+    }
+  })
 </script>
 
 <div

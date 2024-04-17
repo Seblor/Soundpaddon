@@ -33,7 +33,7 @@
     modalStore.close();
   }
 
-  $: newSoundName = (soundData.sound.url.split("/").at(-1) ?? "").replace(
+  $: newSoundName = (soundData.sound.name ?? soundData.sound.url.split("/").at(-1) ?? "").replace(
     /[^a-zA-Z0-9 .]/g,
     "_",
   );
