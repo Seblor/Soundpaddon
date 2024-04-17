@@ -1,5 +1,5 @@
 import { localStorageStore } from "@skeletonlabs/skeleton";
-import type { Sound } from "soundpad.js/web";
+import type { Sound } from "soundpad.js/lib/web";
 import { derived, type Writable } from "svelte/store";
 
 type Cell = {

@@ -9,6 +9,7 @@
   import YoutubeExtractor from "../../../components/dekstop/youtube-extractor.svelte";
   import SoundBankLookup from "../../../components/dekstop/sound-bank-lookup.svelte";
   import SoundExtractor from "../../../components/dekstop/sound-extractor.svelte";
+  import KoFi from "../../../components/icons/ko-fi.svelte";
 
   let currentTile = 0;
 </script>
@@ -92,6 +93,18 @@
     </AppRailTile>
     <!-- --- -->
     <svelte:fragment slot="trail">
+      <AppRailAnchor
+        href="https://ko-fi.com/seblor"
+        target="_blank"
+        title="Donation link"
+      >
+        <div class="flex flex-col items-center">
+          <KoFi class="grow size-1/2" />
+          <div class="mx-4">
+            <span class="text-white text-center">Buy me a coffee ❤️</span>
+          </div>
+        </div>
+      </AppRailAnchor>
       <AppRailAnchor
         href="https://support.soundpaddon.app"
         target="_blank"

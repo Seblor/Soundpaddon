@@ -2,6 +2,17 @@
   import DownloadIcon from "virtual:icons/mdi/download";
 </script>
 
+{@html `
+<script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+<script>
+  kofiWidgetOverlay.draw('seblor', {
+    'type': 'floating-chat',
+    'floating-chat.donateButton.text': 'Support me',
+    'floating-chat.donateButton.background-color': '#00b9fe',
+    'floating-chat.donateButton.text-color': '#fff'
+  });
+</script>`}
+
 <div
   class="flex flex-col items-center justify-center h-[100vh] w-[100vw] gap-8"
 >

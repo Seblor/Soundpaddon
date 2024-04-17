@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { type Sound } from "soundpad.js/web";
+  import { type Sound } from "soundpad.js/lib/web";
   import { soundpadClient } from "../../client/connections";
-  import { SOUND_COLORS_HSL, getSoundMetadata, getSoundName, soundMetadata } from "../../stores/mirror-layout";
+  import { getSoundMetadata, getSoundName, soundMetadata } from "../../stores/mirror-layout";
 
   export let sound: Sound;
 

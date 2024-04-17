@@ -1,5 +1,5 @@
 import { localStorageStore } from '@skeletonlabs/skeleton';
-import type { Sound } from 'soundpad.js/web';
+import type { Sound } from 'soundpad.js/lib/web';
 import { get, type Writable } from 'svelte/store';
 
 export enum SOUND_COLORS_HSL {

@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import Soundpad from "soundpad.js/web";
+import Soundpad from "soundpad.js/lib/web";
 import { serverHost } from "../stores/settings";
 import { get, writable, type Writable } from "svelte/store";
 

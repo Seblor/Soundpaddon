@@ -35,7 +35,7 @@ async function generateSystrayTemplate(app: App, tray: Tray): Promise<(MenuItemC
           await disableAutoStart('Soundpaddon')
         } else {
           console.log('enabling autostart');
-          await enableAutoStart('Soundpaddon', '"C:\\Program Files (x86)\\Soundpad\\Soundpad.exe"').catch(console.error)
+          await enableAutoStart('Soundpaddon', app.getPath('exe')).catch(console.error)
         }
 
         // Update the context menu with the new checkbox value
