@@ -9,7 +9,7 @@
 </script>
 
 
-<div class="flex flex-col justify-between w-[100vw] h-full">
+<div class="no-scrollbar flex flex-col justify-between w-[100vw] h-full">
   <div class="flex grow shrink overflow-hidden mb-20">
     {#if $isConnected}
       {#if $selectedLayout === "mirror"}

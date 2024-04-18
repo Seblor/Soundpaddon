@@ -25,7 +25,7 @@
       element: "#guide-mobile-preview",
       popover: {
         title: "Interactive Mobile Preview",
-        description: `Preview what will be shown on your mobile device here.<br><span class="text-bold">You can interact with it, this demo will emulate Soundpad !</span>`,
+        description: `<p>Preview what will be shown on your mobile device here.</p><p class="font-bold">You can interact with it, this demo will emulate Soundpad !</p>`,
       },
     },
     {
@@ -60,6 +60,19 @@
           "This sections allows you to import all sounds found in a web page.",
       },
     },
+    {
+      popover: {
+        title: "Tray menu",
+        description:
+          `<div>
+            Look at the bottom right of your screen next to the Windows clock, you should see Soundpaddon's icon: 
+            <img class="inline" src='/icon.png' width='16' />
+          </div>
+          <div>
+            Right-click it to enable automatic start with Windows !
+          </div>`,
+      },
+    },
   ];
 
   const mobileSteps: DriveStep[] = [
@@ -91,7 +104,7 @@
       element: "#guide-record-btns",
       popover: {
         title: "Record buttons",
-        description: `Those buttons will record your microphone or speaker as long as they are pressed.<br /><br />Don't forget to disable the "Recorder" notifications in the settings to remove the delay !`,
+        description: `<p>Those buttons will record your microphone or speaker as long as they are pressed.</p><p>Don't forget to disable the "Recorder" notifications in Soundpad's settings to remove the delay !</p>`,
       },
     },
   ];
@@ -104,7 +117,19 @@
         : mobileSteps,
     });
 
-    if (checkIsDemo() && (location.href.includes("desktop") || location.href.includes("mobile"))) {
+    if (window.location.href.includes("panel")) {
+      document.styleSheets[0].insertRule(
+        `* {
+  scrollbar-width: none;
+}`,
+        0,
+      );
+    }
+
+    if (
+      checkIsDemo() &&
+      (location.href.includes("desktop") || location.href.includes("mobile"))
+    ) {
       guide.drive();
     }
   });

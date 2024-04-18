@@ -28,7 +28,7 @@
         popover: {
           title: "Preview sound",
           description:
-            "Click this button to preview the sound. Click again to stop the preview.<br><br>Some sounds might be loud, but Soundpaddon will reduce the volume automatically !",
+            "<p>Click this button to preview the sound. Click again to stop the preview.</p><p>Some sounds might be loud, but Soundpaddon will reduce the volume automatically !</p>",
         },
       },
       {

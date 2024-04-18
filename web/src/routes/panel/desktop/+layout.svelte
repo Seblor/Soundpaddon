@@ -10,7 +10,7 @@
   });
 </script>
 
-<div class="flex justify-between items-center h-[100vh] gap-4">
+<div class="no-scrollbar flex justify-between items-center h-[100vh] gap-4">
   <slot />
 
   <div id="guide-mobile-preview" class="mr-4">
