@@ -104,7 +104,7 @@
         : mobileSteps,
     });
 
-    if (checkIsDemo()) {
+    if (checkIsDemo() && (location.href.includes("desktop") || location.href.includes("mobile"))) {
       guide.drive();
     }
   });
