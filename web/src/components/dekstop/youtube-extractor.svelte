@@ -31,9 +31,9 @@
         popover: {
           side: "top",
           align: "center",
-          title: "Select the part of the video",
+          title: "Extract only a part of the video",
           description:
-            "Use the slider to select the part of the video you want to import.",
+            "Use the sliders to select the part of the video you want to import.",
         },
       },
     ],
