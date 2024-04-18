@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { sounds } from "../../../stores/sounds";
-  import { socket, soundpadClient } from "../../../client/connections";
+  import { socket } from "../../../client/connections";
   import { soundOrder } from "../../../stores/mirror-layout";
   import { get } from "svelte/store";
   import { checkIsDemo } from "$lib/utils/misc";
@@ -14,8 +14,6 @@
     if (checkIsDemo() === false) {
       socket.connect();
     }
-    // @ts-ignore
-    window.soundpad = soundpadClient;
 
     sounds.subscribe((sounds) => {
       if (sounds.length === 0) return;

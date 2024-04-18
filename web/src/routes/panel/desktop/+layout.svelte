@@ -1,14 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import { socket, soundpadClient } from "../../../client/connections";
+  import { socket } from "../../../client/connections";
   import { checkIsDemo } from "$lib/utils/misc";
 
   onMount(() => {
     if (checkIsDemo() === false) {
       socket.connect();
     }
-    // @ts-ignore
-    window.soundpad = soundpadClient;
   });
 </script>
 

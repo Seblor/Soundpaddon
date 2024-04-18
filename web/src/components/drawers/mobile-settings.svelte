@@ -22,7 +22,7 @@
     if (event?.target == null) return;
     const newVolume = parseInt((event.target as HTMLInputElement).value);
     if (checkIsDemo()) {
-      setVolume(newVolume);
+      setVolume(newVolume / 100);
     } else {
       soundpadClient.setVolume(newVolume);
     }
