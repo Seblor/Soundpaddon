@@ -33,17 +33,20 @@
   class="highlighted-bar flex text-xl items-center justify-between fixed left-0 right-0 top-0 h-16 border-b p-2 z-10"
 >
   <div class="flex h-full items-center gap-4">
-    <img src="/icon.png" class="h-full" alt="Soundpaddon icon" />
-    <span class="text-3xl">Soundpaddon</span>
+    <img src="/logo.svg" class="h-full" alt="Soundpaddon icon" />
+    <span class="text-xl sm:text-3xl">Soundpaddon</span>
   </div>
   <div class="flex items-center gap-2">
     <div>
       <a
         href="https://www.leppsoft.com/soundpad/"
-        class="flex items-center text-[#ce081c] text-xl font-bold gap-1"
+        class="text-[#ce081c] text-xl font-bold"
       >
-        <span>Get Soundpad</span>
-        <ExternalLinkIcon />
+        <img class="inline sm:hidden" src="/soundpad.png" alt="Soundpad icon" />
+        <div class="hidden sm:flex items-center gap-1">
+          <span>Get Soundpad</span>
+          <ExternalLinkIcon />
+        </div>
       </a>
     </div>
     <a href="https://support.soundpaddon.app" target="_blank"><DiscordIcon /></a
@@ -61,11 +64,11 @@
 >
   <div class="flex flex-col items-center justify-center h-full w-[100vw] gap-8">
     <div class="flex items-center gap-4">
-      <img src="/icon.png" class="h-24" alt="Soundpaddon icon" />
-      <span class="text-5xl">Soundpaddon</span>
+      <img src="/logo.svg" class="h-12 sm:h-24" alt="Soundpaddon icon" />
+      <span class="text-2xl sm:text-5xl">Soundpaddon</span>
     </div>
-    <span class="text-2xl">Enhance your Soudpad experience</span>
-    <div class="flex gap-4">
+    <span class="sm:text-2xl">Enhance your Soudpad experience</span>
+    <div class="flex flex-wrap justify-center gap-4">
       <a href="https://github.com/Seblor/soundpaddon/releases">
         <button class="btn variant-filled-primary"
           ><span><DownloadIcon /></span><span>Download</span></button
@@ -80,26 +83,29 @@
   </div>
 
   <div class="flex flex-col size-full items-center gap-16" bind:this={features}>
-    <div class="flex flex-col text-justify items-center w-1/2 p-8 gap-4">
-      <h1 class="text-3xl">What is Soundpaddon ?</h1>
-      <p>
+    <div class="flex flex-col items-center md:w-1/2 p-8 gap-4">
+      <h1 class="text-3xl text-center">What is Soundpaddon?</h1>
+      <p class="text-justify">
         Soundpaddon is a free and open-source application that adds a few
         features for Soundpad.
       </p>
-      <p>
+      <p class="text-justify">
         It allows you to control Soundpad remotely from any device connected to
         your local network. It also makes it fast and easy to import sounds from
         the web, YouTube, and more.
       </p>
     </div>
-    <div class="flex flex-col text-justify items-center w-1/2 p-8 gap-4">
-      <h1 class="text-3xl">How does it work ?</h1>
-      <p>
+    <div class="flex flex-col items-center md:w-1/2 p-8 gap-4">
+      <h1 class="text-3xl text-center">How does it work ?</h1>
+      <p class="text-justify">
         Soundpaddon runs on your computer and communicates with the devices you
         paired with. To pair devices, simply flash the QRCode on the screen with
         your phone, and it just works !
       </p>
-      <img src="/diagram.svg" alt="Diagram representing how Soundpaddon works">
+      <img
+        src="/diagram.svg"
+        alt="Diagram representing how Soundpaddon works"
+      />
     </div>
   </div>
 
