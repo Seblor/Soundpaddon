@@ -17,14 +17,20 @@
 <div class="flex items-center justify-between w-full h-full">
   <AppRail class="min-w-[100px]">
     <svelte:fragment slot="lead">
-      <AppRailAnchor
-        ><img
-          src="/icon.png"
-          alt="Soundpaddon icon"
-          class="scale-50 h-[100px]"
-        />
-        <div class="-translate-y-2">Soundpaddon</div>
-      </AppRailAnchor>
+      <a
+        href={location.origin.includes("soundpaddon.app")
+          ? "/"
+          : "javascript:void()"}
+      >
+        <AppRailAnchor
+          ><img
+            src="/icon.png"
+            alt="Soundpaddon icon"
+            class="scale-50 h-[100px]"
+          />
+          <div class="-translate-y-2">Soundpaddon</div>
+        </AppRailAnchor>
+      </a>
     </svelte:fragment>
     <!-- --- -->
     <AppRailTile
