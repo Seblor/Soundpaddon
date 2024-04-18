@@ -15,9 +15,8 @@
 <div class="flex justify-between items-center h-[100vh] gap-4">
   <slot />
 
-  <div class="mr-4">
+  <div id="guide-mobile-preview" class="mr-4">
     <iframe
-      id="guide-mobile-preview"
       seamless
       src="/panel/mobile"
       frameborder="0"
