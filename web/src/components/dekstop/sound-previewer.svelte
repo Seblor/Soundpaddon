@@ -142,7 +142,7 @@
   <div class="grow flex flex-wrap break-all p-2 overflow-scroll">
     {sound.name}
   </div>
-  <div class="shrink flex justify-between p-1 pt-0 w-full">
+  <div class="shrink flex justify-between p-1 pt-0 w-full" style="overflow: visible !important">
     <button
       type="button"
       class="guide-sound-previewer-play scale-75 btn-icon btn-icon-sm variant-filled-primary"
