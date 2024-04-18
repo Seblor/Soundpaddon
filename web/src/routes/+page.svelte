@@ -1,5 +1,6 @@
 <script lang="ts">
   import DownloadIcon from "virtual:icons/mdi/download";
+  import Guide from "../components/showcase/guide.svelte";
 </script>
 
 {@html `
@@ -28,4 +29,7 @@
       >
     </a>
   </div>
+</div>
+<div class="h-[100vh] w-[100vw] border">
+  <Guide />
 </div>

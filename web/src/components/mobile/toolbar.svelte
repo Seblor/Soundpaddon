@@ -4,12 +4,20 @@
   import ToolbarButtons from "./toolbar-buttons.svelte";
   import QrcodeScanButton from "../buttons/qrcode-scan.svelte";
   import ManualHostButton from "../buttons/manual-host.svelte";
+  import { checkIsDemo } from "$lib/utils/misc";
+  import { playbackPosition } from "$lib/demo/demo-audio";
+
+  let data = 0;
+
+  if (checkIsDemo()) {
+    playbackPosition.subscribe((position: number) => {
+      data = position;
+    });
+  }
 
   socket.on("playback-position", (playbackPosition) => {
     data = parseFloat(playbackPosition);
   });
-
-  let data = 0;
 </script>
 
 {#if $isConnected}

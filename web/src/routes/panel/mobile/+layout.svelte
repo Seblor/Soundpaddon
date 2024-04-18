@@ -4,13 +4,16 @@
   import { socket, soundpadClient } from "../../../client/connections";
   import { soundOrder } from "../../../stores/mirror-layout";
   import { get } from "svelte/store";
+  import { checkIsDemo } from "$lib/utils/misc";
 
   socket.on("sounds", (soundsList) => {
     sounds.set(soundsList);
   });
 
   onMount(() => {
-    socket.connect();
+    if (checkIsDemo() === false) {
+      socket.connect();
+    }
     // @ts-ignore
     window.soundpad = soundpadClient;
 

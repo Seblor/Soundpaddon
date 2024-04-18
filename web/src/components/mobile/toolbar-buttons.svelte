@@ -4,8 +4,11 @@
   import SpeakerIcon from "virtual:icons/mdi/speaker";
   import SettingsIcon from "virtual:icons/mdi/cog";
   import { soundpadClient } from "../../client/connections";
-  import { getDrawerStore } from "@skeletonlabs/skeleton";
+  import { getDrawerStore, popup } from "@skeletonlabs/skeleton";
   import { DRAWER_TYPES } from "$lib/utils/enums";
+  import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
+  import { isAudioPlaying, stopAudio } from "$lib/demo/demo-audio";
+  import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
 
   export let isSoundPlaying = true;
 
@@ -15,15 +18,20 @@
 <button
   type="button"
   class="btn variant-filled btn-icon variant-filled-primary"
-  disabled={isSoundPlaying === false}
-  on:click={() => soundpadClient.stopSound()}
+  disabled={(checkIsDemo() ? $isAudioPlaying : isSoundPlaying) === false}
+  on:click={() => (checkIsDemo() ? stopAudio() : soundpadClient.stopSound())}
 >
   <span><StopIcon /></span>
 </button>
 
-<div class="flex gap-4">
+<div
+  id="guide-record-btns"
+  class={`flex gap-4 ${checkIsDemo() ? "[&>*]:pointer-events-none" : ""}`}
+  use:popup={demoPopupConfig}
+>
   <button
     type="button"
+    disabled={checkIsDemo()}
     class="btn variant-filled btn-icon active:scale-75 select-none"
     on:contextmenu={(e) => e.preventDefault()}
     on:pointerdown={(e) => {
@@ -37,6 +45,7 @@
 
   <button
     type="button"
+    disabled={checkIsDemo()}
     class="btn variant-filled btn-icon active:scale-75 select-none"
     on:contextmenu={(e) => e.preventDefault()}
     on:pointerdown={(e) => {
@@ -60,3 +69,5 @@
 >
   <span><SettingsIcon /></span>
 </button>
+
+<DisabledInDemoPopup />

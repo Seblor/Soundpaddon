@@ -28,6 +28,8 @@
   import Sortable from "sortablejs";
   import TickIcon from "virtual:icons/mdi/tick-circle";
   import EraserIcon from "virtual:icons/mdi/eraser";
+  import { checkIsDemo } from "$lib/utils/misc";
+  import { demoCategories } from "$lib/demo/demo-data";
 
   let sortableElement: HTMLDivElement;
   let popupTriggerButton: HTMLButtonElement;
@@ -90,9 +92,15 @@
   });
 
   function refreshCategories() {
-    soundpadClient.getCategoriesJSON(true, true).then((fetchedCategories: Category[]) => {
-      categories = fetchedCategories;
-    });
+    if (checkIsDemo()) {
+      categories = demoCategories;
+      return;
+    }
+    soundpadClient
+      .getCategoriesJSON(true, true)
+      .then((fetchedCategories: Category[]) => {
+        categories = fetchedCategories;
+      });
   }
 
   onMount(() => {
@@ -158,9 +166,11 @@
 >
   <TabGroup class="w-[100vw] flex flex-col">
     <div
+      id="guide-categories"
       bind:this={header}
       class="flex w-[100vw] border-b border-gray-400 fixed overflow-x-auto overflow-y-hidden h-20 highlighted-bar draggable z-10"
     >
+      <div class="absolute size-full" />
       {#each categories as category, index}
         <Tab bind:group={tabSet} name="tab1" value={index}>
           <div class="flex h-16 flex-col items-center text-xs">
@@ -176,7 +186,7 @@
     </div>
     <!-- Tab Panels --->
     <svelte:fragment slot="panel">
-      <div class="mt-16 p-2">
+      <div id="guide-sounds-list" class="mt-16 p-2">
         {#if $showSearchBar}
           <div class="flex items-center gap-2">
             <input
@@ -192,11 +202,11 @@
           style={`grid-template-columns: repeat(auto-fill, minmax(${$mirrorLayoutSoundButtonSize}px, 1fr)); box-sizing: content-box;`}
           bind:this={sortableElement}
         >
-          {#each soundsToDisplay as sound (sound.url + sound.index)}
+          {#each soundsToDisplay as sound, index (sound.url + sound.index)}
             <div
               animate:flip={{ duration: 100 }}
               draggable="true"
-              class="flex size-full select-none"
+              class={`${index === 0 ? "guide-sound" : ""} flex size-full select-none`}
               role="button"
               tabindex="0"
               on:contextmenu={(e) => {

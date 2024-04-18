@@ -18,12 +18,17 @@
   <AppRail class="min-w-[100px]">
     <svelte:fragment slot="lead">
       <AppRailAnchor
-        ><img src="/icon.png" alt="Soundpaddon icon" class="scale-50" />
+        ><img
+          src="/icon.png"
+          alt="Soundpaddon icon"
+          class="scale-50 h-[100px]"
+        />
         <div class="-translate-y-2">Soundpaddon</div>
       </AppRailAnchor>
     </svelte:fragment>
     <!-- --- -->
     <AppRailTile
+      class="guide-pair-section"
       bind:group={currentTile}
       name="tile-1"
       value={0}
@@ -41,6 +46,7 @@
       </div>
     </AppRailTile>
     <AppRailTile
+      class="guide-youtube-import-section"
       bind:group={currentTile}
       name="tile-2"
       value={1}
@@ -58,6 +64,7 @@
       </div>
     </AppRailTile>
     <AppRailTile
+      class="guide-soundbanks-import-section"
       bind:group={currentTile}
       name="tile-3"
       value={2}
@@ -75,6 +82,7 @@
       </div>
     </AppRailTile>
     <AppRailTile
+      class="guide-extract-import-section"
       bind:group={currentTile}
       name="tile-4"
       value={3}

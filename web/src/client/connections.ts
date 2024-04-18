@@ -2,6 +2,7 @@ import { io } from "socket.io-client";
 import Soundpad from "soundpad.js/lib/web";
 import { serverHost } from "../stores/settings";
 import { get, writable, type Writable } from "svelte/store";
+import { checkIsDemo } from "$lib/utils/misc";
 
 const soundpadClient = new Soundpad();
 
@@ -15,6 +16,10 @@ const socket = io(`wss://${serverIP}:${server.port}`, {
 });
 
 soundpadClient.connect((query: string) => {
+  if (checkIsDemo()) {
+    alert(query);
+    return Promise.resolve('');
+  }
   return fetch(`https://${serverIP}:${server.port}/api/soundpad`, { method: "POST", body: query })
     .then((data) => data.text())
     .then((data) => {
@@ -29,6 +34,10 @@ export const isConnected: Writable<boolean> = writable(false);
 socket.on("connect", () => {
   isConnected.set(true);
 });
+
+if (checkIsDemo()) {
+  isConnected.set(true);
+};
 
 export {
   soundpadClient,

@@ -7,9 +7,13 @@
   import SoundFetched from "./sound-previewer.svelte";
   import { onMount } from "svelte";
   import { initAudioPreviewer } from "$lib/preview-audio";
+  import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
+  import { demoExtractor } from "$lib/demo/demo-sounds";
+  import { popup } from "@skeletonlabs/skeleton";
+  import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
 
-  let webPageUrl = "";
-  let soundsFound: FetchedSound[] = [];
+  let webPageUrl = checkIsDemo() ? "https://www.nyan.cat/" : "";
+  let soundsFound: FetchedSound[] = checkIsDemo() ? demoExtractor : [];
   // let soundsFound: FetchedSound[] = new Array(58).fill(undefined);
   // soundsFound = soundsFound.map((_, i) => ({
   //   name: "Sound " + i,
@@ -51,9 +55,10 @@
   <div class="flex flex-col py-8 h-full items-center gap-4">
     <label class="relative label w-full">
       <input
+        use:popup={demoPopupConfig}
         class="input h-8 px-2 text-center"
         type="text"
-        disabled={isFetching}
+        disabled={checkIsDemo() || isFetching}
         placeholder="Enter a web page URL"
         bind:value={webPageUrl}
         on:input={() => searchSounds()}
@@ -74,3 +79,5 @@
     </div>
   </div>
 </div>
+
+<DisabledInDemoPopup />

@@ -5,12 +5,23 @@
   import { ipToSSLDomain } from "../../client/connections";
   import { get } from "svelte/store";
   import { serverHost } from "../../stores/settings";
+  import { checkIsDemo } from "$lib/utils/misc";
 
   const server = get(serverHost);
 
   let qrcodeCanvas: HTMLCanvasElement;
 
   onMount(async () => {
+    if (checkIsDemo()) {
+      QRCode.toCanvas(
+        qrcodeCanvas,
+        `https://www.youtube.com/watch?v=dQw4w9WgXcQ`,
+        (error: any) => {
+          if (error) console.error(error);
+        },
+      );
+      return;
+    }
     const data = await fetch(
       `https://${ipToSSLDomain(server.ip)}:${server.port}/api/data`,
     ).then((res) => res.json());

@@ -2,8 +2,13 @@
   import type { FetchedSound } from "$lib/api-return-types";
   import WarningIcon from "virtual:icons/mdi/warning";
   import LoadingIcon from "virtual:icons/mdi/loading";
-  import { ProgressBar, getModalStore } from "@skeletonlabs/skeleton";
+  import { ProgressBar, getModalStore, popup } from "@skeletonlabs/skeleton";
   import { getEndpointUrl } from "$lib/utils/api";
+  import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
+  import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
+  import { onMount } from "svelte";
+  import { shownDrivers } from "$lib/demo/configs";
+  import { driver } from "driver.js";
 
   const modalStore = getModalStore();
 
@@ -15,6 +20,8 @@
 
   let isDownloading = false;
   let currentProgress = 0;
+
+  $: hasEarrapeInName = /earr?ape/.test(soundData.sound.name.toLowerCase());
 
   async function startDownload() {
     const es = new EventSource(`${getEndpointUrl()}/import/url/progress`);
@@ -33,10 +40,30 @@
     modalStore.close();
   }
 
-  $: newSoundName = (soundData.sound.name ?? soundData.sound.url.split("/").at(-1) ?? "").replace(
-    /[^a-zA-Z0-9 .]/g,
-    "_",
-  );
+  $: newSoundName = (
+    soundData.sound.name ??
+    soundData.sound.url.split("/").at(-1) ??
+    ""
+  ).replace(/[^a-zA-Z0-9 .]/g, "_");
+
+  onMount(async () => {
+    if (
+      checkIsDemo() &&
+      hasEarrapeInName &&
+      !shownDrivers.has("sound-download-earrape-title")
+    ) {
+      await new Promise((r) => setTimeout(r, 100));
+      shownDrivers.add("sound-download-earrape-title");
+      const earrapeGuide = driver();
+      earrapeGuide.highlight({
+        element: ".guide-sound-earrape-title-warning",
+        popover: {
+          title: "Excessive volume",
+          description: `This sound has "earrape" in its name, which means it might be very loud.`,
+        },
+      });
+    }
+  });
 </script>
 
 {#if $modalStore[0]?.meta?.sound != undefined}
@@ -56,8 +83,10 @@
         />
       </label>
     </div>
-    {#if soundData.isEarRape || /earr?ape/.test(soundData.sound.name.toLowerCase())}
-      <aside class="alert variant-filled-error">
+    {#if soundData.isEarRape || hasEarrapeInName}
+      <aside
+        class={`alert variant-filled-error ${hasEarrapeInName ? "guide-sound-earrape-title-warning" : ""}`}
+      >
         <!-- Icon -->
         <div><WarningIcon font-size="64" /></div>
         <!-- Message -->
@@ -73,9 +102,11 @@
       </aside>
     {/if}
     <div class="card-footer flex flex-col justify-stretch items-end gap-4">
+      <DisabledInDemoPopup />
       <button
         class="btn bg-primary-700"
-        disabled={isDownloading}
+        use:popup={demoPopupConfig}
+        disabled={checkIsDemo() || isDownloading}
         on:click={startDownload}
       >
         {#if isDownloading}

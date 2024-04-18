@@ -5,19 +5,22 @@
   import { soundpadClient } from "../../client/connections";
   import { SlideToggle } from "@skeletonlabs/skeleton";
   import { showSearchBar } from "../../stores/settings";
+  import { checkIsDemo } from "$lib/utils/misc";
 
   let volume = 0;
 
-  soundpadClient.getVolume().then((v) => {
-    volume = v;
-  });
+  if (checkIsDemo()) {
+    volume = 50;
+  } else {
+    soundpadClient.getVolume().then((v) => {
+      volume = v;
+    });
+  }
 
   function updateVolume(event: Event) {
     if (event?.target == null) return;
     const newVolume = (event.target as HTMLInputElement).value;
-    soundpadClient.setVolume(
-      parseInt(newVolume),
-    );
+    soundpadClient.setVolume(parseInt(newVolume));
     volume = parseInt(newVolume);
   }
 </script>

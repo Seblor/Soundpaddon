@@ -8,9 +8,13 @@
   import { onMount } from "svelte";
   import { initAudioPreviewer } from "$lib/preview-audio";
   import type { SOUND_SOURCES } from "$lib/api-return-types";
+  import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
+  import { popup } from "@skeletonlabs/skeleton";
+    import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
+    import { demoSoundbanks } from "$lib/demo/demo-sounds";
 
-  let searchFilter = "";
-  let soundsFound: FetchedSound[] = [];
+  let searchFilter = checkIsDemo() ? "Some examples" : "";
+  let soundsFound: FetchedSound[] = checkIsDemo() ? demoSoundbanks :[];
   let isFetching = false;
 
   const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy"];
@@ -18,7 +22,7 @@
   let selectedSources: SOUND_SOURCES[] = [...sources];
 
   $: filteredSounds = soundsFound.filter((sound) =>
-    selectedSources.includes(sound.source)
+    selectedSources.includes(sound.source),
   );
 
   const searchSounds = _.debounce(async () => {
@@ -47,9 +51,10 @@
   <div class="flex flex-col py-8 h-full items-center gap-4">
     <label class="relative label w-full">
       <input
+        use:popup={demoPopupConfig}
         class="input h-8 px-2 text-center"
         type="text"
-        disabled={isFetching}
+        disabled={checkIsDemo() || isFetching}
         placeholder="Search a sound"
         bind:value={searchFilter}
         on:input={() => searchSounds()}
@@ -66,9 +71,11 @@
             : 'variant-soft'}"
           on:click={() => {
             if (selectedSources.includes(clickedSource)) {
-              console.log('removing', clickedSource);
+              console.log("removing", clickedSource);
               console.log(selectedSources);
-              selectedSources = selectedSources.filter(source => source !== clickedSource);
+              selectedSources = selectedSources.filter(
+                (source) => source !== clickedSource,
+              );
               console.log(selectedSources);
             } else {
               selectedSources = [...selectedSources, clickedSource];
@@ -76,7 +83,8 @@
           }}
           on:keypress
         >
-          {#if selectedSources.includes(clickedSource)}<span><CheckmarkIcon /></span
+          {#if selectedSources.includes(clickedSource)}<span
+              ><CheckmarkIcon /></span
             >{/if}
           <span>{clickedSource}</span>
         </button>
@@ -94,3 +102,5 @@
     </div>
   </div>
 </div>
+
+<DisabledInDemoPopup />

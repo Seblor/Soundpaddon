@@ -1,13 +1,17 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import YTPlayer from "youtube-player";
-  import { ProgressBar } from "@skeletonlabs/skeleton";
+  import { ProgressBar, popup } from "@skeletonlabs/skeleton";
   import ImportIcon from "virtual:icons/mdi/import";
   import LoadingIcon from "virtual:icons/mdi/loading";
   import YoutubeIcon from "virtual:icons/mdi/youtube";
   import DoubleRangeSlider from "../double-range-slider.svelte";
   import type { YouTubePlayer } from "youtube-player/dist/types";
   import { getEndpointUrl } from "$lib/utils/api";
+  import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
+  import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
+  import { driver } from "driver.js";
+  import { driverConfig, shownDrivers } from "$lib/demo/configs";
 
   let videoPlayerElement: HTMLDivElement;
   let progress: number = -1;
@@ -18,6 +22,22 @@
   let end = 1;
   let soundName: string = "";
   let isDownloading = false;
+
+  const guide = driver({
+    ...driverConfig,
+    steps: [
+      {
+        element: "#guide-youtube-slider",
+        popover: {
+          side: "top",
+          align: "center",
+          title: "Select the part of the video",
+          description:
+            "Use the slider to select the part of the video you want to import.",
+        },
+      },
+    ],
+  });
 
   let currentProgress = 0;
 
@@ -30,6 +50,8 @@
       player?.destroy();
       player = undefined;
     } else {
+      start = 0;
+      end = 1;
       player = YTPlayer(videoPlayerElement, {
         videoId: youtube_parser(videoUrl) as string,
         width: 640,
@@ -56,6 +78,10 @@
   }
 
   onMount(() => {
+    if (checkIsDemo() && !shownDrivers.has("youtube-extractor")) {
+      shownDrivers.add("youtube-extractor");
+      guide.drive();
+    }
     videoPlayerElement.innerHTML = ``;
 
     updateVideoPlayer(youtube_parser(videoUrl ?? "") as string);
@@ -153,11 +179,15 @@
       {secondsToHHMMSS(start * videoDuration)}
     </div>
     <div class="w-full justify-self-center max-w-[640px] relative">
-      <div class="flex justify-center items-center absolute w-[640px] h-[360px] bg-black -z-10">
+      <div
+        class="flex justify-center items-center absolute w-[640px] h-[360px] bg-black -z-10"
+      >
         <YoutubeIcon font-size="64" color="#ff1308" />
       </div>
       <div class="w-[640px] h-[360px]" bind:this={videoPlayerElement}></div>
-      <DoubleRangeSlider bind:start bind:end />
+      <div id="guide-youtube-slider">
+        <DoubleRangeSlider bind:start bind:end />
+      </div>
     </div>
     <div class="place-self-end justify-self-start">
       {secondsToHHMMSS(end * videoDuration)}
@@ -174,7 +204,8 @@
   <button
     on:click={importToSoundpad}
     class={`w-1/3 btn bg-primary-700`}
-    disabled={isDownloading || !player}
+    use:popup={demoPopupConfig}
+    disabled={checkIsDemo() || isDownloading || !player}
   >
     {#if isDownloading}
       <LoadingIcon class="mr-3 animate-spin" />
@@ -189,3 +220,5 @@
     {/if}
   </div>
 </div>
+
+<DisabledInDemoPopup />

@@ -1,9 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
   import { socket, soundpadClient } from "../../../client/connections";
+  import { checkIsDemo } from "$lib/utils/misc";
 
   onMount(() => {
-    socket.connect();
+    if (checkIsDemo() === false) {
+      socket.connect();
+    }
     // @ts-ignore
     window.soundpad = soundpadClient;
   });
@@ -14,6 +17,7 @@
 
   <div class="mr-4">
     <iframe
+      id="guide-mobile-preview"
       seamless
       src="/panel/mobile"
       frameborder="0"

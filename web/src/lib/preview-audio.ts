@@ -1,4 +1,5 @@
 import { getEndpointUrl } from "./utils/api";
+import { checkIsDemo } from "./utils/misc";
 
 let audioElement = undefined as unknown as HTMLAudioElement;
 const outputAudio = new Audio();
@@ -62,7 +63,7 @@ export async function previewAudio(url: string, newListeners: Partial<Listeners>
   audioElement.pause();
   await new Promise(resolve => setTimeout(resolve, 100)); // Wait for the audio to stop playing
 
-  audioElement.src = `${getEndpointUrl()}/proxy/${url}`
+  audioElement.src = checkIsDemo() ? url : `${getEndpointUrl()}/proxy/${url}`
 
   listeners.onLoaded = newListeners.onLoaded ?? (() => {});
   listeners.onPlay = newListeners.onPlay ?? (() => {});
@@ -90,7 +91,7 @@ function protectEars(analyser: AnalyserNode) {
   analyser.getByteTimeDomainData(fbc_array);
   const dataArray = new Uint8Array(fbc_array.buffer);
 
-  if (dataArray.filter((val) => val >= 240).length > 5) {
+  if (dataArray.filter((val) => val >= 240).length > 2) {
     outputAudio.volume = 0.1;
     listeners.onEarRape();
   }

@@ -8,6 +8,39 @@
   import { onDestroy, onMount } from "svelte";
   import { previewAudio, stopPreview } from "$lib/preview-audio";
   import { getModalStore } from "@skeletonlabs/skeleton";
+  import { shownDrivers, driverConfig } from "$lib/demo/configs";
+  import { driver } from "driver.js";
+  import { checkIsDemo } from "$lib/utils/misc";
+
+  const guide = driver({
+    ...driverConfig,
+    steps: [
+      {
+        element: ".guide-sound-previewer",
+        popover: {
+          title: "Sound found",
+          description:
+            "This is one of the sounds found by the importer you used.",
+        },
+      },
+      {
+        element: ".guide-sound-previewer-play",
+        popover: {
+          title: "Preview sound",
+          description:
+            "Click this button to preview the sound. Click again to stop the preview.<br><br>Some sounds might be loud, but Soundpaddon will reduce the volume automatically !",
+        },
+      },
+      {
+        element: ".guide-sound-previewer-download",
+        popover: {
+          title: "Import to Soundpad",
+          description:
+            "Click this button to import the sound to Soundpad. You can rename the sound before importing it.",
+        },
+      },
+    ],
+  });
 
   const modalStore = getModalStore();
 
@@ -43,6 +76,17 @@
           audioState = AUDIO_STATE.PLAYING;
         },
         onEarRape: () => {
+          if (checkIsDemo() && !shownDrivers.has("sound-previewer-earrape")) {
+            shownDrivers.add("sound-previewer-earrape");
+            const earrapeGuide = driver();
+            earrapeGuide.highlight({
+              element: ".guide-sound-previewer",
+              popover: {
+                title: "Excessive volume",
+                description: "Soundpaddon will automatically detect and reduce the volume of loud sounds in real time !",
+              },
+            });
+          }
           isEarRape = true;
         },
       });
@@ -78,15 +122,22 @@
     isDownloading = false;
   }
 
+  onMount(() => {
+    if (checkIsDemo() && !shownDrivers.has("sound-previewer")) {
+      shownDrivers.add("sound-previewer");
+      guide.drive();
+    }
+  });
+
   onDestroy(() => {
     if (audioState === AUDIO_STATE.PLAYING) {
       stopPreview();
     }
-  })
+  });
 </script>
 
 <div
-  class={`card ${isEarRape ? "!bg-error-800" : ""} flex flex-col justify-center items-center aspect-square overflow-hidden break-all basis-1/6`}
+  class={`guide-sound-previewer card ${isEarRape ? "!bg-error-800" : ""} flex flex-col justify-center items-center aspect-square overflow-hidden break-all basis-1/6`}
 >
   <div class="grow flex flex-wrap break-all p-2 overflow-scroll">
     {sound.name}
@@ -94,7 +145,7 @@
   <div class="shrink flex justify-between p-1 pt-0 w-full">
     <button
       type="button"
-      class="scale-75 btn-icon btn-icon-sm variant-filled-primary"
+      class="guide-sound-previewer-play scale-75 btn-icon btn-icon-sm variant-filled-primary"
       disabled={audioState === AUDIO_STATE.LOADING}
       on:click={handlePlayClick}
     >
@@ -108,7 +159,7 @@
     </button>
     <button
       type="button"
-      class="scale-75 btn-icon btn-icon-sm variant-filled-primary"
+      class="guide-sound-previewer-download scale-75 btn-icon btn-icon-sm variant-filled-primary"
       disabled={isDownloading}
       on:click={openDownloadModal}
     >

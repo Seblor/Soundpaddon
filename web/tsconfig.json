@@ -14,7 +14,11 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
-		"moduleResolution": "Node"
+		"moduleResolution": "Node",
+    "typeRoots": [
+      "node_modules/@types",
+      "src/customTypes"
+    ]
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//
