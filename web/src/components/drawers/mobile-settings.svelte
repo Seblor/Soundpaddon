@@ -6,6 +6,7 @@
   import { SlideToggle } from "@skeletonlabs/skeleton";
   import { showSearchBar } from "../../stores/settings";
   import { checkIsDemo } from "$lib/utils/misc";
+  import { setVolume } from "$lib/demo/demo-audio";
 
   let volume = 0;
 
@@ -19,9 +20,13 @@
 
   function updateVolume(event: Event) {
     if (event?.target == null) return;
-    const newVolume = (event.target as HTMLInputElement).value;
-    soundpadClient.setVolume(parseInt(newVolume));
-    volume = parseInt(newVolume);
+    const newVolume = parseInt((event.target as HTMLInputElement).value);
+    if (checkIsDemo()) {
+      setVolume(newVolume);
+    } else {
+      soundpadClient.setVolume(newVolume);
+    }
+    volume = newVolume;
   }
 </script>
 

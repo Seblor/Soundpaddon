@@ -27,5 +27,9 @@ export function stopAudio() {
   audioElement.currentTime = 0;
 }
 
+export function setVolume(newVolume: number) {
+  audioElement.volume = newVolume;
+}
+
 export const isAudioPlaying = writable(false);
 export const playbackPosition = writable(0);
