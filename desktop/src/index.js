@@ -14,6 +14,15 @@ const iconPath = path.join(__dirname, '../assets/soundpaddon.ico')
 if (require('electron-squirrel-startup')) {
   app.quit();
 } else {
+  // Quit when all windows are closed, except on macOS. There, it's common
+  // for applications and their menu bar to stay active until the user quits
+  // explicitly with Cmd + Q.
+  app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+      app.quit();
+    }
+  });
+
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.
@@ -67,8 +76,13 @@ const createWindow = async () => {
     }
   });
 
+  const externalUrls = [
+    'https://ko-fi.com/seblor',
+    'https://support.soundpaddon.app/',
+  ];
+
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
-    if (url === 'https://support.soundpaddon.app/') {
+    if (externalUrls.includes(url)) {
       shell.openExternal(url);
       return {
         action: 'deny'
@@ -88,21 +102,12 @@ const createWindow = async () => {
   // mainWindow.webContents.openDevTools();
 };
 
-// Quit when all windows are closed, except on macOS. There, it's common
-// for applications and their menu bar to stay active until the user quits
-// explicitly with Cmd + Q.
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
-
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
 async function checkIfSoundpadIsInstalledAndPurchased() {
   if (getSoundpadPath() === null || existsSync(getSoundpadPath()) === false) {
-    dialog.showErrorBox('Soundpad is not installed', 'Please install Soundpad to use this app.');
+    dialog.showErrorBox('Soundpad is not installed', 'Please install Soundpad to use Soundpaddon.');
     return false;
   }
   openSoundpad(false)
@@ -116,7 +121,7 @@ async function checkIfSoundpadIsInstalledAndPurchased() {
     new Promise(resolve => setTimeout(resolve, 2e3)).then(() => false),
   ])
   if (isPipeOpen === false) {
-    dialog.showErrorBox('Soundpad is in trial version', 'Remote control of Soundpad is not available in the trial version. Please purchase Soundpad to use this app.');
+    dialog.showErrorBox('Soundpad is in trial version', 'Remote control of Soundpad is not available in the trial version. Please purchase Soundpad to use Soundpaddon.');
     return false;
   }
   return true;

@@ -6,6 +6,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
+    "build": "npm run build:renderer && npm run build:main",
     "build:renderer": "tsx fetch-sources.ts",
     "build:main": "tsc -p tsconfig.main.json",
     "package": "electron-forge package",

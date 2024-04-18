@@ -48,9 +48,9 @@ const config: UserConfig = {
 				id: 'com.soundpaddon',
 				theme_color: '#000000',
 				icons: [{
-					src: '/icon.png',
+					src: '/logo_192.png',
 					purpose: 'any',
-					sizes: '144x144',
+					sizes: '192x192',
 				}]
 			}
 		}),

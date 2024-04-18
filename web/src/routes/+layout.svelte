@@ -66,7 +66,7 @@
         description:
           `<div>
             Look at the bottom right of your screen next to the Windows clock, you should see Soundpaddon's icon: 
-            <img class="inline" src='/icon.png' width='16' />
+            <img class="inline" src='/logo.svg' width='16' />
           </div>
           <div>
             Right-click it to enable automatic start with Windows !

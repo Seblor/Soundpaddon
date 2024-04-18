@@ -24,7 +24,7 @@
       >
         <AppRailAnchor
           ><img
-            src="/icon.png"
+            src="/logo.svg"
             alt="Soundpaddon icon"
             class="scale-50 h-[100px]"
           />
