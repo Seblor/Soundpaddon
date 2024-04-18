@@ -18,7 +18,7 @@ const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
 	preprocess: [vitePreprocess()],
-	optimizeDeps: { exclude: ['@skeletonlabs/skeleton'] },
+	optimizeDeps: { exclude: ['@skeletonlabs/skeleton', 'driver.js/dist/driver.css'] },
 
 	kit: {
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
