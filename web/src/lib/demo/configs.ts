@@ -15,6 +15,9 @@ export const shownDrivers = checkIsDemo() ? new Set() : {
       return drivers;
     })
   },
+} satisfies {
+  has: (id: string) => boolean,
+  add: (id: string) => void,
 };
 
 export const driverStyleConfig: Config = {
