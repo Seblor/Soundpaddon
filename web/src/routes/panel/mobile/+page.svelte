@@ -1,13 +1,20 @@
 <script lang="ts">
-    import { isConnected } from "../../../client/connections";
-    import Toolbar from "../../../components/mobile/toolbar.svelte";
-    import { selectedLayout } from "../../../stores/settings";
-    import AskServerIp from "./layouts/ask-server-ip.svelte";
-    import Customized from "./layouts/customized.svelte";
-    import Mirror from "./layouts/mirror.svelte";
+  import { onMount } from "svelte";
+  import { isConnected } from "../../../client/connections";
+  import Toolbar from "../../../components/mobile/toolbar.svelte";
+  import { selectedLayout } from "../../../stores/settings";
+  import AskServerIp from "./layouts/ask-server-ip.svelte";
+  import Customized from "./layouts/customized.svelte";
+  import Mirror from "./layouts/mirror.svelte";
 
+  import NoSleep from "nosleep.js";
+
+  const noSleep = new NoSleep();
+
+  onMount(() => {
+    noSleep.enable();
+  });
 </script>
-
 
 <div class="no-scrollbar flex flex-col justify-between w-[100vw] h-full">
   <div class="flex grow shrink overflow-hidden mb-20">
