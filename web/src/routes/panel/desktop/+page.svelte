@@ -176,11 +176,11 @@
                         class="text-blue-500 underline"
                         href="https://en.wikipedia.org/wiki/DNS_rebinding"
                         target="_blank">DNS rebinding</a
-                      > (which is needed for security porposes).
+                      > (which is needed for security purposes).
                     </li>
                     <li>
-                      Open the link form the QRCode on your default browser.
-                      Embedded browser will most likely not work.
+                      You should open the link form the QRCode on your default
+                      browser. Embedded browsers will most likely not work.
                     </li>
                   </ul>
                 </div>
