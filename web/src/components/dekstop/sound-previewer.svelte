@@ -76,9 +76,10 @@
           audioState = AUDIO_STATE.PLAYING;
         },
         onEarRape: async () => {
+          const wasEarrapeTriggered = isEarRape;
           isEarRape = true;
           await new Promise((r) => setTimeout(r, 100));
-          if (checkIsDemo() || !shownDrivers.has("sound-previewer-earrape")) {
+          if (wasEarrapeTriggered === false && (checkIsDemo() || !shownDrivers.has("sound-previewer-earrape"))) {
             shownDrivers.add("sound-previewer-earrape");
             const earrapeGuide = driver({
               ...driverStyleConfig,
