@@ -4,20 +4,25 @@ import type { Config } from "driver.js";
 import { get } from "svelte/store";
 
 const _shownDrivers = localStorageStore<Record<string, boolean>>('demo', {});
+const _shownDriversDemo = new Set();
 
-export const shownDrivers = checkIsDemo() ? new Set() : {
+export const shownDrivers = {
   has: (id: string): boolean => {
+    if (checkIsDemo()) {
+      return _shownDriversDemo.has(id);
+    }
     return id in get(_shownDrivers)
   },
   add: (id: string): void => {
+    if (checkIsDemo()) {
+      _shownDriversDemo.add(id);
+      return;
+    }
     _shownDrivers.update((drivers) => {
       drivers[id] = true;
       return drivers;
     })
   },
-} satisfies {
-  has: (id: string) => boolean,
-  add: (id: string) => void,
 };
 
 export const driverStyleConfig: Config = {
