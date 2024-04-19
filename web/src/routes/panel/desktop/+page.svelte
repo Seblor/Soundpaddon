@@ -1,10 +1,17 @@
 <script lang="ts">
-  import { AppRail, AppRailAnchor, AppRailTile } from "@skeletonlabs/skeleton";
+  import {
+    Accordion,
+    AccordionItem,
+    AppRail,
+    AppRailAnchor,
+    AppRailTile,
+  } from "@skeletonlabs/skeleton";
   import QRCodeIcon from "virtual:icons/mdi/qrcode";
   import YoutubeIcon from "virtual:icons/mdi/youtube";
   import DiscordIcon from "virtual:icons/mdi/discord";
   import ImportIcon from "virtual:icons/mdi/import";
   import MagnifyIcon from "virtual:icons/mdi/magnify";
+  import HammerScrewdriverIcon from "virtual:icons/mdi/hammer-screwdriver";
   import PairingQrcode from "../../../components/dekstop/pairing-qrcode.svelte";
   import YoutubeExtractor from "../../../components/dekstop/youtube-extractor.svelte";
   import SoundBankLookup from "../../../components/dekstop/sound-bank-lookup.svelte";
@@ -144,6 +151,44 @@
             >soundpaddon.app</kbd
           > website on your phone or with your usual QRCode scan application
         </p>
+        <hr class="w-full bg-gray-200 dark:bg-gray-700" />
+        <div class="relative w-3/4 h-16">
+          <Accordion class="absolute">
+            <AccordionItem>
+              <svelte:fragment slot="lead"
+                ><HammerScrewdriverIcon /></svelte:fragment
+              >
+              <svelte:fragment slot="summary"
+                >Troubleshooting and known issues</svelte:fragment
+              >
+              <svelte:fragment slot="content">
+                <div
+                  class="text-left bg-slate-700 bg-opacity-50 shadow-2xl rounded-xl p-2 max-h-52 overflow-y-scroll"
+                >
+                  For the pairing to work, Soundpaddon needs the following
+                  requirements:
+                  <ul class="list-disc ml-6 mt-2">
+                    <li class="list-item">
+                      Both devices must be on the same network.
+                    </li>
+                    <li class="list-item">
+                      Your modem must support&nbsp;<a
+                        class="text-blue-500 underline"
+                        href="https://en.wikipedia.org/wiki/DNS_rebinding"
+                        target="_blank">DNS rebinding</a
+                      > (which is needed for security porposes).
+                    </li>
+                    <li>
+                      Open the link form the QRCode on your default browser.
+                      Embedded browser will most likely not work.
+                    </li>
+                  </ul>
+                </div>
+              </svelte:fragment>
+            </AccordionItem>
+            <!-- ... -->
+          </Accordion>
+        </div>
       </div>
     {/if}
     {#if currentTile === 1}
