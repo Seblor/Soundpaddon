@@ -91,10 +91,6 @@ const createWindow = async () => {
     return { action: 'deny' }
   })
 
-  mainWindow.on('minimize', () => {
-    mainWindow.hide();
-  });
-
   // and load the index.html of the app.
   mainWindow.loadURL('https://127-0-0-1.local-ip.sh:8555/panel/desktop');
 

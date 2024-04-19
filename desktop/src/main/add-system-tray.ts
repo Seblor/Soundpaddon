@@ -14,12 +14,7 @@ export async function createTray(app: App, iconPath: string) {
 
   tray.on('click', (e: KeyboardEvent) => {
     const appWindow = BrowserWindow.getAllWindows()[0]
-    if (appWindow.isVisible()) {
-      appWindow.hide()
-    } else {
-      appWindow.show()
-      appWindow.focus()
-    }
+    appWindow.focus()
   })
 }
 
