@@ -145,7 +145,7 @@
 <div
   class={`guide-sound-previewer card ${isEarRape ? "!bg-error-800 earrape" : ""} flex flex-col justify-center items-center aspect-square overflow-hidden break-all basis-1/6`}
 >
-  <div class="grow flex flex-wrap break-all p-2 overflow-scroll">
+  <div class="grow flex flex-wrap break-all p-2 no-scrollbar overflow-scroll">
     {sound.name}
   </div>
   <div
