@@ -1,10 +1,11 @@
+import { checkIsDemo } from "$lib/utils/misc";
 import { localStorageStore } from "@skeletonlabs/skeleton";
 import type { Config } from "driver.js";
 import { get } from "svelte/store";
 
 const _shownDrivers = localStorageStore<Record<string, boolean>>('demo', {});
 
-export const shownDrivers = {
+export const shownDrivers = checkIsDemo() ? new Set() : {
   has: (id: string): boolean => {
     return id in get(_shownDrivers)
   },

@@ -47,10 +47,7 @@
   ).replace(/[^a-zA-Z0-9 .]/g, "_");
 
   onMount(async () => {
-    if (
-      checkIsDemo() ||
-      (hasEarrapeInName && !shownDrivers.has("sound-download-earrape-title"))
-    ) {
+    if (hasEarrapeInName && !shownDrivers.has("sound-download-earrape-title")) {
       await new Promise((r) => setTimeout(r, 100));
       shownDrivers.add("sound-download-earrape-title");
       const earrapeWarningGuide = driver({

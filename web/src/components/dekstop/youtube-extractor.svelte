@@ -78,7 +78,7 @@
   }
 
   onMount(() => {
-    if (checkIsDemo() || !shownDrivers.has("youtube-extractor")) {
+    if (!shownDrivers.has("youtube-extractor")) {
       shownDrivers.add("youtube-extractor");
       guide.drive();
     }

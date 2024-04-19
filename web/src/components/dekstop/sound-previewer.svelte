@@ -79,7 +79,7 @@
           const wasEarrapeTriggered = isEarRape;
           isEarRape = true;
           await new Promise((r) => setTimeout(r, 100));
-          if (wasEarrapeTriggered === false && (checkIsDemo() || !shownDrivers.has("sound-previewer-earrape"))) {
+          if (wasEarrapeTriggered === false && !shownDrivers.has("sound-previewer-earrape")) {
             shownDrivers.add("sound-previewer-earrape");
             const earrapeGuide = driver({
               ...driverStyleConfig,
@@ -129,7 +129,7 @@
   }
 
   onMount(() => {
-    if (checkIsDemo() || !shownDrivers.has("sound-previewer")) {
+    if (!shownDrivers.has("sound-previewer")) {
       shownDrivers.add("sound-previewer");
       guide.drive();
     }
