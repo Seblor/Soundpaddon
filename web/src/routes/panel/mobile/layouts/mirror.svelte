@@ -166,11 +166,13 @@
 >
   <TabGroup class="w-[100vw] flex flex-col">
     <div
-      id="guide-categories"
       bind:this={header}
       class="flex w-[100vw] border-b border-gray-400 fixed overflow-x-auto overflow-y-hidden h-20 highlighted-bar draggable z-10"
     >
-      <div class="absolute size-full" />
+      <div
+        id="guide-categories"
+        class="absolute size-full pointer-events-none"
+      />
       {#each categories as category, index}
         <Tab bind:group={tabSet} name="tab1" value={index}>
           <div class="flex h-16 flex-col items-center text-xs">

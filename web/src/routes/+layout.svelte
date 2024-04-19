@@ -76,6 +76,13 @@
 
   const mobileSteps: DriveStep[] = [
     {
+      popover: {
+        title: "Welcome !",
+        description:
+          "Wellcome to Soundpaddon's mobile access !",
+      },
+    },
+    {
       element: "#guide-categories",
       popover: {
         title: "Categories",
