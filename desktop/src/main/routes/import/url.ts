@@ -9,6 +9,7 @@ import jsdom from 'jsdom';
 import fetch from 'node-fetch-commonjs';
 import Fuse from 'fuse.js'
 import type { FetchedSound, SOUND_SOURCES } from '../../../customTypes';
+import fs from 'node:fs';
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path.replace('app.asar', 'app.asar.unpacked'))
 
@@ -22,6 +23,8 @@ export default function registerRoutes(app: Application, electronApp: App) {
     };
 
     const outputPath = path.join(electronApp.getPath('userData'), 'sounds', (data.name ? path.normalize(data.name) : path.basename(data.url)).replace(/\.[^/.]+$/, '') + '.mp3');
+
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     await new Promise(resolve => {
       ffmpeg(data.url)

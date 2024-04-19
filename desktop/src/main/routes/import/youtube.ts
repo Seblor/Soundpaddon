@@ -5,7 +5,7 @@ import { App } from 'electron/main';
 import path from 'node:path';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
-import Soundpad from 'soundpad.js';
+import fs from 'node:fs';
 import { importToSoundpad, timeMarkToSeconds } from '../../utils/misc';
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path.replace('app.asar', 'app.asar.unpacked'))
@@ -27,6 +27,8 @@ export default function registerRoutes(app: Application, electronApp: App) {
     });
 
     const outputPath = path.join(electronApp.getPath('userData'), 'sounds', `${data.name}.mp3`);
+
+    fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
     await new Promise(resolve => {
       ffmpeg(stream)

@@ -1,9 +1,10 @@
 {
   "name": "soundpaddon-desktop",
   "productName": "Soundpaddon",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "My Electron application description",
   "main": "src/index.js",
+  "repository": "https://github.com/Seblor/Soundpaddon",
   "scripts": {
     "start": "electron-forge start",
     "build": "npm run build:renderer && npm run build:main",

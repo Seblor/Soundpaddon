@@ -20,7 +20,8 @@ module.exports.makers = [
       iconUrl: 'https://www.soundpaddon.app/soundpaddon.ico',
       setupIcon: iconPath,
       authors: 'Sébastien "Seblor" Lorentz',
-      description: 'Soundpaddon, an addon for Soundpad'
+      description: 'Soundpaddon, an addon for Soundpad',
+      setupExe: 'Soundpaddon-x64.exe',
     },
   },
   {
