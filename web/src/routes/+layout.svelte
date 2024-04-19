@@ -7,7 +7,7 @@
   import { checkIsDemo } from "$lib/utils/misc";
   $: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : "";
 
-  import { driverConfig } from "$lib/demo/configs";
+  import { driverConfig, shownDrivers } from "$lib/demo/configs";
 
   import { driver, type DriveStep } from "driver.js";
   import "driver.js/dist/driver.css"; // This will be stripped in production build, so the CSS has been copied bellow to be forced into the header (https://github.com/sveltejs/svelte/issues/5804)
@@ -25,7 +25,7 @@
       element: "#guide-mobile-preview",
       popover: {
         title: "Interactive Mobile Preview",
-        description: `<p>Preview what will be shown on your mobile device here.</p><p class="font-bold">You can interact with it, this demo will emulate Soundpad !</p>`,
+        description: `<p>Preview what will be shown on your mobile device here.</p><p class="font-bold">You can interact with it !</p>`,
       },
     },
     {
@@ -109,24 +109,31 @@
   ];
 
   onMount(() => {
-    const guide = driver({
-      ...driverConfig,
-      steps: location.href.includes("desktop")
-        ? desktopGuideSteps
-        : mobileSteps,
-    });
-
     if (window.location.href.includes("panel")) {
       document.styleSheets[0].insertRule(
         `* {
-  scrollbar-width: none;
+scrollbar-width: none;
 }`,
         0,
       );
     }
 
+    const isDesktop = location.href.includes("desktop");
+    const shouldShowDesktopGuide =
+      checkIsDemo() || (isDesktop && !shownDrivers.has("desktop"));
+    const shouldShowMobileGuide =
+      checkIsDemo() || (!isDesktop && !shownDrivers.has("mobile"));
+
+    const guide = driver({
+      ...driverConfig,
+      steps: isDesktop ? desktopGuideSteps : mobileSteps,
+      onDeselected: () => {
+        shownDrivers.add(isDesktop ? "desktop" : "mobile");
+      },
+    });
+
     if (
-      checkIsDemo() &&
+      (shouldShowDesktopGuide || shouldShowMobileGuide) &&
       (location.href.includes("desktop") || location.href.includes("mobile"))
     ) {
       guide.drive();

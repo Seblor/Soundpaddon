@@ -7,7 +7,7 @@
   import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
   import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
   import { onMount } from "svelte";
-  import { shownDrivers } from "$lib/demo/configs";
+  import { shownDrivers, driverStyleConfig } from "$lib/demo/configs";
   import { driver } from "driver.js";
 
   const modalStore = getModalStore();
@@ -48,14 +48,16 @@
 
   onMount(async () => {
     if (
-      checkIsDemo() &&
-      hasEarrapeInName &&
-      !shownDrivers.has("sound-download-earrape-title")
+      checkIsDemo() ||
+      (hasEarrapeInName && !shownDrivers.has("sound-download-earrape-title"))
     ) {
       await new Promise((r) => setTimeout(r, 100));
       shownDrivers.add("sound-download-earrape-title");
-      const earrapeGuide = driver();
-      earrapeGuide.highlight({
+      const earrapeWarningGuide = driver({
+        ...driverStyleConfig,
+        showButtons: [],
+      });
+      earrapeWarningGuide.highlight({
         element: ".guide-sound-earrape-title-warning",
         popover: {
           title: "Excessive volume",
