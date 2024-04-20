@@ -200,7 +200,7 @@
           </div>
         {/if}
         <div
-          class="grid shrink overflow-auto gap-2 pt-2"
+          class="grid shrink overflow-auto gap-2 pt-2 overflow-x-hidden"
           style={`grid-template-columns: repeat(auto-fill, minmax(${$mirrorLayoutSoundButtonSize}px, 1fr)); box-sizing: content-box;`}
           bind:this={sortableElement}
         >

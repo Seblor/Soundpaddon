@@ -8,6 +8,7 @@
   } from "../../stores/mirror-layout";
   import { checkIsDemo } from "$lib/utils/misc";
   import { playAudio } from "$lib/demo/demo-audio";
+  import { mirrorLayoutSoundButtonSize } from "../../stores/settings";
 
   export let sound: Sound;
 
@@ -23,8 +24,8 @@
 </script>
 
 <button
-  class="btn whitespace-normal grow flex flex-wrap min-w-14 aspect-square text-sm bg-secondary-800 rounded overflow-hidden break-all p-0 border border-secondary-800"
-  style={`background-color: hsl(${color} / var(--tw-bg-opacity));border-color: hsl(${color} / var(--tw-bg-opacity));`}
+  class="btn whitespace-normal grow flex flex-wrap aspect-square text-sm bg-secondary-800 rounded overflow-hidden break-all p-0 border border-secondary-800"
+  style={`background-color: hsl(${color} / var(--tw-bg-opacity));border-color: hsl(${color} / var(--tw-bg-opacity)); font-size: ${Math.max(10, ($mirrorLayoutSoundButtonSize - name.length * 0.5) / 4)}px`}
   on:click={() =>
     isDemo ? playAudio(sound.url) : soundpadClient.playSound(sound.index)}
   on:keydown={(event) => {

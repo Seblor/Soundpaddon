@@ -11,7 +11,7 @@
   <div class="flex gap-2">
     <input
       type="range"
-      min="25"
+      min="30"
       max="100"
       on:pointerdown={makeDrawerTransparent}
       on:pointerup={makeDrawerOpaque}
