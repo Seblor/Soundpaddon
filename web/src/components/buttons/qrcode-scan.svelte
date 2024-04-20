@@ -26,6 +26,8 @@
       allLocalIPs.map((ip) => testHostIp(ip, 5000)),
     );
 
+    alert(JSON.stringify(scanResults));
+
     let serverFound: string | undefined = undefined;
 
     // Finding https server
