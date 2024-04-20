@@ -13,7 +13,7 @@ export const demoCategories = [
     "sounds": [
       {
         "index": 1,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\taking-the-hobbits-to-isengard-mp3cut.mp3",
+        "url": "/demo-sounds/taking-the-hobbits-to-isengard-mp3cut.mp3",
         "artist": "",
         "title": "taking-the-hobbits-to-isengard-mp3cut",
         "duration": "0:08",
@@ -23,7 +23,7 @@ export const demoCategories = [
       },
       {
         "index": 3,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\freebird.mp3",
+        "url": "/demo-sounds/freebird.mp3",
         "artist": "",
         "title": "freebird",
         "duration": "0:17",
@@ -33,7 +33,7 @@ export const demoCategories = [
       },
       {
         "index": 9,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\Cantina.mp3",
+        "url": "/demo-sounds/Cantina.mp3",
         "artist": "",
         "title": "Cantina",
         "duration": "0:28",
@@ -50,7 +50,7 @@ export const demoCategories = [
     "sounds": [
       {
         "index": 2,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\murloc.mp3",
+        "url": "/demo-sounds/murloc.mp3",
         "artist": "",
         "title": "murloc",
         "duration": "0:03",
@@ -60,7 +60,7 @@ export const demoCategories = [
       },
       {
         "index": 4,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\bonk.mp3",
+        "url": "/demo-sounds/bonk.mp3",
         "artist": "",
         "title": "bonk",
         "duration": "0:02",
@@ -70,7 +70,7 @@ export const demoCategories = [
       },
       {
         "index": 5,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\bell.mp3",
+        "url": "/demo-sounds/bell.mp3",
         "artist": "",
         "title": "bell",
         "duration": "0:03",
@@ -87,7 +87,7 @@ export const demoCategories = [
     "sounds": [
       {
         "index": 6,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\quack.mp3",
+        "url": "/demo-sounds/quack.mp3",
         "artist": "",
         "title": "quack",
         "duration": "0:01",
@@ -97,7 +97,7 @@ export const demoCategories = [
       },
       {
         "index": 7,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\Spooky Scary Skeleton.mp3",
+        "url": "/demo-sounds/Spooky Scary Skeleton.mp3",
         "artist": "",
         "title": "Spooky Scary Skeleton",
         "duration": "0:06",
@@ -107,7 +107,7 @@ export const demoCategories = [
       },
       {
         "index": 8,
-        "url": "C:\\Users\\Seblor\\AppData\\Roaming\\Soundpaddon\\sounds\\nope.mp3",
+        "url": "/demo-sounds/nope.mp3",
         "artist": "",
         "title": "nope",
         "duration": "0:00",
