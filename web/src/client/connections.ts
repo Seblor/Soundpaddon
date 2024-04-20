@@ -54,17 +54,22 @@ export function ipToSSLDomain(ip: string): string {
  * @param timeout 
  */
 export async function testHostIp(ip: string, timeout: number = 1000): Promise<'https' | 'http' | 'offline'> {
-  const [https, http] = await Promise.all([
-    fetchWithTimeout(`https://${ipToSSLDomain(ip)}:${get(serverHost).port}/api/data`, timeout),
-    fetchWithTimeout(`http://${ip}:${get(serverHost).port + 1}/api/data`, timeout),
-  ])
-  if (https) {
-    return 'https';
-  }
-  if (http) {
-    return 'http';
-  }
-  return 'offline';
+  return new Promise(async resolve => {
+    const [https, http] = await Promise.allSettled([
+      fetchWithTimeout(`https://${ipToSSLDomain(ip)}:${get(serverHost).port}/api/data`, timeout),
+      fetchWithTimeout(`http://${ip}:${get(serverHost).port + 1}/api/data`, timeout),
+    ]).catch(() => {
+      resolve('offline');
+      return Promise.reject();
+    })
+    if (https.status === 'fulfilled' && https.value) {
+      resolve('https');
+    }
+    if (http.status === 'rejected') {
+      resolve('http');
+    }
+    resolve('offline');
+  })
 }
 
 function fetchWithTimeout(url: string, timeout: number): Promise<any> {
