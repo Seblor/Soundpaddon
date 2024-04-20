@@ -18,7 +18,7 @@
       popover: {
         title: "Welcome !",
         description:
-          "Wellcome to Soundpaddon, I will guide you through the features available to you !",
+          "Welcome to Soundpaddon, I will guide you through the features available to you !",
       },
     },
     {
@@ -79,7 +79,7 @@
       popover: {
         title: "Welcome !",
         description:
-          "Wellcome to Soundpaddon's mobile access !",
+          "Welcome to Soundpaddon's mobile access !",
       },
     },
     {

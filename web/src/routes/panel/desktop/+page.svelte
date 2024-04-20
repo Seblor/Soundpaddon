@@ -147,9 +147,9 @@
         <h1 class="text-2xl">Scan this QRCode with your phone</h1>
         <PairingQrcode />
         <p>
-          You can scan it from the <kbd class="bg-slate-700 rounded"
-            >soundpaddon.app</kbd
-          > website on your phone or with your usual QRCode scan application
+          You can scan it from <kbd class="bg-slate-700 rounded"
+            >soundpaddon.app/panel</kbd
+          > on your phone or with your usual QRCode scan application
         </p>
         <hr class="w-full bg-gray-200 dark:bg-gray-700" />
         <div class="relative w-3/4 h-16">
