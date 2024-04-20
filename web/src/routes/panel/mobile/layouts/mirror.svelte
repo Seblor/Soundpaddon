@@ -27,7 +27,7 @@
   } from "../../../../stores/mirror-layout";
   import Sortable from "sortablejs";
   import TickIcon from "virtual:icons/mdi/tick-circle";
-  import EraserIcon from "virtual:icons/mdi/eraser";
+  import RestoreIcon from "virtual:icons/mdi/restore";
   import { checkIsDemo } from "$lib/utils/misc";
   import { demoCategories } from "$lib/demo/demo-data";
 
@@ -244,7 +244,7 @@
           $soundEditedName = generateSoundNameFromSoundpad(soundEdited);
         }}
       >
-        <EraserIcon font-size="24" />
+        <RestoreIcon font-size="24" />
       </button>
       <input
         on:keypress={(e) => {
