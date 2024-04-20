@@ -28,7 +28,7 @@
       message: "Scanning for your device...",
     });
 
-    if (await testHostIp(userHost)) {
+    if ((await testHostIp(userHost)) !== "offline") {
       serverHost.update((host) => {
         host.ip = userHost;
         return host;

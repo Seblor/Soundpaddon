@@ -5,7 +5,7 @@
   import { ipToSSLDomain } from "../../client/connections";
   import { get } from "svelte/store";
   import { serverHost } from "../../stores/settings";
-  import { checkIsDemo } from "$lib/utils/misc";
+  import { checkIsDemo, isHttps } from "$lib/utils/misc";
 
   const server = get(serverHost);
 
@@ -23,7 +23,7 @@
       return;
     }
     const data = await fetch(
-      `https://${ipToSSLDomain(server.ip)}:${server.port}/api/data`,
+      `${isHttps() ? 'https' : 'http'}://${isHttps() ? ipToSSLDomain(server.ip) : location.hostname}:${server.port}/api/data`,
     ).then((res) => res.json());
     QRCode.toCanvas(
       qrcodeCanvas,

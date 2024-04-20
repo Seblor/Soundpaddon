@@ -8,6 +8,7 @@
   import { serverHost } from "../../stores/settings";
   import { getToastStore } from "@skeletonlabs/skeleton";
   import lz from "lz-string";
+  import { isHttps } from "$lib/utils/misc";
 
   const toastStore = getToastStore();
 
@@ -21,30 +22,63 @@
       message: "Scanning for your device...",
     });
 
-    Promise.allSettled(allLocalIPs.map((ip) => testHostIp(ip))).then(
-      (results) => {
-        results.forEach((result, index) => {
-          if (result.status === "fulfilled" && result.value) {
-            serverHost.update((host) => {
-              host.ip = allLocalIPs[index];
-              return host;
-            });
-          }
-
-          toastStore.trigger({
-            hideDismiss: true,
-            timeout: 3000,
-            message: "Found your device, connecting...",
-          });
-
-          window.location.search = "";
-
-          setTimeout(() => {
-            window.location.reload();
-          }, 1e3);
-        });
-      },
+    const scanResults = await Promise.allSettled(
+      allLocalIPs.map((ip) => testHostIp(ip, 5000)),
     );
+
+    let serverFound: string | undefined = undefined;
+
+    // Finding https server
+    serverFound = allLocalIPs.find((ip, index) => {
+      const scanResult = scanResults[index];
+      if (scanResult.status === "fulfilled" && scanResult.value === "https") {
+        return true;
+      }
+    });
+
+    // If https server is not found, try http server
+    if (serverFound === undefined) {
+      serverFound = allLocalIPs.find((ip, index) => {
+        const scanResult = scanResults[index];
+        if (scanResult.status === "fulfilled" && scanResult.value === "http") {
+          return true;
+        }
+      });
+
+      if (serverFound && isHttps()) {
+        window.location.href = `http://${serverFound}:${8556}${
+          window.location.pathname + window.location.search
+        }`;
+        return;
+      }
+    }
+
+    if (serverFound === undefined) {
+      toastStore.trigger({
+        hideDismiss: true,
+        timeout: 3000,
+        message: "Could not find your device...",
+      });
+      return;
+    }
+
+    toastStore.trigger({
+      hideDismiss: true,
+      timeout: 3000,
+      message: "Found your device, connecting...",
+    });
+
+    serverHost.update((host) => {
+      host.ip = serverFound!;
+      host.port = isHttps() ? 8555 : 8556;
+      return host;
+    });
+
+    window.location.search = "";
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 1e3);
   }
 
   let config: Html5QrcodeScannerConfig = {

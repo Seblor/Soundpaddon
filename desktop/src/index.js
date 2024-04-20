@@ -33,17 +33,11 @@ if (require('electron-squirrel-startup')) {
     }
     app.whenReady()
       .then(async () => {
-        const host = require('./main/dist/index')
-        const server = await host.createHttpServer({
+        const host = require('./main/dist/index.js')
+        await host.createHttpServer({
           certificateRootPath: path.join(app.getPath('userData'), 'ssl'),
           pathToServe: __dirname + '/renderer',
           electronApp: app,
-        })
-
-        await new Promise(resolve => {
-          server
-            .listen(8555)
-            .once('listening', resolve)
         })
 
         host.setSystemTray(app, iconPath);

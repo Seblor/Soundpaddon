@@ -1,3 +1,4 @@
+import http from 'node:http';
 import https from 'node:https';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -22,7 +23,7 @@ export async function createHttpServer({
   certificateRootPath: string
   pathToServe: string
   electronApp: App
-}): Promise<https.Server> {
+}): Promise<void> {
   await Promise.all([
     downloadFile(keyUrl, path.join(certificateRootPath, 'server.key')),
     downloadFile(certUrl, path.join(certificateRootPath, 'server.pem')),
@@ -40,24 +41,40 @@ export async function createHttpServer({
   registerRoutes(app, electronApp);
 
   app.use(express.static(pathToServe, {
+    redirect: false,
     extensions: ['html']
   }));
   app.get('*', function (request, response) {
+    console.log(path.resolve(__dirname, 'index.html'));
     response.sendFile(path.resolve(__dirname, 'index.html'));
   });
 
   // SvelteKit handlers
   // app.use(handler);
 
-  const server = https.createServer({
+  const httpsServer = https.createServer({
     key: fs.readFileSync(path.join(certificateRootPath, 'server.pem')),
     cert: fs.readFileSync(path.join(certificateRootPath, 'server.key')),
   }, app)
 
-  // Inject SocketIO
-  injectSocketIO(server);
+  const httpServer = http.createServer(app)
 
-  return server
+  // Inject SocketIO
+  injectSocketIO(httpsServer);
+  injectSocketIO(httpServer);
+
+  await Promise.all([
+    new Promise(resolve => {
+      httpsServer
+        .listen(8555)
+        .once('listening', resolve)
+    }),
+    new Promise(resolve => {
+      httpServer
+        .listen(8556)
+        .once('listening', resolve)
+    })
+  ])
 }
 
 export function setSystemTray(app: App, iconPath: string) {

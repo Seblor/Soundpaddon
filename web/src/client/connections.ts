@@ -2,25 +2,24 @@ import { io } from "socket.io-client";
 import Soundpad from "soundpad.js/lib/web";
 import { serverHost } from "../stores/settings";
 import { get, writable, type Writable } from "svelte/store";
-import { checkIsDemo } from "$lib/utils/misc";
+import { checkIsDemo, isHttps } from "$lib/utils/misc";
 
 const soundpadClient = new Soundpad();
 
 const server = get(serverHost);
 
-const serverIP = ipToSSLDomain(server.ip);
+const serverHostname = isHttps() ? ipToSSLDomain(server.ip) : location.hostname;
 
-const socket = io(`wss://${serverIP}:${server.port}`, {
+const socket = io(`${isHttps() ? 'wss' : 'ws'}://${serverHostname}:${server.port}`, {
   autoConnect: false,
   transports: ["websocket"],
 });
 
 soundpadClient.connect((query: string) => {
   if (checkIsDemo()) {
-    alert(query);
     return Promise.resolve('');
   }
-  return fetch(`https://${serverIP}:${server.port}/api/soundpad`, { method: "POST", body: query })
+  return fetch(`${isHttps() ? 'https' : 'http'}://${serverHostname}:${server.port}/api/soundpad`, { method: "POST", body: query })
     .then((data) => data.text())
     .then((data) => {
       return data;
@@ -54,14 +53,17 @@ export function ipToSSLDomain(ip: string): string {
  * @param ip Checks if the host is reachable
  * @param timeout 
  */
-export function testHostIp(ip: string, timeout: number = 1000): Promise<boolean> {
-  const endpoint = `https://${ipToSSLDomain(ip)}:${get(serverHost).port}/api/data`
+export function testHostIp(ip: string, timeout: number = 1000): Promise<'https' | 'http' | 'offline'> {
+  let endpoint = `https://${ipToSSLDomain(ip)}:${get(serverHost).port}/api/data`
+  if (!isHttps()) {
+    endpoint = `http://${ip}:${get(serverHost).port + 1}/api/data`;
+  }
   return new Promise((resolve) => {
     fetch(endpoint)
-      .then(() => resolve(true))
+      .then(() => resolve('https'))
       .catch((e) => {
-        resolve(false)
+        resolve('http')
       });
-    setTimeout(() => resolve(false), timeout);
+    setTimeout(() => resolve('offline'), timeout);
   });
 }

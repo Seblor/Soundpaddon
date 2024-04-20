@@ -13,3 +13,7 @@ export const demoPopupConfig: PopupSettings = {
   target: "disabledDemo",
   placement: "top",
 };
+
+export function isHttps() {
+  return window.location.protocol === "https:"
+};
