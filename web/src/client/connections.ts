@@ -53,17 +53,30 @@ export function ipToSSLDomain(ip: string): string {
  * @param ip Checks if the host is reachable
  * @param timeout 
  */
-export function testHostIp(ip: string, timeout: number = 1000): Promise<'https' | 'http' | 'offline'> {
-  let endpoint = `https://${ipToSSLDomain(ip)}:${get(serverHost).port}/api/data`
-  if (!isHttps()) {
-    endpoint = `http://${ip}:${get(serverHost).port + 1}/api/data`;
+export async function testHostIp(ip: string, timeout: number = 1000): Promise<'https' | 'http' | 'offline'> {
+  const [https, http] = await Promise.all([
+    fetchWithTimeout(`https://${ipToSSLDomain(ip)}:${get(serverHost).port}/api/data`, timeout),
+    fetchWithTimeout(`http://${ip}:${get(serverHost).port + 1}/api/data`, timeout),
+  ])
+  if (https) {
+    return 'https';
   }
-  return new Promise((resolve) => {
-    fetch(endpoint)
-      .then(() => resolve('https'))
-      .catch((e) => {
-        resolve('http')
-      });
-    setTimeout(() => resolve('offline'), timeout);
+  if (http) {
+    return 'http';
+  }
+  return 'offline';
+}
+
+function fetchWithTimeout(url: string, timeout: number): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    setTimeout(() => {
+      controller.abort();
+      reject(new Error('timeout'));
+    }, timeout);
+    fetch(url, { signal })
+      .then(resolve)
+      .catch(reject);
   });
 }
