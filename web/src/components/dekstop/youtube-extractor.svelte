@@ -46,10 +46,10 @@
   $: seekTo(start);
 
   async function updateVideoPlayer(videoId: string | false) {
-    if (videoId == false) {
+    console.log(videoId, player);
       player?.destroy();
       player = undefined;
-    } else {
+    if (videoId) {
       start = 0;
       end = 1;
       player = YTPlayer(videoPlayerElement, {
