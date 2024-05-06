@@ -27,6 +27,7 @@
     'floating-chat.donateButton.background-color': '#00b9fe',
     'floating-chat.donateButton.text-color': '#fff'
   });
+  document.querySelector('.floatingchat-container').setAttribute('title', 'Support me on Ko-fi');
 </script>`}
 
 <div
@@ -49,9 +50,9 @@
         </div>
       </a>
     </div>
-    <a href="https://support.soundpaddon.app" target="_blank"><DiscordIcon /></a
+    <a href="https://support.soundpaddon.app" aria-label="Support Discord server" target="_blank"><DiscordIcon /></a
     >
-    <a href="https://www.github.com/Seblor/Soundpaddon" target="_blank"
+    <a href="https://www.github.com/Seblor/Soundpaddon" aria-label="Find the code on Github" target="_blank"
       ><GitHubIcon /></a
     >
   </div>
@@ -117,6 +118,7 @@
         features.scrollIntoView({ behavior: "smooth" });
       }}
       class="animate-bounce"
+      aria-label="Name"
     >
       <ArrowDown font-size="32" />
     </button>
