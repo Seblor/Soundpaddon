@@ -123,6 +123,10 @@ scrollbar-width: none;
 }`,
         0,
       );
+
+      if (window.location.href.includes("soundpaddon.app")) {
+        inject();
+      }
     }
 
     const isDesktop = location.href.includes("desktop");
@@ -147,7 +151,6 @@ scrollbar-width: none;
     }
   });
 
-  inject();
 </script>
 
 <svelte:head>
