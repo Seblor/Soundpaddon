@@ -26,8 +26,6 @@ soundpadClient.connect((query: string) => {
     });
 });
 
-await soundpadClient.connectionAwaiter;
-
 export const isConnected: Writable<boolean> = writable(false);
 
 socket.on("connect", () => {
