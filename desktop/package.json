@@ -1,7 +1,7 @@
 {
   "name": "soundpaddon-desktop",
   "productName": "Soundpaddon",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "My Electron application description",
   "main": "src/index.js",
   "repository": "https://github.com/Seblor/Soundpaddon",
@@ -59,7 +59,7 @@
     "node-fetch-progress": "^1.0.2",
     "request": "^2.88.2",
     "socket.io": "^4.7.5",
-    "soundpad.js": "^2.3.2",
+    "soundpad.js": "^2.4.0",
     "winreg": "^1.2.5",
     "ytdl-core": "^4.11.5"
   }

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ProgressBar } from "@skeletonlabs/skeleton";
   import { isConnected, socket } from "../../client/connections";
+  import CameraOffIcon from "virtual:icons/mdi/camera-off";
   import ToolbarButtons from "./toolbar-buttons.svelte";
   import QrcodeScanButton from "../buttons/qrcode-scan.svelte";
   import ManualHostButton from "../buttons/manual-host.svelte";
@@ -8,6 +9,7 @@
   import { playbackPosition } from "$lib/demo/demo-audio";
 
   let data = 0;
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 
   if (checkIsDemo()) {
     playbackPosition.subscribe((position: number) => {
@@ -29,7 +31,20 @@
   </div>
 {:else}
   <div class="flex border-t size-full items-center justify-center gap-2">
-    <QrcodeScanButton />
+    {#if isSafari}
+      <!-- Safari does not support barcode or QRCode scanner APIs -->
+      <button
+        type="button"
+        disabled
+        class={`btn variant-filled btn-icon active:scale-75 select-none`}
+      >
+        <span>
+          <CameraOffIcon color="red" />
+        </span>
+      </button>
+    {:else}
+      <QrcodeScanButton />
+    {/if}
     <ManualHostButton />
   </div>
 {/if}
