@@ -23,6 +23,9 @@
   let soundName: string = "";
   let isDownloading = false;
 
+  // trimming special characters that soundpad cannot handle (for example ♪ or ♫)
+  $: soundName = soundName.replace(/[^a-zA-Z0-9_ \[\]$&+,:;=?@#|'<>.^*()%!-]/g, "");
+
   const guide = driver({
     ...driverConfig,
     steps: [
@@ -137,7 +140,7 @@
       },
       body: JSON.stringify({
         url: videoUrl,
-        name: soundName,
+        name: soundName.trim(),
         start: Math.round(start * totalDuration * 1000) / 1000,
         duration: Math.round((end - start) * totalDuration * 1000) / 1000,
       }),
