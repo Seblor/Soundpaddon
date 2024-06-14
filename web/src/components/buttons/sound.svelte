@@ -24,8 +24,8 @@
 </script>
 
 <button
-  class="btn whitespace-normal grow flex flex-wrap aspect-square text-sm bg-secondary-800 rounded overflow-hidden break-all p-0 border border-secondary-800"
-  style={`line-height: 1.5; background-color: hsl(${color} / var(--tw-bg-opacity));border-color: hsl(${color} / var(--tw-bg-opacity)); font-size: ${Math.max(10, ($mirrorLayoutSoundButtonSize - name.length * 0.5) / 4)}px`}
+  class="btn whitespace-normal grow flex flex-wrap aspect-square text-sm bg-secondary-800 rounded overflow-hidden p-0 border border-secondary-800"
+  style={`word-break: break-word; line-height: 1.5; background-color: hsl(${color} / var(--tw-bg-opacity));border-color: hsl(${color} / var(--tw-bg-opacity)); font-size: ${Math.max(10, ($mirrorLayoutSoundButtonSize - name.length * 0.5) / 4)}px`}
   on:click={() =>
     isDemo ? playAudio(sound.url) : soundpadClient.playSound(sound.index)}
   on:keydown={(event) => {
