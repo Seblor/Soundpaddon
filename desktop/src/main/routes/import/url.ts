@@ -45,8 +45,10 @@ export default function registerRoutes(app: Application, electronApp: App) {
   app.get('/api/import/url/search/:searchQuery', bodyParser.json(), async function (req: Request, res: Response) {
     const searchQuery = req.params.searchQuery;
 
-    const allSounds = await Promise.all(Object.values(importers).map(importer => importer(searchQuery)))
-      .catch(() => []) as Array<FetchedSound>
+    const allSounds = await Promise.all(
+      Object.values(importers)
+        .map(importer => importer(searchQuery).catch(() => [] as Array<FetchedSound>))
+    )
 
     const fuse = new Fuse(allSounds.flat(), {
       keys: ['name'],
@@ -181,15 +183,28 @@ const importers: Partial<Record<SOUND_SOURCES, (searchFilter: string) => Promise
     })
     return sounds.filter(Boolean)
   },
+  uwupad: async function (searchFilter: string) {
+    const output = await fetch(getURL('uwupad', searchFilter)).then(res => res.json()) as Array<{
+      title: string,
+      extension: string,
+      id: number,
+    }>
+    const sounds = output.map(data => {
+      return { source: 'uwupad' as SOUND_SOURCES, name: data.title, url: `https://uwupad.me/audio/${data.id}.${data.extension}` }
+    })
+    return sounds
+  },
 }
 
 function getURL(source: SOUND_SOURCES, searchFilter: string): string {
   switch (source) {
     case 'myinstants':
-      return `https://www.myinstants.com/search/?name=${searchFilter}`;
+      return `https://www.myinstants.com/search/?name=${encodeURIComponent(searchFilter)}`;
     case 'freesound':
-      return `https://freesound.org/search/?q=${searchFilter}`;
+      return `https://freesound.org/search/?q=${encodeURIComponent(searchFilter)}`;
     case 'voicy':
-      return `https://server.voicy.network/api/clips?Type=0&Search=${searchFilter}&Quantity=20&Index=0&NSFW=true`;
+      return `https://server.voicy.network/api/clips?Type=0&Search=${encodeURIComponent(searchFilter)}&Quantity=20&Index=0&NSFW=true`;
+    case 'uwupad':
+      return `https://uwupad.me/api/search?query=${encodeURIComponent(searchFilter)}&limit=20&offset=0`;
   }
 }

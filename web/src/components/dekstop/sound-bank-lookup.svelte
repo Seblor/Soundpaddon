@@ -17,7 +17,7 @@
   let soundsFound: FetchedSound[] = checkIsDemo() ? demoSoundbanks :[];
   let isFetching = false;
 
-  const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy"];
+  const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy", "uwupad"];
 
   let selectedSources: SOUND_SOURCES[] = [...sources];
 
@@ -31,7 +31,7 @@
     }
     isFetching = true;
     soundsFound = await fetch(
-      `${getEndpointUrl()}/import/url/search/${searchFilter.replace(/\W/g, "_")}`,
+      `${getEndpointUrl()}/import/url/search/${searchFilter.replace(/[^\w ]/g, "_")}`,
       {
         method: "GET",
         headers: {
