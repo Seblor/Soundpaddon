@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import { type Application, type Request, type Response, } from 'express';
-import ytdl from 'ytdl-core'
+import ytdl from '@distube/ytdl-core'
 import { App } from 'electron/main';
 import path from 'node:path';
 import ffmpeg from 'fluent-ffmpeg';
