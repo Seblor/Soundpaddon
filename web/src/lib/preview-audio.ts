@@ -4,7 +4,7 @@ import { checkIsDemo } from "./utils/misc";
 let audioElement = undefined as unknown as HTMLAudioElement;
 const outputAudio = new Audio();
 
-export function initAudioPreviewer() {
+export function initAudioPreviewer () {
   audioElement = document.createElement("audio")
   audioElement.crossOrigin = "anonymous";
   audioElement.preload = "none";
@@ -48,6 +48,7 @@ type Listeners = {
   onPause: () => void;
   onEnd: () => void;
   onEarRape: () => void;
+  onError: () => void;
 }
 
 const listeners = {
@@ -56,32 +57,37 @@ const listeners = {
   onPause: () => { },
   onEnd: () => { },
   onEarRape: () => { },
+  onError: () => { },
 } as Listeners;
 
-export async function previewAudio(url: string, newListeners: Partial<Listeners>) {
+export async function previewAudio (url: string, newListeners: Partial<Listeners>) {
   listeners.onEnd();
   audioElement.pause();
   await new Promise(resolve => setTimeout(resolve, 100)); // Wait for the audio to stop playing
 
   audioElement.src = checkIsDemo() ? url : `${getEndpointUrl()}/proxy/${url}`
 
-  listeners.onLoaded = newListeners.onLoaded ?? (() => {});
-  listeners.onPlay = newListeners.onPlay ?? (() => {});
-  listeners.onPause = newListeners.onPause ?? (() => {});
-  listeners.onEnd = newListeners.onEnd ?? (() => {});
-  listeners.onEarRape = newListeners.onEarRape ?? (() => {});
+
+  listeners.onLoaded = newListeners.onLoaded ?? (() => { });
+  listeners.onPlay = newListeners.onPlay ?? (() => { });
+  listeners.onPause = newListeners.onPause ?? (() => { });
+  listeners.onEnd = newListeners.onEnd ?? (() => { });
+  listeners.onEarRape = newListeners.onEarRape ?? (() => { });
+  listeners.onError = newListeners.onError ?? (() => { });
+
+  audioElement.onerror = listeners.onError;
 
   audioElement.play();
 }
 
-export function stopPreview() {
+export function stopPreview () {
   audioElement.pause();
   listeners.onPause();
   audioElement.currentTime = 0;
   audioElement.src = "";
 }
 
-function protectEars(analyser: AnalyserNode) {
+function protectEars (analyser: AnalyserNode) {
   analyser.fftSize = 2048;
   analyser.minDecibels = -90;
 

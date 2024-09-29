@@ -34,6 +34,10 @@ export default function registerRoutes (app: Application, electronApp: App) {
           responsesToUpdate.forEach(listener => listener(progress.percent, false));
         })
         .on('end', resolve)
+        .on('error', (err) => {
+          res.status(500).send('Error while converting audio');
+          resolve('Error while converting audio');
+        })
         .save(outputPath);
     })
 

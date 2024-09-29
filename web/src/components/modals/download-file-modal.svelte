@@ -20,10 +20,15 @@
 
   let isDownloading = false;
   let currentProgress = 0;
+  let error = "";
 
-  $: hasEarrapeInName = /earr?ape/.test(soundData.sound.name.toLowerCase());
+  $: hasEarrapeInName = /ear ?r?ape/.test(soundData.sound.name.toLowerCase());
 
-  async function startDownload() {
+  async function modalButtonPressed() {
+    if (error) {
+      modalStore.close();
+      return;
+    }
     const es = new EventSource(`${getEndpointUrl()}/import/url/progress`);
     es.onmessage = function (event) {
       currentProgress = parseFloat(event.data);
@@ -34,10 +39,17 @@
     };
 
     isDownloading = true;
-    await soundData.downloadFile(newSoundName);
+    await soundData
+      .downloadFile(newSoundName)
+      .then(() => {
+        error = "";
+        modalStore.close();
+      })
+      .catch((e) => {
+        error =
+          "An error occurred while importing the sound. This is most likely an issue with the soundbank's website.";
+      });
     isDownloading = false;
-
-    modalStore.close();
   }
 
   $: newSoundName = (
@@ -100,16 +112,21 @@
         </div>
       </aside>
     {/if}
+    {#if error}
+      <div class="text-error-500">{error}</div>
+    {/if}
     <div class="card-footer flex flex-col justify-stretch items-end gap-4">
       <DisabledInDemoPopup />
       <button
         class="btn bg-primary-700"
         use:popup={demoPopupConfig}
         disabled={checkIsDemo() || isDownloading}
-        on:click={startDownload}
+        on:click={modalButtonPressed}
       >
         {#if isDownloading}
           <LoadingIcon class="animate-spin" />
+        {:else if error}
+          Close
         {:else}
           Import to Soundpad
         {/if}

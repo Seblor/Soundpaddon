@@ -8,7 +8,11 @@
   import { onDestroy, onMount } from "svelte";
   import { previewAudio, stopPreview } from "$lib/preview-audio";
   import { getModalStore } from "@skeletonlabs/skeleton";
-  import { shownDrivers, driverConfig, driverStyleConfig } from "$lib/demo/configs";
+  import {
+    shownDrivers,
+    driverConfig,
+    driverStyleConfig,
+  } from "$lib/demo/configs";
   import { driver } from "driver.js";
   import { checkIsDemo } from "$lib/utils/misc";
 
@@ -49,11 +53,13 @@
     LOADING,
     PLAYING,
     STOPPED,
+    ERROR,
   }
 
   let audioState = AUDIO_STATE.INITIAL;
   let isEarRape = false;
   let isDownloading = false;
+  let error = "";
 
   export let sound: FetchedSound;
 
@@ -79,7 +85,10 @@
           const wasEarrapeTriggered = isEarRape;
           isEarRape = true;
           await new Promise((r) => setTimeout(r, 100));
-          if (wasEarrapeTriggered === false && !shownDrivers.has("sound-previewer-earrape")) {
+          if (
+            wasEarrapeTriggered === false &&
+            !shownDrivers.has("sound-previewer-earrape")
+          ) {
             shownDrivers.add("sound-previewer-earrape");
             const earrapeGuide = driver({
               ...driverStyleConfig,
@@ -94,6 +103,11 @@
               },
             });
           }
+        },
+        onError: () => {
+          error =
+            "An error occurred while importing the sound. This is most likely an issue with the soundbank's website.";
+          audioState = AUDIO_STATE.ERROR;
         },
       });
     } else if (audioState === AUDIO_STATE.PLAYING) {
@@ -115,17 +129,33 @@
 
   async function importToSoundpad(fileName: string): Promise<void> {
     isDownloading = true;
-    await fetch(`${getEndpointUrl()}/import/url`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        url: sound.url,
-        name: fileName,
-      }),
+    return new Promise((resolve, reject) => {
+      fetch(`${getEndpointUrl()}/import/url`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: sound.url,
+          name: fileName,
+        }),
+      })
+        .then((res) => {
+          if (res.ok) {
+            error = "";
+            resolve();
+          }
+          reject(new Error("Something went wrong"));
+        })
+        .catch((e) => {
+          error =
+            "An error occurred while importing the sound. This is most likely an issue with the soundbank's website.";
+          reject(e);
+        })
+        .finally(() => {
+          isDownloading = false;
+        });
     });
-    isDownloading = false;
   }
 
   onMount(() => {
@@ -155,7 +185,8 @@
     <button
       type="button"
       class="guide-sound-previewer-play scale-75 btn-icon btn-icon-sm variant-filled-primary"
-      disabled={audioState === AUDIO_STATE.LOADING}
+      disabled={audioState === AUDIO_STATE.LOADING || audioState === AUDIO_STATE.ERROR}
+      title={error}
       on:click={handlePlayClick}
     >
       {#if audioState === AUDIO_STATE.LOADING}
