@@ -15,7 +15,7 @@ ffmpeg.setFfmpegPath(ffmpegInstaller.path.replace('app.asar', 'app.asar.unpacked
 
 const responsesToUpdate: Array<(newProgress: number, isDone: boolean) => void> = [];
 
-export default function registerRoutes(app: Application, electronApp: App) {
+export default function registerRoutes (app: Application, electronApp: App) {
   app.post('/api/import/url', bodyParser.json(), async function (req: Request, res: Response) {
     const data = req.body as {
       name: string,
@@ -190,13 +190,13 @@ const importers: Partial<Record<SOUND_SOURCES, (searchFilter: string) => Promise
       id: number,
     }>
     const sounds = output.map(data => {
-      return { source: 'uwupad' as SOUND_SOURCES, name: data.title, url: `https://uwupad.me/audio/${data.id}.${data.extension}` }
+      return { source: 'uwupad' as SOUND_SOURCES, name: data.title, url: `https://cdn.uwupad.me/${data.id}.${data.extension}` }
     })
     return sounds
   },
 }
 
-function getURL(source: SOUND_SOURCES, searchFilter: string): string {
+function getURL (source: SOUND_SOURCES, searchFilter: string): string {
   switch (source) {
     case 'myinstants':
       return `https://www.myinstants.com/search/?name=${encodeURIComponent(searchFilter)}`;
