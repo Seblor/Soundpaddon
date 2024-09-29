@@ -125,5 +125,6 @@ function categoriesToComparable(categories: Category[]): {
     icon: category.icon ?? 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z/C/HgAGgwJ/lK3Q6wAAAABJRU5ErkJggg==', // Transparent 1x1 PNG
     name: category.name,
     sounds: soundListToComparable(category.sounds ?? []),
+    subCategories: categoriesToComparable(category.subCategories ?? []),
   }))
 }

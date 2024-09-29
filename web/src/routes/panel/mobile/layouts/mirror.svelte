@@ -31,10 +31,12 @@
   import { checkIsDemo } from "$lib/utils/misc";
   import { demoCategories } from "$lib/demo/demo-data";
 
+  type FlattenedCategory = Category & { depth: number };
+
   let sortableElement: HTMLDivElement;
   let popupTriggerButton: HTMLButtonElement;
   let popupCloseBtn: HTMLSpanElement;
-  let categories: Category[] = [];
+  let categories: FlattenedCategory[] = [];
   let tabSet: number = 0;
   let draggingSound: SoundpadSound | undefined;
   let soundsToDisplay: SoundpadSound[] = [];
@@ -71,7 +73,8 @@
     return get(soundOrder).indexOf(sound.url);
   }
 
-  $: soundsInCategory = tabSet === 0 ? $sounds : selectedCategory?.sounds ?? [];
+  $: soundsInCategory =
+    tabSet === 0 ? $sounds : (selectedCategory?.sounds ?? []);
 
   $: {
     draggingSound;
@@ -93,14 +96,32 @@
 
   function refreshCategories() {
     if (checkIsDemo()) {
-      categories = demoCategories;
+      categories = flattenCategories(demoCategories);
       return;
     }
     soundpadClient
       .getCategoriesJSON(true, true)
       .then((fetchedCategories: Category[]) => {
-        categories = fetchedCategories;
+        console.log(fetchedCategories);
+        categories = flattenCategories(fetchedCategories);
       });
+  }
+
+  // Flatten categories to a list of first-level categories, inserting subCategories after their parent
+  function flattenCategories(
+    categories: Category[],
+    currentDepth = 0,
+  ): FlattenedCategory[] {
+    let flattenedCategories: FlattenedCategory[] = [];
+    for (const category of categories) {
+      flattenedCategories.push({ ...category, depth: currentDepth });
+      if (category.subCategories) {
+        flattenedCategories.push(
+          ...flattenCategories(category.subCategories, currentDepth + 1),
+        );
+      }
+    }
+    return flattenedCategories;
   }
 
   onMount(() => {
@@ -174,11 +195,18 @@
         class="absolute size-full pointer-events-none"
       />
       {#each categories as category, index}
-        <Tab bind:group={tabSet} name="tab1" value={index}>
+        <Tab class="relative" bind:group={tabSet} name="tab1" value={index}>
+          {#each Array(category.depth).fill(0) as _, depth}
+            <div
+              class="absolute w-full -ml-4 h-0.5"
+              style={`top: ${(depth + 0.5) * 0.3}rem; background-color: rgb(5 90 133)`}
+            />
+          {/each}
           <div class="flex h-16 flex-col items-center text-xs">
             <img
               class="h-10 w-10 aspect-square"
               src={"data:image/png;base64," + category.icon}
+              style={`transform: scale(${1 - 0.1 * category.depth}) translateY(${5 * category.depth}%);`}
               alt="category icon"
             />
             <span>{category.name}</span>

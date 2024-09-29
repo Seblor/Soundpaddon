@@ -61,7 +61,7 @@
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "sortablejs": "^1.15.2",
-    "soundpad.js": "^2.3.1",
+    "soundpad.js": "^2.5.0",
     "svelte-gestures": "^4.0.0",
     "unplugin-icons": "^0.18.5",
     "youtube-player": "^5.6.0"
