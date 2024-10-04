@@ -31,7 +31,7 @@
     }
     isFetching = true;
     soundsFound = await fetch(
-      `${getEndpointUrl()}/import/url/search/${searchFilter.replace(/[^\w ]/g, "_")}`,
+      `${getEndpointUrl()}/import/url/search/${searchFilter}`,
       {
         method: "GET",
         headers: {
