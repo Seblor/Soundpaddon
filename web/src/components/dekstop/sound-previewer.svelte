@@ -185,7 +185,8 @@
     <button
       type="button"
       class="guide-sound-previewer-play scale-75 btn-icon btn-icon-sm variant-filled-primary"
-      disabled={audioState === AUDIO_STATE.LOADING || audioState === AUDIO_STATE.ERROR}
+      disabled={audioState === AUDIO_STATE.LOADING ||
+        audioState === AUDIO_STATE.ERROR}
       title={error}
       on:click={handlePlayClick}
     >
