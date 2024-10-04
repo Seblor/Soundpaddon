@@ -75,7 +75,11 @@ export async function previewAudio (url: string, newListeners: Partial<Listeners
   listeners.onEarRape = newListeners.onEarRape ?? (() => { });
   listeners.onError = newListeners.onError ?? (() => { });
 
-  audioElement.onerror = listeners.onError;
+  audioElement.onerror = () => {
+    if (audioElement.src.includes('proxy')) { // Filters errors from setting src to an empty string
+      listeners.onError();
+    }
+  };
 
   audioElement.play();
 }
