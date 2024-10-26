@@ -10,12 +10,8 @@ import { createTray } from './add-system-tray';
 import { type App } from 'electron/main';
 import { downloadFile } from './utils/misc';
 
-// const keyUrl = 'http://local-ip.co/cert/server.pem'
-// const certUrl = 'http://local-ip.co/cert/server.key'
-const keyUrl = 'https://local-ip.sh/server.pem'
-const certUrl = 'https://local-ip.sh/server.key'
-
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"
+const keyUrl = 'https://local.soundpaddon.app/server.pem'
+const certUrl = 'https://local.soundpaddon.app/server.key'
 
 export async function createHttpServer({
   certificateRootPath,

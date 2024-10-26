@@ -8,8 +8,6 @@ const net = require('net');
 const { getSoundpadPath, isSoundpadOpened, openSoundpad, waitForPipe } = require('soundpad.js');
 const { existsSync } = require('node:fs');
 
-app.commandLine.appendSwitch('ignore-certificate-errors')
-
 const iconPath = path.join(__dirname, '../assets/soundpaddon.ico')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -88,7 +86,7 @@ const createWindow = async () => {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadURL('https://127-0-0-1.local-ip.sh:8555/panel/desktop');
+  mainWindow.loadURL('https://127-0-0-1.local.soundpaddon.app:8555/panel/desktop');
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
