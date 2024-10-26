@@ -15,6 +15,8 @@ import { downloadFile } from './utils/misc';
 const keyUrl = 'https://local-ip.sh/server.pem'
 const certUrl = 'https://local-ip.sh/server.key'
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"
+
 export async function createHttpServer({
   certificateRootPath,
   pathToServe,

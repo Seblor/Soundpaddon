@@ -7,6 +7,8 @@ import Icons from 'unplugin-icons/vite'
 import fetch from 'node-fetch'
 import fs from 'fs'
 
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = "0"
+
 const enableHttps = !process.env.VERCEL_ENV;
 // const keyUrl = 'http://local-ip.co/cert/server.pem'
 // const certUrl = 'http://local-ip.co/cert/server.key'

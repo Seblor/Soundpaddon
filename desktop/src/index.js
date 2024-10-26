@@ -8,6 +8,8 @@ const net = require('net');
 const { getSoundpadPath, isSoundpadOpened, openSoundpad, waitForPipe } = require('soundpad.js');
 const { existsSync } = require('node:fs');
 
+app.commandLine.appendSwitch('ignore-certificate-errors')
+
 const iconPath = path.join(__dirname, '../assets/soundpaddon.ico')
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
