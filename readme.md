@@ -6,12 +6,16 @@ Enhance your Soundpad experience with Soundpaddon.
 
 ## Table of Contents
 
-- [About](#about)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+- [Soundpaddon](#soundpaddon)
+  - [Table of Contents](#table-of-contents)
+  - [About](#about)
+  - [Features](#features)
+  - [Installation](#installation)
+  - [Building the project](#building-the-project)
+  - [Contributing](#contributing)
+  - [License](#license)
+  - [Support](#support)
+  - [Shameless donation plug](#shameless-donation-plug)
 
 ## About
 
@@ -39,7 +43,11 @@ To install Soundpaddon, follow these steps:
     ```
 3. Install dependencies:
     ```sh
-    npm install
+    cd ./web # Navigate to the web interface directory
+    npm ci # Install the web interface dependencies
+
+    cd ../desktop # Navigate to the desktop interface directory
+    npm ci # Install the desktop interface dependencies
     ```
 
 ## Building the project
@@ -47,12 +55,6 @@ To install Soundpaddon, follow these steps:
 To build the project, run the following commands:
 
 ```sh
-cd ./web # Navigate to the web interface directory
-npm ci # Install the web interface dependencies
-
-cd ../desktop # Navigate to the desktop interface directory
-npm ci # Install the desktop interface dependencies
-
 npm run build # Builds the web interface, copies it to the server directory, and transpiles the server
 npm run package # Builds the project and creates an installer.
 ```
