@@ -3,6 +3,12 @@
 import adapterStatic from '@sveltejs/adapter-static';
 import adapterVercel from '@sveltejs/adapter-vercel';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+
+const file = fileURLToPath(new URL('package.json', import.meta.url));
+const json = readFileSync(file, 'utf8');
+const pkg = JSON.parse(json);
 
 let adapter = adapterStatic({
 	fallback: 'index.html'
@@ -27,6 +33,9 @@ const config = {
 		adapter: adapter,
 		csrf: {
 			checkOrigin: false,
+		},
+		version: {
+			name: pkg.version
 		}
 	}
 };

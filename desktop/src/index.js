@@ -72,6 +72,7 @@ const createWindow = async () => {
 
   const externalUrls = [
     'https://ko-fi.com/seblor',
+    'https://github.com/Seblor/Soundpaddon/releases/latest',
     'https://support.soundpaddon.app/',
   ];
 

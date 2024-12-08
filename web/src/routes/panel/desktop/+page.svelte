@@ -9,6 +9,7 @@
   import QRCodeIcon from "virtual:icons/mdi/qrcode";
   import YoutubeIcon from "virtual:icons/mdi/youtube";
   import DiscordIcon from "virtual:icons/mdi/discord";
+  import UpdateIcon from "virtual:icons/mdi/update";
   import ImportIcon from "virtual:icons/mdi/import";
   import MagnifyIcon from "virtual:icons/mdi/magnify";
   import HammerScrewdriverIcon from "virtual:icons/mdi/hammer-screwdriver";
@@ -17,6 +18,15 @@
   import SoundBankLookup from "../../../components/dekstop/sound-bank-lookup.svelte";
   import SoundExtractor from "../../../components/dekstop/sound-extractor.svelte";
   import KoFi from "../../../components/icons/ko-fi.svelte";
+  import { checkForUpdate } from "$lib/update-checker";
+
+  let newUpdateAvailable = false;
+  let newUpdateVersion = "";
+
+  checkForUpdate().then((update) => {
+    newUpdateAvailable = update.newUpdateAvailable;
+    newUpdateVersion = update.latestUpdateVersion;
+  });
 
   let currentTile = 0;
 </script>
@@ -114,6 +124,22 @@
     </AppRailTile>
     <!-- --- -->
     <svelte:fragment slot="trail">
+      {#if newUpdateAvailable}
+        <AppRailAnchor
+          href="https://github.com/Seblor/Soundpaddon/releases/latest"
+          target="_blank"
+          title="Update link"
+        >
+          <div class="flex flex-col items-center my-2">
+            <UpdateIcon class="grow size-1/2" />
+            <div class="mx-4">
+              <span class="text-white text-center"
+                >New update available: {newUpdateVersion} !</span
+              >
+            </div>
+          </div>
+        </AppRailAnchor>
+      {/if}
       <AppRailAnchor
         href="https://ko-fi.com/seblor"
         target="_blank"
