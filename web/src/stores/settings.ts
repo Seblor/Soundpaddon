@@ -18,6 +18,8 @@ export const mirrorLayoutSoundButtonSize: Writable<number> = localStorageStore('
 
 export const showSearchBar: Writable<boolean> = localStorageStore('v1_showSearchBar', false);
 
+export const enableSoundpadColors: Writable<boolean> = localStorageStore('v1_enableSoundpadColors', true);
+
 export const selectedLayout: Writable<'mirror' | 'customized'> = localStorageStore('v1_selectedLayout', 'mirror');
 
 export const customizedLayoutSoundColumns: Writable<number> = localStorageStore('v1_customizedLayoutSoundColumns', 5);

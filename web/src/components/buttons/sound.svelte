@@ -8,7 +8,7 @@
   } from "../../stores/mirror-layout";
   import { checkIsDemo } from "$lib/utils/misc";
   import { playAudio } from "$lib/demo/demo-audio";
-  import { mirrorLayoutSoundButtonSize } from "../../stores/settings";
+  import { enableSoundpadColors, mirrorLayoutSoundButtonSize } from "../../stores/settings";
 
   export let sound: Sound;
 
@@ -17,10 +17,17 @@
   let name = getSoundMetadata(sound).name;
   let color = getSoundMetadata(sound).color;
 
-  soundMetadata.subscribe(() => {
+  $: {
+    color = getSoundMetadata(sound).color;
+  }
+
+  soundMetadata.subscribe(updateSoundData);
+  enableSoundpadColors.subscribe(updateSoundData);
+
+  function updateSoundData() {
     name = getSoundMetadata(sound).name;
     color = getSoundMetadata(sound).color;
-  });
+  }
 </script>
 
 <button

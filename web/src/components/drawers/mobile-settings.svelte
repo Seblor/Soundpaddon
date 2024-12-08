@@ -4,7 +4,7 @@
   import MirrorLayoutSettings from "../settings/mirror-layout-settings.svelte";
   import { soundpadClient } from "../../client/connections";
   import { SlideToggle } from "@skeletonlabs/skeleton";
-  import { showSearchBar } from "../../stores/settings";
+  import { showSearchBar, enableSoundpadColors } from "../../stores/settings";
   import { checkIsDemo } from "$lib/utils/misc";
   import { setVolume } from "$lib/demo/demo-audio";
 
@@ -52,6 +52,15 @@
       active="bg-primary-500"
       size="sm"
       bind:checked={$showSearchBar}
+    />
+  </div>
+  <div class="flex flex-col items-center gap-2">
+    <span>Enable Soundpad colors</span>
+    <SlideToggle
+      name="enableSoundpadColors"
+      active="bg-primary-500"
+      size="sm"
+      bind:checked={$enableSoundpadColors}
     />
   </div>
   <hr />

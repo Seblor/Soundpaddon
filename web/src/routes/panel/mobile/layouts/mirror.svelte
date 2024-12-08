@@ -270,6 +270,11 @@
         on:click={() => {
           // @ts-ignore
           $soundEditedName = generateSoundNameFromSoundpad(soundEdited);
+          soundEditedColor = SOUND_COLORS_HSL.BLUE;
+          // @ts-ignore
+          setSoundMetadata(soundEdited, {
+            color: soundEditedColor,
+          });
         }}
       >
         <RestoreIcon font-size="24" />

@@ -17,6 +17,7 @@ export const demoCategories = [
         "artist": "",
         "title": "taking-the-hobbits-to-isengard-mp3cut",
         "duration": "0:08",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "2024-04-17",
         "playCount": 1
@@ -27,6 +28,7 @@ export const demoCategories = [
         "artist": "",
         "title": "freebird",
         "duration": "0:17",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "2024-04-17",
         "playCount": 3
@@ -37,6 +39,7 @@ export const demoCategories = [
         "artist": "",
         "title": "Cantina",
         "duration": "0:28",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "",
         "playCount": 0
@@ -54,6 +57,7 @@ export const demoCategories = [
         "artist": "",
         "title": "murloc",
         "duration": "0:03",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "",
         "playCount": 0
@@ -64,6 +68,7 @@ export const demoCategories = [
         "artist": "",
         "title": "bonk",
         "duration": "0:02",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "2024-04-17",
         "playCount": 5
@@ -74,6 +79,7 @@ export const demoCategories = [
         "artist": "",
         "title": "bell",
         "duration": "0:03",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "2024-04-17",
         "playCount": 4
@@ -91,6 +97,7 @@ export const demoCategories = [
         "artist": "",
         "title": "quack",
         "duration": "0:01",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "",
         "playCount": 0
@@ -101,6 +108,7 @@ export const demoCategories = [
         "artist": "",
         "title": "Spooky Scary Skeleton",
         "duration": "0:06",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "2024-04-17",
         "playCount": 1
@@ -111,6 +119,7 @@ export const demoCategories = [
         "artist": "",
         "title": "nope",
         "duration": "0:00",
+        "tag": "",
         "addedOn": "2024-04-17",
         "lastPlayedOn": "2024-04-17",
         "playCount": 1

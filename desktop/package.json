@@ -60,7 +60,7 @@
     "node-fetch-progress": "^1.0.2",
     "request": "^2.88.2",
     "socket.io": "^4.7.5",
-    "soundpad.js": "^2.5.0",
+    "soundpad.js": "^2.6.0",
     "winreg": "^1.2.5",
     "ytdl-core": "^4.11.5"
   }

@@ -1,6 +1,8 @@
 import { localStorageStore } from '@skeletonlabs/skeleton';
 import type { Sound } from 'soundpad.js/lib/web';
 import { get, type Writable } from 'svelte/store';
+import { enableSoundpadColors } from './settings';
+import { rgbToHsl } from '$lib/utils/misc';
 
 export enum SOUND_COLORS_HSL {
   BLUE = '200 93% 27%',
@@ -40,7 +42,7 @@ export function getSoundName(sound: Sound): string {
 
 export function getSoundMetadata(sound: Sound): CustomSoundData {
   return get(soundMetadata)[sound.url] ?? {
-    color: SOUND_COLORS_HSL.BLUE,
+    color: get(enableSoundpadColors) && sound.color ? rgbToHsl(sound.color) ?? SOUND_COLORS_HSL.BLUE : SOUND_COLORS_HSL.BLUE,
     name: generateSoundNameFromSoundpad(sound)
   };
 }
