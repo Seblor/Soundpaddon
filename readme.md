@@ -13,7 +13,6 @@ Enhance your Soundpad experience with Soundpaddon.
   - [Installation](#installation)
   - [Building the project](#building-the-project)
   - [Contributing](#contributing)
-  - [License](#license)
   - [Support](#support)
   - [Shameless donation plug](#shameless-donation-plug)
 
@@ -71,14 +70,10 @@ Some dependencies will most likely be needed, please refer to your specific erro
 
 All contributions are welcome!
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Support
 
 For support, join my [Discord server](https://support.soundpaddon.app).
 
 ## Shameless donation plug
 
-If you like this project, consider supporting it by starring the repository or [buying me a coffee](https://www.buymeacoffee.com/seblor).
+If you like this project, consider supporting it by starring the repository or [buying me a coffee](https://ko-fi.com/seblor).
