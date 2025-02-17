@@ -22,6 +22,7 @@
     generateSoundNameFromSoundpad,
     getSoundMetadata,
     getSoundName,
+    getSoundOrderForCategory,
     setSoundMetadata,
     soundOrder,
   } from "../../../../stores/mirror-layout";
@@ -69,8 +70,10 @@
 
   $: selectedCategory = categories[tabSet] as Category;
 
+  $: shouldCustomSort = selectedCategory?.name === "All sounds";
+
   function getActualSoundIndex(sound: SoundpadSound) {
-    return get(soundOrder).indexOf(sound.url);
+    return getSoundOrderForCategory(selectedCategory?.name).indexOf(sound.url);
   }
 
   $: soundsInCategory =
@@ -83,7 +86,9 @@
         extract: getSoundName,
       })
       .map((sound) => sound.original)
-      .sort((a, b) => getActualSoundIndex(a) - getActualSoundIndex(b));
+      .sort((a, b) =>
+        shouldCustomSort ? getActualSoundIndex(a) - getActualSoundIndex(b) : 0,
+      );
   }
 
   socket.on("sounds", () => {
@@ -124,6 +129,8 @@
     return flattenedCategories;
   }
 
+  let customSortable: Sortable | null = null;
+
   onMount(() => {
     refreshCategories();
 
@@ -143,10 +150,11 @@
       });
     });
 
-    Sortable.create(sortableElement, {
+    customSortable = Sortable.create(sortableElement, {
       animation: 150,
       delay: 500,
       delayOnTouchOnly: true,
+      disabled: !shouldCustomSort,
       // Element dragging ended
       onEnd: (evt) => {
         if (evt.oldIndex !== undefined && evt.newIndex !== undefined) {
@@ -164,6 +172,10 @@
       },
     });
   });
+
+  $: {
+    customSortable?.option("disabled", !shouldCustomSort);
+  }
 
   function openCustomizationPopup(
     sound: SoundpadSound,

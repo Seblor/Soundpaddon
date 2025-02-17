@@ -4,6 +4,10 @@ import { get, type Writable } from 'svelte/store';
 import { enableSoundpadColors } from './settings';
 import { rgbToHsl } from '$lib/utils/misc';
 
+/**
+ * === Sound Metadata ===
+ */
+
 export enum SOUND_COLORS_HSL {
   BLUE = '200 93% 27%',
   GREEN = '120 93% 27%',
@@ -36,18 +40,25 @@ const defaultSoundMetadata: CustomSoundData = {
 export const soundOrder: Writable<Array<string>> = localStorageStore('v1_soundOrder', []);
 export const soundMetadata: Writable<Record<string, CustomSoundData>> = localStorageStore('v1_soundMetadata', {});
 
-export function getSoundName(sound: Sound): string {
+export function getSoundOrderForCategory (categoryName: string): Array<string> {
+  if (categoryName !== 'All sounds') {
+    return [];
+  }
+  return get(soundOrder);
+}
+
+export function getSoundName (sound: Sound): string {
   return getSoundMetadata(sound).name;
 }
 
-export function getSoundMetadata(sound: Sound): CustomSoundData {
+export function getSoundMetadata (sound: Sound): CustomSoundData {
   return get(soundMetadata)[sound.url] ?? {
     color: get(enableSoundpadColors) && sound.color ? rgbToHsl(sound.color) ?? SOUND_COLORS_HSL.BLUE : SOUND_COLORS_HSL.BLUE,
     name: generateSoundNameFromSoundpad(sound)
   };
 }
 
-export function setSoundMetadata(sound: Sound, data: Partial<CustomSoundData>) {
+export function setSoundMetadata (sound: Sound, data: Partial<CustomSoundData>) {
   const newMetadata = {
     ...getSoundMetadata(sound),
     ...data
@@ -66,7 +77,7 @@ export function setSoundMetadata(sound: Sound, data: Partial<CustomSoundData>) {
   });
 }
 
-export function generateSoundNameFromSoundpad(sound: Sound): string {
+export function generateSoundNameFromSoundpad (sound: Sound): string {
   return sound.title
     ? sound.title.replace(/^\d+-/, "")
     : RegExp(/.+\/([^/]+)\..+$/).exec(sound.url.replace(/\/\/|\\\\|\\/g, "/"))?.[1] ??
