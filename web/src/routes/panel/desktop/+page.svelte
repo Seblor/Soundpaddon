@@ -35,7 +35,8 @@
   <AppRail class="min-w-[100px]">
     <svelte:fragment slot="lead">
       <a
-        href={location.origin.includes("soundpaddon.app")
+        href={location.origin.includes("soundpaddon.app") &&
+        !location.origin.includes("local")
           ? "/"
           : "javascript:void()"}
       >
