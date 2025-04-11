@@ -78,8 +78,8 @@ export function setSoundMetadata (sound: Sound, data: Partial<CustomSoundData>) 
 }
 
 export function generateSoundNameFromSoundpad (sound: Sound): string {
-  return sound.title
-    ? sound.title.replace(/^\d+-/, "")
+  return sound.tag
+    ? sound.tag.replace(/^\d+-/, "")
     : RegExp(/.+\/([^/]+)\..+$/).exec(sound.url.replace(/\/\/|\\\\|\\/g, "/"))?.[1] ??
     ""
 }

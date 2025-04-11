@@ -109,7 +109,7 @@ function soundListToComparable(sounds: Sound[]): {
 }[] {
   return sounds.map(sound => ({
     index: sound.index,
-    title: sound.title,
+    title: sound.tag,
     color: sound.color,
     url: sound.url,
   }))

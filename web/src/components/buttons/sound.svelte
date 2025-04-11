@@ -18,6 +18,7 @@
   let color = getSoundMetadata(sound).color;
 
   $: {
+    name = getSoundMetadata(sound).name;
     color = getSoundMetadata(sound).color;
   }
 
