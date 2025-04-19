@@ -25,19 +25,6 @@ module.exports.makers = [
     },
   },
   {
-    name: '@electron-forge/maker-wix',
-    config: {
-      iconUrl: 'https://www.soundpaddon.app/soundpaddon.ico',
-      icon: iconPath,
-      manufacturer: 'Sébastien \'Seblor\' Lorentz',
-      description: 'Soundpaddon, an addon for Soundpad',
-      ui: {
-        "enabled": true,
-        "chooseDirectory": true
-      }
-    },
-  },
-  {
     name: '@electron-forge/maker-zip',
     platforms: ['darwin'],
   },
