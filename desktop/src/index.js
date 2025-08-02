@@ -58,17 +58,47 @@ if (require('electron-squirrel-startup')) {
 const createWindow = async () => {
   let factor = screen.getPrimaryDisplay().scaleFactor;
 
+  const baseResolution = 1080; // The app was designed for 1080p resolution.
+  factor = screen.getPrimaryDisplay().workAreaSize.height / baseResolution;
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
     icon: nativeImage.createFromPath(iconPath),
     autoHideMenuBar: true,
-    width: (screen.getPrimaryDisplay().workAreaSize.width * 0.75) / factor,
-    height: (screen.getPrimaryDisplay().workAreaSize.height * 0.75) / factor,
+    width: (screen.getPrimaryDisplay().workAreaSize.width * 0.75),
+    height: (screen.getPrimaryDisplay().workAreaSize.height * 0.75),
     webPreferences: {
-      zoomFactor: 1.0 / factor,
+      zoomFactor: factor,
       preload: './preload.js',
     }
   });
+
+  mainWindow.on('moved', () => {
+
+    const newFactor = screen.getDisplayMatching(
+      mainWindow.getBounds()
+    ).workAreaSize.height / baseResolution;
+
+    if (newFactor === factor) {
+      return
+    }
+
+    mainWindow.setSize(
+      Math.round(mainWindow.getSize()[0] * newFactor / factor),
+      Math.round(mainWindow.getSize()[1] * newFactor / factor)
+    );
+
+    factor = newFactor;
+
+    mainWindow.webContents.setZoomFactor(factor ** 0.25)
+    mainWindow.show()
+  })
+
+  mainWindow.once('ready-to-show', () => {
+    factor = screen.getPrimaryDisplay().workAreaSize.height / baseResolution;
+    mainWindow.webContents.setZoomFactor(factor ** 0.25)
+    mainWindow.show()
+  })
 
   const externalUrls = [
     'https://ko-fi.com/seblor',
@@ -96,7 +126,7 @@ const createWindow = async () => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and import them here.
 
-async function checkIfSoundpadIsInstalledAndPurchased() {
+async function checkIfSoundpadIsInstalledAndPurchased () {
   if (getSoundpadPath() === null || existsSync(getSoundpadPath()) === false) {
     dialog.showErrorBox('Soundpad is not installed', 'Please install Soundpad to use Soundpaddon.');
     return false;
