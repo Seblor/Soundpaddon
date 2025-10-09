@@ -22,6 +22,8 @@
   import { checkForUpdate } from "$lib/update-checker";
   import { driverConfig, shownDrivers } from "$lib/demo/configs";
   import { driver } from "driver.js";
+  import { debounce } from "lodash";
+  import { tick } from "svelte";
 
   let newUpdateAvailable = false;
   let newUpdateVersion = "";
@@ -34,12 +36,45 @@
   let currentTile = 0;
 
   let previewEl: HTMLIFrameElement | null = null;
+  let previewCustomSize = localStorage.getItem("soundpad-only-size")
+    ? JSON.parse(localStorage.getItem("soundpad-only-size") as string)
+    : {
+        width: null as number | null,
+        height: null as number | null,
+      };
+
+  const observer = new ResizeObserver(
+    debounce((mutations: ResizeObserverEntry[]) => {
+      if (currentTile === 4 && previewEl) {
+        previewCustomSize.width =
+          mutations[0].target.getBoundingClientRect().width;
+        previewCustomSize.height =
+          mutations[0].target.getBoundingClientRect().height;
+
+        localStorage.setItem(
+          "soundpad-only-size",
+          JSON.stringify(previewCustomSize),
+        );
+      }
+    }, 500),
+  );
 
   $: if (currentTile === 4) {
+    previewEl?.classList.add("transition-all");
+
+    tick().then(() => {
+      if (previewCustomSize.width && previewCustomSize.height) {
+        previewEl?.classList.add(
+          `w-[${previewCustomSize.width}px]`,
+          `h-[${previewCustomSize.height}px]`,
+        );
+      } else {
+        previewEl?.classList.add("size-full");
+      }
+    });
+
     // Disabling transition after the resize is done to avoid weird animation when the user is resizing the iframe
     setTimeout(() => {
-      previewEl?.classList.remove("transition-all");
-
       if (!shownDrivers.has("soundpad-only")) {
         shownDrivers.add("soundpad-only");
 
@@ -57,7 +92,17 @@
         });
         soundPadOnlyGuide.drive();
       }
-    }, 300);
+
+      if (previewEl) {
+        previewEl.classList.remove("transition-all");
+        observer.observe(previewEl, { box: "border-box" });
+      }
+    }, 500);
+  } else {
+    if (previewEl) {
+      previewEl.classList.add("transition-all");
+      observer.unobserve(previewEl);
+    }
   }
 </script>
 
@@ -278,7 +323,7 @@
     {#if currentTile === 4}
       <div
         id="soundpad-only-handle-anchor"
-        class="bottom-0 right-0 absolute m-4 size-6"
+        class="pointer-events-none bottom-0 right-0 absolute m-4 size-6"
       ></div>
     {/if}
   </div>
@@ -296,9 +341,15 @@
       frameborder="0"
       title="mobile view"
       class="{currentTile === 4
-        ? 'size-full max-h-full max-w-full transition-all'
+        ? `max-h-full max-w-full transition-all`
         : 'max-h-[75vh] w-96 h-[48rem]'} border-8 border-black rounded-lg shadow-lg resize"
-      style={currentTile === 4 ? "direction: ltr" : "direction: rtl"}
+      style="{currentTile === 4
+        ? 'direction: ltr;'
+        : 'direction: rtl;'} {currentTile === 4 &&
+      previewCustomSize.width &&
+      previewCustomSize.height
+        ? `width: ${previewCustomSize.width}px; height: ${previewCustomSize.height}px;`
+        : ''}"
     ></iframe>
   </div>
 </div>
