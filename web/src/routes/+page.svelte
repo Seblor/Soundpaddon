@@ -68,7 +68,7 @@
       <img src="/logo.svg" class="h-12 sm:h-24" alt="Soundpaddon icon" />
       <span class="text-2xl sm:text-5xl">Soundpaddon</span>
     </div>
-    <span class="sm:text-2xl">Enhance your Soudpad experience</span>
+    <span class="sm:text-2xl">Enhance your Soundpad experience</span>
     <div class="flex flex-wrap justify-center gap-4">
       <a href="https://github.com/Seblor/soundpaddon/releases">
         <button class="btn variant-filled-primary"

@@ -164,14 +164,14 @@ scrollbar-width: none;
 <svelte:head>
   {@html webManifestLink}
 
-  <meta name=description content="Enhance your Soudpad experience with Soundpaddon !" />
+  <meta name=description content="Enhance your Soundpad experience with Soundpaddon !" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:site_name" content="Soundpaddon" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://soundpaddon.app/" />
   <meta property="og:title" content="Soundpaddon — An addon for Soundpad" />
-  <meta property="og:description" content="Enhance your Soudpad experience" />
+  <meta property="og:description" content="Enhance your Soundpad experience" />
   <meta property="og:image" content="https://soundpaddon.app/banner.png" />
 
   <!-- Twitter -->
