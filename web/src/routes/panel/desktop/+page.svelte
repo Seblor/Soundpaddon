@@ -278,7 +278,7 @@
     {#if currentTile === 4}
       <div
         id="soundpad-only-handle-anchor"
-        class="bottom-0 right-0 absolute m-4 border size-6 border-red-500"
+        class="bottom-0 right-0 absolute m-4 size-6"
       ></div>
     {/if}
   </div>
