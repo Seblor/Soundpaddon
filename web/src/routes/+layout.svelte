@@ -175,7 +175,7 @@ scrollbar-width: none;
   />
   <meta
     property="twitter:description"
-    content="Enhance your Soudpad experience"
+    content="Enhance your Soundpad experience"
   />
   <meta property="twitter:image" content="https://soundpaddon.app/banner.png" />
   <style>
