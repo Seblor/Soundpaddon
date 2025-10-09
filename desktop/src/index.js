@@ -7,6 +7,9 @@ const { dialog } = require('electron/main');
 const net = require('net');
 const { getSoundpadPath, isSoundpadOpened, openSoundpad, waitForPipe } = require('soundpad.js');
 const { existsSync } = require('node:fs');
+const Store = require('electron-store');
+
+const store = new Store();
 
 const iconPath = path.join(__dirname, '../assets/soundpaddon.ico')
 
@@ -70,6 +73,13 @@ const createWindow = async () => {
     webPreferences: {
       zoomFactor: factor,
       preload: './preload.js',
+    }
+  });
+
+  mainWindow.on('close', function (event) {
+    if (store.get('minimizeOnWinClose', false)) {
+      event.preventDefault();
+      mainWindow.hide();
     }
   });
 

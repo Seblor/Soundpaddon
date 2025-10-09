@@ -1,11 +1,12 @@
 // @ts-check
 
 import { closeSoundpad } from 'soundpad.js'
-import { disableAutoStart, enableAutoStart, getAutoStartValue } from './start-with-windows'
+import { disableAutoStart, enableAutoStart, getAutoStartValue } from './start-with-windows-tray-option'
 import { Menu, Tray, type App } from 'electron';
 import { BrowserWindow, type KeyboardEvent, type MenuItem, type MenuItemConstructorOptions } from 'electron/main';
+import { enableMinimizeOnWinClose, getMinimizeOnWinClose, disableMinimizeOnWinClose } from './auto-minimize-tray-option';
 
-export async function createTray(app: App, iconPath: string) {
+export async function createTray (app: App, iconPath: string) {
   const tray = new Tray(iconPath)
 
   const contextMenu = Menu.buildFromTemplate(await generateSystrayTemplate(app, tray))
@@ -14,11 +15,15 @@ export async function createTray(app: App, iconPath: string) {
 
   tray.on('click', (e: KeyboardEvent) => {
     const appWindow = BrowserWindow.getAllWindows()[0]
-    appWindow.focus()
+    if (appWindow.isVisible()) {
+      appWindow.focus()
+    } else {
+      appWindow.show()
+    }
   })
 }
 
-async function generateSystrayTemplate(app: App, tray: Tray): Promise<(MenuItemConstructorOptions | MenuItem)[]> {
+async function generateSystrayTemplate (app: App, tray: Tray): Promise<(MenuItemConstructorOptions | MenuItem)[]> {
   return [
     {
       label: 'Open Soundpaddon with Windows',
@@ -31,6 +36,23 @@ async function generateSystrayTemplate(app: App, tray: Tray): Promise<(MenuItemC
         } else {
           console.log('enabling autostart');
           await enableAutoStart('Soundpaddon', app.getPath('exe')).catch(console.error)
+        }
+
+        // Update the context menu with the new checkbox value
+        tray.setContextMenu(Menu.buildFromTemplate(await generateSystrayTemplate(app, tray)))
+      }
+    },
+    {
+      label: 'Minimize to tray when closing Soundpaddon\'s window',
+      type: 'checkbox',
+      checked: getMinimizeOnWinClose(),
+      click: async () => {
+        if (getMinimizeOnWinClose()) {
+          console.log('disabling minimize on close');
+          disableMinimizeOnWinClose()
+        } else {
+          console.log('enabling minimize on close');
+          enableMinimizeOnWinClose()
         }
 
         // Update the context menu with the new checkbox value
