@@ -61,6 +61,14 @@
       },
     },
     {
+      element: ".guide-soundpad-only-section",
+      popover: {
+        title: "Soundpad only section",
+        description:
+          "This sections allows you to only show the Soundpad interface, just like the mobile version, but bigger !",
+      },
+    },
+    {
       popover: {
         title: "Tray menu",
         description: `<div>

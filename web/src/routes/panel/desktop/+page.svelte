@@ -12,6 +12,7 @@
   import UpdateIcon from "virtual:icons/mdi/update";
   import ImportIcon from "virtual:icons/mdi/import";
   import MagnifyIcon from "virtual:icons/mdi/magnify";
+  import ViewGridCompactIcon from "virtual:icons/mdi/view-grid-compact";
   import HammerScrewdriverIcon from "virtual:icons/mdi/hammer-screwdriver";
   import PairingQrcode from "../../../components/dekstop/pairing-qrcode.svelte";
   import YoutubeExtractor from "../../../components/dekstop/youtube-extractor.svelte";
@@ -19,6 +20,8 @@
   import SoundExtractor from "../../../components/dekstop/sound-extractor.svelte";
   import KoFi from "../../../components/icons/ko-fi.svelte";
   import { checkForUpdate } from "$lib/update-checker";
+  import { driverConfig, shownDrivers } from "$lib/demo/configs";
+  import { driver } from "driver.js";
 
   let newUpdateAvailable = false;
   let newUpdateVersion = "";
@@ -29,6 +32,33 @@
   });
 
   let currentTile = 0;
+
+  let previewEl: HTMLIFrameElement | null = null;
+
+  $: if (currentTile === 4) {
+    // Disabling transition after the resize is done to avoid weird animation when the user is resizing the iframe
+    setTimeout(() => {
+      previewEl?.classList.remove("transition-all");
+
+      if (!shownDrivers.has("soundpad-only")) {
+        shownDrivers.add("soundpad-only");
+
+        const soundPadOnlyGuide = driver({
+          ...driverConfig,
+          steps: [
+            {
+              element: "#soundpad-only-handle-anchor",
+              popover: {
+                title: "Soundpad-only mode",
+                description: `<p>This is the same interface as you would have on a big mobile screen.<br>Feel free to resize it using the little handle at the bottom right corner.</p>`,
+              },
+            },
+          ],
+        });
+        soundPadOnlyGuide.drive();
+      }
+    }, 300);
+  }
 </script>
 
 <div class="flex items-center justify-between w-full h-full">
@@ -121,6 +151,24 @@
       >
       <div class="px-2 pb-2">
         <span class="text-white text-center">Import From Web Page</span>
+      </div>
+    </AppRailTile>
+    <AppRailTile
+      class="guide-soundpad-only-section"
+      bind:group={currentTile}
+      name="tile-5"
+      value={4}
+      title="tile-5"
+    >
+      <svelte:fragment slot="lead"
+        ><ViewGridCompactIcon
+          class="justify-center w-full"
+          color="white"
+          font-size="32"
+        /></svelte:fragment
+      >
+      <div class="px-2 pb-2">
+        <span class="text-white text-center">Soundpad only</span>
       </div>
     </AppRailTile>
     <!-- --- -->
@@ -227,5 +275,30 @@
     {#if currentTile === 3}
       <SoundExtractor />
     {/if}
+    {#if currentTile === 4}
+      <div
+        id="soundpad-only-handle-anchor"
+        class="bottom-0 right-0 absolute m-4 border size-6 border-red-500"
+      ></div>
+    {/if}
+  </div>
+
+  <div
+    id="guide-mobile-preview"
+    class="mr-4 {currentTile === 4
+      ? 'w-full h-full py-4 flex justify-center items-center'
+      : ''}"
+  >
+    <iframe
+      bind:this={previewEl}
+      seamless
+      src="/panel/mobile"
+      frameborder="0"
+      title="mobile view"
+      class="{currentTile === 4
+        ? 'size-full max-h-full max-w-full transition-all'
+        : 'max-h-[75vh] w-96 h-[48rem]'} border-8 border-black rounded-lg shadow-lg resize"
+      style={currentTile === 4 ? "direction: ltr" : "direction: rtl"}
+    ></iframe>
   </div>
 </div>
