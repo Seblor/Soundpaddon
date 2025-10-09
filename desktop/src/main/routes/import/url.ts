@@ -182,7 +182,7 @@ const importers: Partial<Record<SOUND_SOURCES, (searchFilter: string) => Promise
   },
   freesound: async function (searchFilter: string) {
     const output = await jsdom.JSDOM.fromURL(getURL('freesound', searchFilter));
-    const sounds = [...output.window.document.querySelectorAll('.bw-player.bw-player--hover-interactions')].map(el => {
+    const sounds = [...output.window.document.querySelectorAll('.bw-player[data-mp3]')].map(el => {
       return { source: 'freesound' as SOUND_SOURCES, name: el.getAttribute('data-title'), url: el.getAttribute('data-mp3') }
     })
     return sounds.filter(Boolean)
