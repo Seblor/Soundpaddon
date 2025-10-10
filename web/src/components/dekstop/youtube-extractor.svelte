@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte";
   import YTPlayer from "youtube-player";
-  import { ProgressBar, popup } from "@skeletonlabs/skeleton";
+  import { ProgressBar, ProgressRadial, popup } from "@skeletonlabs/skeleton";
   import ImportIcon from "virtual:icons/mdi/import";
   import LoadingIcon from "virtual:icons/mdi/loading";
   import YoutubeIcon from "virtual:icons/mdi/youtube";
@@ -24,7 +24,10 @@
   let isDownloading = false;
 
   // trimming special characters that soundpad cannot handle (for example ♪ or ♫)
-  $: soundName = soundName.replace(/[^a-zA-Z0-9_ \[\]$&+,:;=?@#|'<>.^*()%!-]/g, "");
+  $: soundName = soundName.replace(
+    /[^a-zA-Z0-9_ \[\]$&+,:;=?@#|'<>.^*()%!-]/g,
+    "",
+  );
 
   const guide = driver({
     ...driverConfig,
@@ -42,7 +45,17 @@
     ],
   });
 
-  let currentProgress = 0;
+  let currentProgress: {
+    stepName: string;
+    progress: number;
+    isDone: boolean;
+  }[] = [];
+
+  $: processesDone = currentProgress.filter((p) => p.isDone);
+  $: processRunning = currentProgress.find((p) => !p.isDone)!;
+  $: processesRemaining = currentProgress.filter(
+    (p) => !processesDone.includes(p) && processRunning !== p,
+  );
 
   $: updateVideoPlayer(youtube_parser(videoUrl ?? "") as string);
 
@@ -50,8 +63,8 @@
 
   async function updateVideoPlayer(videoId: string | false) {
     console.log(videoId, player);
-      player?.destroy();
-      player = undefined;
+    player?.destroy();
+    player = undefined;
     if (videoId) {
       start = 0;
       end = 1;
@@ -122,14 +135,14 @@
     const es = new EventSource(`${getEndpointUrl()}/import/youtube/progress`);
 
     es.onmessage = function (event) {
-      const seconds = parseInt(event.data);
-      const goal = Math.round((end - start) * totalDuration * 1000) / 1000;
-      currentProgress = (seconds / goal) * 100;
+      currentProgress = JSON.parse(event.data);
     };
 
     es.onerror = function (event) {
       es.close();
     };
+
+    await new Promise((resolve) => (es.onopen = resolve));
 
     const totalDuration = await player.getDuration();
     isDownloading = true;
@@ -218,8 +231,43 @@
     Import in Soundpad</button
   >
   <div class="h-4 w-full">
-    {#if isDownloading}
-      <ProgressBar value={currentProgress} />
+    {#if isDownloading && !processRunning}
+      <div style="width: 100%">
+        <ProgressBar value={100} />
+      </div>
+    {/if}
+    {#if isDownloading && processRunning}
+      <div class="flex items-center mx-auto gap-2">
+        {#each currentProgress as process}
+          <div
+            class="flex flex-col justify-center items-center size-full gap-4"
+          >
+            {process.stepName}
+            <ProgressRadial
+              class=" {process === processRunning
+                ? ''
+                : 'scale-50'} transition-all"
+              stroke={process === processRunning ? 75 : 40}
+              meter={process.isDone
+                ? "stroke-green-500"
+                : process === processRunning
+                  ? "stroke-primary-500"
+                  : "stroke-secondary-500"}
+              track={process.isDone
+                ? "stroke-green-500/30"
+                : process === processRunning
+                  ? "stroke-primary-500/30"
+                  : "stroke-secondary-500/30"}
+              strokeLinecap={process.progress === -1 ? "round" : "butt"}
+              value={process.isDone
+                ? 100
+                : process.progress === -1
+                  ? undefined
+                  : process.progress}
+            />
+          </div>
+        {/each}
+      </div>
     {/if}
   </div>
 </div>

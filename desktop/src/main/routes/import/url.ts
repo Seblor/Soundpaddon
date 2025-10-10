@@ -73,7 +73,7 @@ export default function registerRoutes (app: Application, electronApp: App) {
       return res.status(400).send('Invalid URL');
     }
 
-    const fetchHeaders = await fetch(webPageUrl).then(res => res.headers).catch(() => {
+    const fetchHeaders = await fetch(webPageUrl).then(res => res.headers).catch<null>(() => {
       res.send([])
       return null
     })
@@ -86,7 +86,7 @@ export default function registerRoutes (app: Application, electronApp: App) {
       }])
     }
 
-    const webPage = await jsdom.JSDOM.fromURL(webPageUrl).catch(() => {
+    const webPage = await jsdom.JSDOM.fromURL(webPageUrl).catch<null>(() => {
       res.send([])
       return null
     })

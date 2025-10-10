@@ -45,7 +45,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.9",
     "@ffmpeg-installer/ffmpeg": "^1.1.0",
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
@@ -64,6 +63,7 @@
     "soundpad.js": "^2.6.2",
     "undici": "^7.4.0",
     "winreg": "^1.2.5",
+    "yt-dlp-wrap": "^2.3.12",
     "ytdl-core": "^4.11.5"
   }
 }
