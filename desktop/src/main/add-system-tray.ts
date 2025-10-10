@@ -2,9 +2,10 @@
 
 import { closeSoundpad } from 'soundpad.js'
 import { disableAutoStart, enableAutoStart, getAutoStartValue } from './start-with-windows-tray-option'
-import { Menu, Tray, type App } from 'electron';
-import { BrowserWindow, type KeyboardEvent, type MenuItem, type MenuItemConstructorOptions } from 'electron/main';
+import { Menu, shell, Tray, type App } from 'electron';
+import { BrowserWindow, dialog, type KeyboardEvent, type MenuItem, type MenuItemConstructorOptions } from 'electron/main';
 import { enableMinimizeOnWinClose, getMinimizeOnWinClose, disableMinimizeOnWinClose } from './auto-minimize-tray-option';
+import { getDownloadLocation, resetDownloadLocation, setDownloadLocation } from './download-location-tray-option';
 
 export async function createTray (app: App, iconPath: string) {
   const tray = new Tray(iconPath)
@@ -58,6 +59,35 @@ async function generateSystrayTemplate (app: App, tray: Tray): Promise<(MenuItem
         // Update the context menu with the new checkbox value
         tray.setContextMenu(Menu.buildFromTemplate(await generateSystrayTemplate(app, tray)))
       }
+    },
+    {
+      label: 'Sound download location',
+      submenu: [
+        {
+          label: 'Set download location',
+          click: async () => {
+            const result = await dialog.showOpenDialog({
+              properties: ['openDirectory']
+            })
+            if (!result.canceled && result.filePaths.length > 0) {
+              setDownloadLocation(result.filePaths[0])
+            }
+          }
+        },
+        {
+          label: 'Open download location',
+          click: async () => {
+            const location = getDownloadLocation(app)
+            shell.openPath(location)
+          }
+        },
+        {
+          label: 'Reset download location',
+          click: async () => {
+            resetDownloadLocation(app)
+          }
+        }
+      ],
     },
     { type: 'separator' },
     {
