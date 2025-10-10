@@ -17,7 +17,7 @@
   let soundsFound: FetchedSound[] = checkIsDemo() ? demoSoundbanks :[];
   let isFetching = false;
 
-  const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy", "uwupad"];
+  const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy", "uwupad", "pixabay"];
 
   let selectedSources: SOUND_SOURCES[] = [...sources];
 

@@ -7,9 +7,9 @@
   "repository": "https://github.com/Seblor/Soundpaddon",
   "scripts": {
     "start": "electron-forge start",
-    "build": "npm run build:renderer && npm run build:main",
+    "build": "npm run build:renderer && tsc -p tsconfig.main.json",
     "build:renderer": "tsx fetch-sources.ts",
-    "build:main": "tsc -p tsconfig.main.json",
+    "build:main": "tsc -p tsconfig.main.json --watch",
     "package": "electron-forge package",
     "make": "electron-forge make",
     "publish": "electron-forge publish",

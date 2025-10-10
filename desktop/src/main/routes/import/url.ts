@@ -188,7 +188,7 @@ const importers: Partial<Record<SOUND_SOURCES, (searchFilter: string) => Promise
     return sounds.filter(Boolean)
   },
   uwupad: async function (searchFilter: string) {
-    const output = await fetch(getURL('uwupad', searchFilter)).then(res => res.json()) as Array<{
+    const output = await fetch(getURL('uwupad', searchFilter)).then(res => res.json()).catch(console.error) as Array<{
       title: string,
       extension: string,
       id: number,
@@ -196,6 +196,16 @@ const importers: Partial<Record<SOUND_SOURCES, (searchFilter: string) => Promise
     const sounds = output.map(data => {
       return { source: 'uwupad' as SOUND_SOURCES, name: data.title, url: `https://cdn.uwupad.me/${data.id}.${data.extension}` }
     })
+    return sounds
+  },
+  pixabay: async function (searchFilter: string) {
+    const output = await jsdom.JSDOM.fromURL(getURL('pixabay', searchFilter));
+    const sounds = [...output.window.document.querySelectorAll('div[class^="nameAndTitle"]>a')]
+      .map((el: HTMLAnchorElement) => el.href.match(/sound-effects\/(.+)-(\d+)\//))
+      .filter(el => el)
+      .map((match) => {
+        return { source: 'pixabay' as SOUND_SOURCES, name: match[1].replace(/-/g, ' '), url: `https://pixabay.com//fr/sound-effects/download/id-${match[2]}.mp3` }
+      })
     return sounds
   },
 }
@@ -210,5 +220,7 @@ function getURL (source: SOUND_SOURCES, searchFilter: string): string {
       return `https://server.voicy.network/api/clips?Type=0&Search=${encodeURIComponent(searchFilter)}&Quantity=20&Index=0&NSFW=true`;
     case 'uwupad':
       return `https://uwupad.me/api/search?query=${encodeURIComponent(searchFilter)}&limit=20&offset=0`;
+    case 'pixabay':
+      return `https://pixabay.com/fr/sound-effects/search/${encodeURIComponent(searchFilter)}/`;
   }
 }
