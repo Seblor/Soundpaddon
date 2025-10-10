@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import { type Application, type Request, type Response, } from 'express';
-import { app, App } from 'electron/main';
+import { App } from 'electron/main';
 import path from 'node:path';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
@@ -8,11 +8,8 @@ import fs from 'node:fs';
 import { importToSoundpad, timeMarkToSeconds } from '../../utils/misc';
 import { getDownloadLocation } from '../../download-location-tray-option';
 import { getYtDlpWrapper, updateYTDlp } from '../../utils/yt-dlp';
-import { shell } from 'electron';
 
 updateYTDlp();
-
-shell.openExternal(app.getPath('assets'));
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path.replace('app.asar', 'app.asar.unpacked'))
 
