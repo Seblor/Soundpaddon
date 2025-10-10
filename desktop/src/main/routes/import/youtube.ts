@@ -7,12 +7,13 @@ import ffmpeg from 'fluent-ffmpeg';
 import ffmpegInstaller from '@ffmpeg-installer/ffmpeg'
 import fs from 'node:fs';
 import { importToSoundpad, timeMarkToSeconds } from '../../utils/misc';
+import { getDownloadLocation } from '../../download-location-tray-option';
 
 ffmpeg.setFfmpegPath(ffmpegInstaller.path.replace('app.asar', 'app.asar.unpacked'))
 
 const responsesToUpdate: Array<(newProgress: number, isDone: boolean) => void> = [];
 
-export default function registerRoutes(app: Application, electronApp: App) {
+export default function registerRoutes (app: Application, electronApp: App) {
   app.post('/api/import/youtube', bodyParser.json(), async function (req: Request, res: Response) {
     const data = req.body as {
       url: string,
@@ -26,7 +27,7 @@ export default function registerRoutes(app: Application, electronApp: App) {
       quality: 'highestaudio',
     });
 
-    const outputPath = path.join(electronApp.getPath('userData'), 'sounds', `${data.name}.mp3`);
+    const outputPath = path.join(getDownloadLocation(electronApp), `${data.name}.mp3`);
 
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
 
