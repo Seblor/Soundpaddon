@@ -10,14 +10,20 @@
   import type { SOUND_SOURCES } from "$lib/api-return-types";
   import { checkIsDemo, demoPopupConfig } from "$lib/utils/misc";
   import { popup } from "@skeletonlabs/skeleton";
-    import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
-    import { demoSoundbanks } from "$lib/demo/demo-sounds";
+  import DisabledInDemoPopup from "../demo/DisabledInDemoPopup.svelte";
+  import { demoSoundbanks } from "$lib/demo/demo-sounds";
 
   let searchFilter = checkIsDemo() ? "Some examples" : "";
-  let soundsFound: FetchedSound[] = checkIsDemo() ? demoSoundbanks :[];
+  let soundsFound: FetchedSound[] = checkIsDemo() ? demoSoundbanks : [];
   let isFetching = false;
 
-  const sources: SOUND_SOURCES[] = ["myinstants", "freesound", "voicy", "uwupad", "pixabay"];
+  const sources: SOUND_SOURCES[] = [
+    "myinstants",
+    "freesound",
+    "voicy",
+    "uwupad",
+    "pixabay",
+  ];
 
   let selectedSources: SOUND_SOURCES[] = [...sources];
 
@@ -47,58 +53,56 @@
   });
 </script>
 
-<div class="h-full w-full">
-  <div class="flex flex-col py-8 h-full items-center gap-4">
-    <label class="relative label w-full">
-      <input
-        use:popup={demoPopupConfig}
-        class="input h-8 px-2 text-center"
-        type="text"
-        disabled={checkIsDemo() || isFetching}
-        placeholder="Search a sound"
-        bind:value={searchFilter}
-        on:input={() => searchSounds()}
-      />
-      {#if isFetching}
-        <LoadingIcon class="absolute right-2 top-2 animate-spin !-mt-0.5" />
-      {/if}
-    </label>
-    <div class="flex gap-2">
-      {#each sources as clickedSource}
-        <button
-          class="rounded-full chip {selectedSources.includes(clickedSource)
-            ? 'variant-filled'
-            : 'variant-soft'}"
-          on:click={() => {
-            if (selectedSources.includes(clickedSource)) {
-              console.log("removing", clickedSource);
-              console.log(selectedSources);
-              selectedSources = selectedSources.filter(
-                (source) => source !== clickedSource,
-              );
-              console.log(selectedSources);
-            } else {
-              selectedSources = [...selectedSources, clickedSource];
-            }
-          }}
-          on:keypress
-        >
-          {#if selectedSources.includes(clickedSource)}<span
-              ><CheckmarkIcon /></span
-            >{/if}
-          <span>{clickedSource}</span>
-        </button>
-      {/each}
-    </div>
-    <div class="size-full overflow-y-auto">
-      <div
-        class="grid w-full gap-2 pt-2 auto-rows-auto"
-        style={`grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); box-sizing: content-box;`}
+<div class="flex flex-col py-8 h-full items-center gap-4">
+  <label class="relative label w-full">
+    <input
+      use:popup={demoPopupConfig}
+      class="input h-8 px-2 text-center"
+      type="text"
+      disabled={checkIsDemo() || isFetching}
+      placeholder="Search a sound"
+      bind:value={searchFilter}
+      on:input={() => searchSounds()}
+    />
+    {#if isFetching}
+      <LoadingIcon class="absolute right-2 top-2 animate-spin !-mt-0.5" />
+    {/if}
+  </label>
+  <div class="flex gap-2">
+    {#each sources as clickedSource}
+      <button
+        class="rounded-full chip {selectedSources.includes(clickedSource)
+          ? 'variant-filled'
+          : 'variant-soft'}"
+        on:click={() => {
+          if (selectedSources.includes(clickedSource)) {
+            console.log("removing", clickedSource);
+            console.log(selectedSources);
+            selectedSources = selectedSources.filter(
+              (source) => source !== clickedSource,
+            );
+            console.log(selectedSources);
+          } else {
+            selectedSources = [...selectedSources, clickedSource];
+          }
+        }}
+        on:keypress
       >
-        {#each filteredSounds as soundFound (soundFound.name + soundFound.url)}
-          <SoundFetched sound={soundFound} />
-        {/each}
-      </div>
+        {#if selectedSources.includes(clickedSource)}<span
+            ><CheckmarkIcon /></span
+          >{/if}
+        <span>{clickedSource}</span>
+      </button>
+    {/each}
+  </div>
+  <div class="size-full overflow-y-auto">
+    <div
+      class="grid w-full gap-2 pt-2 auto-rows-auto"
+      style={`grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); box-sizing: content-box;`}
+    >
+      {#each filteredSounds as soundFound (soundFound.name + soundFound.url)}
+        <SoundFetched sound={soundFound} />
+      {/each}
     </div>
   </div>
 </div>

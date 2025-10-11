@@ -60,8 +60,6 @@
   );
 
   $: if (currentTile === 4) {
-    previewEl?.classList.add("transition-all");
-
     tick().then(() => {
       if (previewCustomSize.width && previewCustomSize.height) {
         previewEl?.classList.add(
@@ -94,19 +92,17 @@
       }
 
       if (previewEl) {
-        previewEl.classList.remove("transition-all");
         observer.observe(previewEl, { box: "border-box" });
       }
     }, 500);
   } else {
     if (previewEl) {
-      previewEl.classList.add("transition-all");
       observer.unobserve(previewEl);
     }
   }
 </script>
 
-<div class="flex items-center justify-between w-full h-full">
+<div class="flex items-center justify-between w-full h-full overflow-hidden">
   <AppRail class="min-w-[100px]">
     <svelte:fragment slot="lead">
       <a
@@ -261,9 +257,9 @@
     </svelte:fragment>
   </AppRail>
 
-  <div class="flex h-full grow justify-center items-center ml-4">
+  <div class="flex h-full grow justify-center items-center">
     {#if currentTile === 0}
-      <div class="flex flex-col items-center text-center gap-4">
+      <div class="flex flex-col items-center text-center ml-4 gap-4">
         <h1 class="text-2xl">Scan this QRCode with your phone</h1>
         <PairingQrcode />
         <p>
@@ -312,27 +308,33 @@
       </div>
     {/if}
     {#if currentTile === 1}
-      <YoutubeExtractor />
+      <div class="m-4">
+        <YoutubeExtractor />
+      </div>
     {/if}
     {#if currentTile === 2}
-      <SoundBankLookup />
+      <div class="m-4 h-full w-full">
+        <SoundBankLookup />
+      </div>
     {/if}
     {#if currentTile === 3}
-      <SoundExtractor />
+      <div class="m-4 h-full w-full">
+        <SoundExtractor />
+      </div>
     {/if}
     {#if currentTile === 4}
       <div
         id="soundpad-only-handle-anchor"
-        class="pointer-events-none bottom-0 right-0 absolute m-4 size-6"
+        class="pointer-events-none bottom-0 right-0 absolute size-6"
       ></div>
     {/if}
   </div>
 
   <div
     id="guide-mobile-preview"
-    class="mr-4 {currentTile === 4
-      ? 'w-full h-full py-4 flex justify-center items-center'
-      : ''}"
+    class={currentTile === 4
+      ? "w-full h-full flex justify-center items-center"
+      : ""}
   >
     <iframe
       bind:this={previewEl}
@@ -341,8 +343,8 @@
       frameborder="0"
       title="mobile view"
       class="{currentTile === 4
-        ? `max-h-full max-w-full transition-all`
-        : 'max-h-[75vh] w-96 h-[48rem]'} border-8 border-black rounded-lg shadow-lg resize"
+        ? `max-h-full max-w-full`
+        : 'max-h-[75vh] max-w-[50vw] w-96 h-[48rem] border-8 rounded-lg'} transition-all active:transition-none border-black shadow-lg resize min-w-[300px] min-h-[300px]"
       style="{currentTile === 4
         ? 'direction: ltr;'
         : 'direction: rtl;'} {currentTile === 4 &&

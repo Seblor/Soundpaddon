@@ -3,12 +3,25 @@
   // import CustomizedLayoutIcon from "virtual:icons/mdi/brush";
   import MirrorLayoutSettings from "../settings/mirror-layout-settings.svelte";
   import { soundpadClient } from "../../client/connections";
-  import { SlideToggle } from "@skeletonlabs/skeleton";
+  import { RadioGroup, RadioItem, SlideToggle } from "@skeletonlabs/skeleton";
   import { showSearchBar, enableSoundpadColors } from "../../stores/settings";
   import { checkIsDemo } from "$lib/utils/misc";
   import { setVolume } from "$lib/demo/demo-audio";
+  import { onMount } from "svelte";
 
   let volume = 0;
+  let selectedTheme: string = localStorage.getItem("mobile-theme") || "custom-theme";
+
+  onMount(() => {
+    const root = document.body;
+    root.dataset.theme = selectedTheme;
+  });
+
+  $: {
+    const root = document.body;
+    root.dataset.theme = selectedTheme;
+    localStorage.setItem("mobile-theme", selectedTheme);
+  }
 
   if (checkIsDemo()) {
     volume = 50;
@@ -65,6 +78,22 @@
   </div>
   <hr />
   <MirrorLayoutSettings />
+  <!-- <hr />
+  <h1>Theme</h1>
+
+  <RadioGroup rounded="rounded-container-token" flexDirection="flex-col">
+    <RadioItem bind:group={selectedTheme} name="theme" value={"wintry"}>
+      <span class="flex items-center gap-2"> Original </span>
+    </RadioItem>
+    <RadioItem
+      bind:group={selectedTheme}
+      name="theme"
+      value={"custom-theme-dark"}
+    >
+      <span class="flex items-center gap-2"> Dark </span>
+    </RadioItem>
+  </RadioGroup> -->
+
   <!-- <h1>Select layout</h1>
   <RadioGroup>
     <RadioItem bind:group={$selectedLayout} name="justify" value={'mirror'}>
