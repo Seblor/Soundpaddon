@@ -42,6 +42,16 @@
         width: null as number | null,
         height: null as number | null,
       };
+  let isPreviewFullSize = true;
+
+  const parentObserver = new ResizeObserver(() => {
+    if (previewEl && currentTile === 4) {
+      if (isPreviewFullSize) {
+        previewEl.style.width = `${previewEl.parentElement?.clientWidth}px`;
+        previewEl.style.height = `${previewEl.parentElement?.clientHeight}px`;
+      }
+    }
+  });
 
   const observer = new ResizeObserver(
     debounce((mutations: ResizeObserverEntry[]) => {
@@ -55,6 +65,10 @@
           "soundpad-only-size",
           JSON.stringify(previewCustomSize),
         );
+
+        isPreviewFullSize =
+          previewEl.clientWidth === previewEl.parentElement?.clientWidth &&
+          previewEl.clientHeight === previewEl.parentElement?.clientHeight;
       }
     }, 500),
   );
@@ -93,11 +107,13 @@
 
       if (previewEl) {
         observer.observe(previewEl, { box: "border-box" });
+        parentObserver.observe(previewEl.parentElement as Element);
       }
     }, 500);
   } else {
     if (previewEl) {
       observer.unobserve(previewEl);
+      parentObserver.unobserve(previewEl.parentElement as Element);
     }
   }
 </script>
