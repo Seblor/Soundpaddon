@@ -46,7 +46,7 @@ setImmediate(async () => {
     const newPlaybackDuration = await clients.playbackFetcher.getPlaybackDuration()
     const newPlaybackStatus = await clients.playbackFetcher.getPlayStatus()
 
-    if (playbackStatus === PlayStatus.PLAYING && newPlaybackStatus === PlayStatus.STOPPED) {
+    if ([PlayStatus.PLAYING, PlayStatus.PAUSED].includes(playbackStatus) && newPlaybackStatus === PlayStatus.STOPPED) {
       socketsToNotify.forEach(socket => socket.emit('playback-position', 0))
     }
 

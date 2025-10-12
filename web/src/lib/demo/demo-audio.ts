@@ -27,6 +27,20 @@ export function stopAudio() {
   audioElement.currentTime = 0;
 }
 
+export function togglePause() {
+  if (audioElement.paused) {
+    audioElement.play();
+  } else {
+    audioElement.pause();
+  }
+}
+
+export function seek(position: number) {
+  if (audioElement.duration) {
+    audioElement.currentTime = position * audioElement.duration;
+  }
+}
+
 export function setVolume(newVolume: number) {
   audioElement.volume = newVolume;
 }
