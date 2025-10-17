@@ -78,9 +78,10 @@
       seekDemo(newPosition);
       return;
     }
-    const seekPosition = newPosition;
+    const normalizedNewPosition = newPosition * await soundpadClient.getPlaybackDuration();
+    position = newPosition;
     soundpadClient.sendQuery(
-      `DoSeekMs(${seekPosition})`,
+      `DoSeekMs(${normalizedNewPosition})`,
     );
   }, 100);
 </script>
