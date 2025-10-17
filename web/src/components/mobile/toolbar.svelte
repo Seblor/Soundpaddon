@@ -80,7 +80,7 @@
     }
     const seekPosition = newPosition;
     soundpadClient.sendQuery(
-      `DoSeekMs(0)`,
+      `DoSeekMs(${seekPosition})`,
     );
   }, 100);
 </script>
