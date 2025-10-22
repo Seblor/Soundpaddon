@@ -11,11 +11,18 @@ export function getYtDlpWrapper () {
 }
 
 export async function updateYTDlp () {
-  const latestReleases = await YTDlpWrap.getGithubReleases();
-  const currentVersion = await getYtDlpWrapper().getVersion();
-  if (latestReleases[0].tag_name.trim() !== currentVersion.trim()) {
+  try {
+    const currentVersion = await getYtDlpWrapper().getVersion();
+    const latestReleases = await YTDlpWrap.getGithubReleases();
+    if (latestReleases[0].tag_name.trim() !== currentVersion.trim()) {
+      console.log('downloading latest yt-dlp version:', latestReleases[0].tag_name);
+      await YTDlpWrap.downloadFromGithub(path.join(app.getPath('assets'), 'yt-dlp.exe'), latestReleases[0].tag_name, os.platform());
+    }
+    console.log('yt-dlp is up to date:', await getYtDlpWrapper().getVersion());
+  } catch (error) {
+    const latestReleases = await YTDlpWrap.getGithubReleases();
     console.log('downloading latest yt-dlp version:', latestReleases[0].tag_name);
     await YTDlpWrap.downloadFromGithub(path.join(app.getPath('assets'), 'yt-dlp.exe'), latestReleases[0].tag_name, os.platform());
+    console.log('yt-dlp is up to date:', await getYtDlpWrapper().getVersion());
   }
-  console.log('yt-dlp is up to date:', await getYtDlpWrapper().getVersion());
 }
