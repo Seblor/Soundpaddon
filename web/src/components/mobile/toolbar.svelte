@@ -81,7 +81,7 @@
     const normalizedNewPosition = newPosition * await soundpadClient.getPlaybackDuration();
     position = newPosition;
     soundpadClient.sendQuery(
-      `DoSeekMs(${normalizedNewPosition})`,
+      `DoSeekMs(${Math.round(normalizedNewPosition)})`,
     );
   }, 100);
 </script>
