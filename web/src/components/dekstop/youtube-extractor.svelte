@@ -25,7 +25,7 @@
 
   // trimming special characters that soundpad cannot handle (for example ♪ or ♫)
   $: soundName = soundName.replace(
-    /[^a-zA-Z0-9_ \[\]$&+,:;=?@#|'<>.^*()%!-]/g,
+    /[^a-zA-Z0-9_ \[\]$&+,:;=?@#|'<>^*()%!-]/g,
     "",
   );
 
@@ -127,6 +127,18 @@
     return match && match[1].length == 11 ? match[1] : false;
   }
 
+  /**
+   * Cleans the URL if it's a Youtube URL. Otherwise return as-is
+   * @param url
+   */
+  function cleanYoutubeUrl(url: string): string {
+    const youtubeId = youtube_parser(url);
+    if (youtubeId) {
+      return `https://www.youtube.com/watch?v=${youtubeId}`;
+    }
+    return url;
+  }
+
   async function importToSoundpad() {
     if (!player) {
       return;
@@ -152,7 +164,7 @@
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        url: videoUrl,
+        url: cleanYoutubeUrl(videoUrl),
         name: soundName.trim(),
         start: Math.round(start * totalDuration * 1000) / 1000,
         duration: Math.round((end - start) * totalDuration * 1000) / 1000,
