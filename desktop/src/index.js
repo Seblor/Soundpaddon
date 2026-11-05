@@ -37,28 +37,69 @@ if (require('electron-squirrel-startup')) {
     app.whenReady()
       .then(async () => {
         const host = require('./main/dist/index.js')
-        await host.createHttpServer({
-          certificateRootPath: path.join(app.getPath('userData'), 'ssl'),
-          pathToServe: __dirname + '/renderer',
-          electronApp: app,
-        })
 
-        host.setSystemTray(app, iconPath);
+        try {
+          await host.createHttpServer({
+            certificateRootPath: path.join(app.getPath('userData'), 'ssl'),
+            pathToServe: __dirname + '/renderer',
+            electronApp: app,
+          })
 
-        createWindow();
+          host.setSystemTray(app, iconPath);
+          createWindow(false);
 
-        // On OS X it's common to re-create a window in the app when the
-        // dock icon is clicked and there are no other windows open.
-        app.on('activate', () => {
-          if (BrowserWindow.getAllWindows().length === 0) {
-            createWindow();
+          // On OS X it's common to re-create a window in the app when the
+          // dock icon is clicked and there are no other windows open.
+          app.on('activate', () => {
+            if (BrowserWindow.getAllWindows().length === 0) {
+              createWindow(false);
+            }
+          });
+        } catch (error) {
+          const portError = error && error.port ? error : null;
+          const processName = portError && portError.processName ? portError.processName : null;
+
+          if (processName) {
+            await dialog.showMessageBox({
+              type: 'error',
+              title: 'Port already in use',
+              message: `A program is already using port ${portError.port}.`,
+              detail: `${processName} is currently using this port. Please close it before starting Soundpaddon.`,
+              buttons: ['OK'],
+            })
+            app.quit();
+            return;
           }
-        });
+
+          const fallbackChoice = await dialog.showMessageBox({
+            type: 'error',
+            title: 'Windows needs a reboot',
+            message: 'Windows did a fucky and needs a reboot.',
+            detail: 'There is no program currently using port 8555, but Windows is still blocking it. You can continue in local-only mode without mobile or remote access.',
+            buttons: ['Use local static file', 'Quit'],
+            defaultId: 0,
+            cancelId: 1,
+          })
+
+          if (fallbackChoice.response === 0) {
+            host.setSystemTray(app, iconPath);
+            createWindow(true);
+
+            app.on('activate', () => {
+              if (BrowserWindow.getAllWindows().length === 0) {
+                createWindow(true);
+              }
+            });
+            return;
+          }
+
+          app.quit();
+        }
       });
   });
 }
 
-const createWindow = async () => {
+const createWindow = async (localStaticFallback = false) => {
   let factor = screen.getPrimaryDisplay().scaleFactor;
 
   const baseResolution = 1080; // The app was designed for 1080p resolution.
@@ -127,7 +168,11 @@ const createWindow = async () => {
   })
 
   // and load the index.html of the app.
-  mainWindow.loadURL('https://127-0-0-1.local.soundpaddon.app:8555/panel/desktop');
+  if (localStaticFallback) {
+    mainWindow.loadFile(path.join(__dirname, 'renderer', 'panel', 'desktop.html'))
+  } else {
+    mainWindow.loadURL('https://127-0-0-1.local.soundpaddon.app:8555/panel/desktop');
+  }
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools();
