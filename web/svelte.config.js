@@ -15,7 +15,9 @@ let adapter = adapterStatic({
 });
 
 if (process.env.VERCEL_ENV) {
-	adapter = adapterVercel();
+	adapter = adapterVercel({
+		runtime: 'nodejs26.x'
+	});
 }
 
 /** @type {import('@sveltejs/kit').Config} */
